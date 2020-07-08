@@ -45,7 +45,7 @@ spring:
             group: ${config.group}
             dataId: ${spring.application.name}
             data-type: json
-            rule-type: flow
+             rule-type: degrade
 
 info:
   name: ${project.artifactId}

@@ -27,7 +27,6 @@ spring:
         #配置Sentinel dashboard地址
         dashboard: localhost:8858
         port: 8719
-      eager: true
       datasource:
         ds1:
           nacos:
@@ -36,7 +35,8 @@ spring:
             group: ${config.group}
             dataId: ${spring.application.name}
             data-type: json
-            rule-type: flow
+            rule-type: degrade
+
 
 info:
   name: ${project.artifactId}
