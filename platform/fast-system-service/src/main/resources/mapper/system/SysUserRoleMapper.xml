@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tml.system.mapper.SysUserRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tml.system.entity.SysUserRole">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="role_id" property="roleId"/>
+    </resultMap>
+
+    <select id="selectUserRoleListByUserId" parameterType="integer" resultMap="BaseResultMap">
+        SELECT
+	    r.role_name,
+	    ur.role_id
+        FROM
+        sys_role r
+        LEFT JOIN sys_user_role ur ON r.role_id = ur.role_id
+        LEFT JOIN sys_user u ON u.user_id = ur.user_id
+        WHERE
+        u.user_id = #{userId}
+    </select>
+
+</mapper>

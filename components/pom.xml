@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.tml</groupId>
+        <artifactId>fast-cloud</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>components</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>components</name>
+    <description>通用组件</description>
+
+    <modules>
+        <module>fast-common-core</module>
+        <module>fast-common-starter-web</module>
+        <module>fast-common-starter-datasource</module>
+        <module>fast-common-starter-redis</module>
+        <module>fast-common-starter-security</module>
+        <module>fast-common-starter-swagger2</module>
+        <module>fast-common-starter-log</module>
+    </modules>
+</project>

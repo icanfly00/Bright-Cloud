@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.tml</groupId>
+        <artifactId>platform</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.tml</groupId>
+    <artifactId>fast-uaa-service</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>fast-uaa-service</name>
+    <description>授权服务</description>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.tml</groupId>
+            <artifactId>fast-system-api</artifactId>
+            <version>${fast-system-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tml</groupId>
+            <artifactId>fast-common-starter-web</artifactId>
+            <version>${fast-common-starter-web.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tml</groupId>
+            <artifactId>fast-common-starter-datasource</artifactId>
+            <version>${fast-common-starter-datasource.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tml</groupId>
+            <artifactId>fast-common-starter-redis</artifactId>
+            <version>${fast-common-starter-redis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tml</groupId>
+            <artifactId>fast-common-starter-security</artifactId>
+            <version>${fast-common-starter-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tml</groupId>
+            <artifactId>fast-common-starter-swagger2</artifactId>
+            <version>${fast-common-starter-swagger2.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

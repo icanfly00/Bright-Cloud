@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css">
+    <script th:src="@{/bootstrap/js/jquery-3.4.1.min.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="left">
+                    <span>首页</span>
+                </div>
+                <div class="right menu">
+                    <!--如果未登录-->
+                    <div sec:authorize="!isAuthenticated()">
+                        <a class="item" th:href="@{/login}">
+                            <i class="card"></i> 登录
+                        </a>
+                    </div>
+                    <!--如果已登录-->
+                    <div sec:authorize="isAuthenticated()">
+                        <a class="item">
+                            <i class="card"></i>
+                            用户名：<span sec:authentication="principal.username"></span>
+                            角色：<span sec:authentication="principal.authorities"></span>
+                        </a>
+                    </div>
+                    <div sec:authorize="isAuthenticated()">
+                        <a class="item" th:href="@{/logout}">
+                            <i class="card"></i> 注销
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

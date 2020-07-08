@@ -1,0 +1,44 @@
+server:
+  port: 8002
+  # 开启优雅停机，默认immediate是立即关机。
+  shutdown: graceful
+
+spring:
+  application:
+    name: ${project.artifactId}
+  profiles:
+    active: ${profileActive}
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      config:
+        server-addr: ${discovery.server-addr}
+        namespace: ${config.namespace}
+        group: ${config.group}
+        file-extension: yaml
+        shared-configs: common.yaml,db.yaml,redis.yaml,mail.yaml,rabbitmq.yaml
+      discovery:
+        server-addr: ${discovery.server-addr}
+        namespace: ${config.namespace}
+        group: ${config.group}
+    sentinel:
+      transport:
+        #配置Sentinel dashboard地址
+        dashboard: localhost:8858
+        port: 8719
+      eager: true
+      datasource:
+        ds1:
+          nacos:
+            server-addr: ${discovery.server-addr}
+            namespace: ${config.namespace}
+            group: ${config.group}
+            dataId: ${spring.application.name}
+            data-type: json
+            rule-type: flow
+
+info:
+  name: ${project.artifactId}
+  version: ${project.version}
+  descrption: ${project.description}

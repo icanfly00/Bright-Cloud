@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>统一认证 - 登录页</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css">
+    <script th:src="@{/bootstrap/js/jquery-3.4.1.min.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}" type="text/javascript" charset="utf-8"></script>
+    <link th:href="@{/css/login.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="m-login-bg">
+    <div class="m-login">
+        <div class="m-login-warp">
+            <div class="card">
+                <div class="card-header"> 欢迎登录</div>
+                <div class="card-block" style="height: 200px;">
+                    <form role="form" method="post" action="/login">
+                        <div class="form-group">
+                            <input type="text" name="username" required placeholder="登录名/邮箱/手机号" autocomplete="off" class="form-control ">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" required placeholder="密码" autocomplete="off" class="form-control ">
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" class="pull-right" id="customCheck" name="rememberMe">
+                            <label class="pull-right" for="customCheck">记住用户名</label>
+                        </div>
+                        <div class="form-group m-login-btn">
+                            <button class="btn btn-primary btn-block" type="submit">登录</button>
+                        </div>
+                    </form>
+                </div>
+                <p class="copyright">统一认证登录</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

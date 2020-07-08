@@ -1,0 +1,7 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.tml.common.datasource.configuration.MybatisPlusConfiguration,\
+  com.tml.common.datasource.tenant.RestTenantConfigProperties,\
+  com.tml.common.datasource.tenant.RestTenantContextHolderFilter,\
+  com.tml.common.datasource.tenant.RestTenantHandler
+
+
