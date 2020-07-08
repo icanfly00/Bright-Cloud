@@ -20,5 +20,4 @@ public class WebAutoConfiguration {
     public XssFilter xssFilter(){
         return new XssFilter();
     }
-
 }

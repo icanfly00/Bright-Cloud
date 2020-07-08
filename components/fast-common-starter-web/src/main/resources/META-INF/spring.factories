@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.tml.common.util.SpringUtil,\
   com.tml.common.web.task.AsyncThreadPoolConfiguration,\
   com.tml.common.web.task.ScheduledThreadPoolConfiguration,\
   com.tml.common.web.configuration.CorsConfig,\

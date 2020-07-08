@@ -11,6 +11,14 @@ spring:
   main:
     allow-bean-definition-overriding: true
   cloud:
+    gateway:
+      enabled: true
+      discovery:
+        locator:
+          #表明gateway开启服务注册和发现的功能，并且spring cloud gateway自动根据服务发现为每一个服务创建了一个router，# 这个router将以服务名开头的请求路径转发到对应的服务
+          enabled: true
+          #将请求路径上的服务名配置为小写（因为服务注册的时候，向注册中心注册时将服务名转成大写的了,比如以/service-hi/*的请求路径被路由转发到服务名为service-hi的服务上
+          lower-case-service-id: true
     nacos:
       config:
         server-addr: ${discovery.server-addr}
@@ -37,8 +45,33 @@ spring:
             data-type: json
             rule-type: degrade
 
-
 info:
   name: ${project.artifactId}
   version: ${project.version}
   descrption: ${project.description}
+
+tml:
+  # 开放api
+  api:
+    # 参数签名验证
+    check-sign: false
+    # 访问权限控制
+    access-control: true
+    # swagger调试,生产环境设为false
+    api-debug: true
+    # 始终放行
+    permit-all:
+      - /*/login/**
+      - /*/logout/**
+      - /*/oauth/**
+      - /actuator/health
+      - /actuator/info
+    # 忽略权限鉴定
+    authority-ignores:
+      - /*/authority/granted/me
+      - /*/authority/granted/me/menu
+      - /*/current/user/**
+    # 签名忽略
+    sign-ignores:
+      - /**/login/**
+      - /**/logout/**

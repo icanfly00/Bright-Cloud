@@ -3,12 +3,10 @@ package com.tml.common.exception;
 import com.tml.common.api.CommonResult;
 import com.tml.common.api.ResultCode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
@@ -23,14 +21,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = APIException.class)
     public CommonResult handle(APIException e) {
-
         if(e.getCode()!=ResultCode.FAILED.getCode()){
-
+            return CommonResult.failed(e.getCode(),e.getMessage());
+        }else {
             return CommonResult.failed(e.getMessage());
         }
-
-
-        return CommonResult.failed(e.getMessage());
     }
 
     /**
@@ -68,35 +63,34 @@ public class GlobalExceptionHandler {
      */
     public static CommonResult resolveException(Exception ex, String path) {
         ResultCode code = ResultCode.FAILED;
-        int httpStatus = HttpStatus.INTERNAL_SERVER_ERROR.value();
         String message = ex.getMessage();
         String className = ex.getClass().getName();
         if (className.contains("UsernameNotFoundException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
+           
             code = ResultCode.USERNAME_NOT_FOUND;
         } else if (className.contains("BadCredentialsException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
+           
             code = ResultCode.BAD_CREDENTIALS;
         } else if (className.contains("AccountExpiredException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
+           
             code = ResultCode.ACCOUNT_EXPIRED;
         } else if (className.contains("LockedException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
+           
             code = ResultCode.ACCOUNT_LOCKED;
         } else if (className.contains("DisabledException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
+           
             code = ResultCode.ACCOUNT_DISABLED;
         } else if (className.contains("CredentialsExpiredException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
+           
             code = ResultCode.CREDENTIALS_EXPIRED;
         } else if (className.contains("InvalidClientException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
+           
             code = ResultCode.INVALID_CLIENT;
         } else if (className.contains("UnauthorizedClientException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
+           
             code = ResultCode.UNAUTHORIZED_CLIENT;
         } else if (className.contains("InsufficientAuthenticationException") || className.contains("AuthenticationCredentialsNotFoundException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
+           
             code = ResultCode.UNAUTHORIZED;
         } else if (className.contains("InvalidGrantException")) {
             code = ResultCode.ALERT;
@@ -108,13 +102,12 @@ public class GlobalExceptionHandler {
                 code = ResultCode.ACCOUNT_LOCKED;
             }
         } else if (className.contains("InvalidScopeException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
+           
             code = ResultCode.INVALID_SCOPE;
         } else if (className.contains("InvalidTokenException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
+           
             code = ResultCode.INVALID_TOKEN;
         } else if (className.contains("InvalidRequestException")) {
-            httpStatus = HttpStatus.BAD_REQUEST.value();
             code = ResultCode.INVALID_REQUEST;
         } else if (className.contains("RedirectMismatchException")) {
             code = ResultCode.REDIRECT_URI_MISMATCH;
@@ -126,7 +119,6 @@ public class GlobalExceptionHandler {
             code = ResultCode.ACCESS_DENIED;
         } else if (className.contains("AccessDeniedException")) {
             code = ResultCode.ACCESS_DENIED;
-            httpStatus = HttpStatus.FORBIDDEN.value();
             if (ResultCode.ACCESS_DENIED_BLACK_LIMITED.getMessage().contains(message)) {
                 code = ResultCode.ACCESS_DENIED_BLACK_LIMITED;
             } else if (ResultCode.ACCESS_DENIED_WHITE_LIMITED.getMessage().contains(message)) {
@@ -143,16 +135,12 @@ public class GlobalExceptionHandler {
         } else if (className.contains("HttpMessageNotReadableException")
                 || className.contains("TypeMismatchException")
                 || className.contains("MissingServletRequestParameterException")) {
-            httpStatus = HttpStatus.BAD_REQUEST.value();
             code = ResultCode.BAD_REQUEST;
         } else if (className.contains("NoHandlerFoundException")) {
-            httpStatus = HttpStatus.NOT_FOUND.value();
             code = ResultCode.NOT_FOUND;
         } else if (className.contains("HttpRequestMethodNotSupportedException")) {
-            httpStatus = HttpStatus.METHOD_NOT_ALLOWED.value();
             code = ResultCode.METHOD_NOT_ALLOWED;
         } else if (className.contains("HttpMediaTypeNotAcceptableException")) {
-            httpStatus = HttpStatus.BAD_REQUEST.value();
             code = ResultCode.MEDIA_TYPE_NOT_ACCEPTABLE;
         } else if (className.contains("MethodArgumentNotValidException")) {
             BindingResult bindingResult = ((MethodArgumentNotValidException) ex).getBindingResult();
@@ -161,15 +149,13 @@ public class GlobalExceptionHandler {
         } else if (className.contains("IllegalArgumentException")) {
             //参数错误
             code = ResultCode.ALERT;
-            httpStatus = HttpStatus.BAD_REQUEST.value();
         } else if (className.contains("OpenAlertException")) {
             code = ResultCode.ALERT;
         } else if (className.contains("OpenSignatureException")) {
-            httpStatus = HttpStatus.BAD_REQUEST.value();
             code = ResultCode.SIGNATURE_DENIED;
         } else if (message.equalsIgnoreCase(ResultCode.TOO_MANY_REQUESTS.name())) {
             code = ResultCode.TOO_MANY_REQUESTS;
         }
-        return CommonResult.failed(code,message);
+        return CommonResult.failed(code);
     }
 }

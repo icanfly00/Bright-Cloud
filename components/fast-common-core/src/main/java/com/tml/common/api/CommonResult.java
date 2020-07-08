@@ -61,12 +61,11 @@ public class CommonResult<T> {
      * 失败返回结果
      *
      * @param errorCode 错误码
-     * @param message   提示信息
      * @param <T>
      * @return
      */
-    public static <T> CommonResult<T> failed(IErrorCode errorCode, String message) {
-        return new CommonResult<T>(errorCode.getCode(), message, null);
+    public static <T> CommonResult<T> failed(IErrorCode errorCode) {
+        return new CommonResult<T>(errorCode.getCode(), errorCode.getMessage(), null);
     }
 
     /**
