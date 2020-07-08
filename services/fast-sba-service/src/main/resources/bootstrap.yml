@@ -1,5 +1,5 @@
 server:
-  port: 8003
+  port: 8006
   # 开启优雅停机，默认immediate是立即关机。
   shutdown: graceful
   undertow:

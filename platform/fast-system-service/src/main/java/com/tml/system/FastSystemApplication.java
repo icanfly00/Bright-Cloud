@@ -6,11 +6,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication(exclude = DruidDataSourceAutoConfigure.class)
 @EnableAspectJAutoProxy
 @EnableDiscoveryClient
+@EnableFeignClients
 @RefreshScope
 @EnableFastCloudResourceServer
 public class FastSystemApplication {

@@ -102,43 +102,51 @@ FEBS模块：
 ---|---|---
 FastSystemApplication| 8000 | 微服务子系统，系统核心模块 
 FastUAAApplication| 8001 | 微服务子系统，认证模块 
-FastTestpplication|8002 | 微服务子系统，Demo模块
-FastGeneratorApplication|8003 | 微服务子系统，代码生成模块
-FastJobApplication|8004 | 微服务子系统，任务调度模块
-FastGatewayApplication|8005|微服务网关
+FastGatewayApplication|8002|微服务网关
+FastJobApplication|8003 | 微服务子系统，任务调度模块
+FastMsgApplication|8004 | 微服务子系统，消息模块
+FastGeneratorApplication|8005| 微服务子系统，代码生成模块
 FastAdminApplication|8006|微服务监控子系统
-FastTxManagerApplication|8007|微服务分布式事务控制器
+FastTestApplication|8007 | 微服务子系统，Demo模块
+FastTxManagerApplication|8008|微服务分布式事务控制器
 
 第三方模块：
 
 服务名称 | 端口 | 描述
 ---|---|---
 Nacos| 8848 |注册中心，配置中心 
+Sentinel| 8858 |Sentinel控制台
 MySQL| 3306 |MySQL 数据库 
 Redis| 6379 | K-V 缓存数据库 
 Elasticsearch|9200 | 日志存储
 Logstash|9400|日志收集
 Kibana|9500|日志展示
-Skywalking|11800、12800、8080|Skywalking APM
+Skywalking|11800、12800、9080|Skywalking APM
 
 ### 目录结构
 ```
 ├─components                       ------ 组件
-│  ├─fast-common-core              ------ 系统核心依赖包
-│  ├─fast-common-starter           ------ 系统核心自动装配starter
+│  ├─fast-common-core                         ------ 系统核心依赖包
+│  ├─fast-common-starter-datasource           ------ 系统数据库自动装配starter
+│  ├─fast-common-starter-log                  ------ 系统日志自动装配starter
+│  ├─fast-common-starter-redis                ------ 系统Reids自动装配starter
+│  ├─fast-common-starter-security             ------ 系统安全自动装配starter
+│  ├─fast-common-starter-swagger2             ------ 系统文档自动装配starter
+│  ├─fast-common-starter-web                  ------ 系统网络自动装配starter
 ├─docs                  		   ------ 文档
-│  ├─conf                          ------ 配置文件
-│  ├─images                        ------ 图片
-│  └─sql               			   ------ SQL脚本
-├─platfrom                    	   ------ 平台服务
-│  ├─fast-system-api                   ------ 微服务系统接口模块
-│  ├─fast-system-service     		   ------ 微服务系统服务模块
-│  ├─fast-uaa-service                  ------ 微服务认证中心
+│  ├─conf                                     ------ 配置文件
+│  ├─images                                   ------ 图片
+│  └─sql               			              ------ SQL脚本
+├─platfrom                    	  ------ 平台服务
+│  ├─fast-system-api                          ------ 微服务系统接口模块
+│  ├─fast-system-service     		          ------ 微服务系统服务模块
+│  ├─fast-uaa-service                         ------ 微服务认证中心
+│  ├─fast-gateway-service                     ------ 微服务网关
 │  ├─
 │  ├─
 │  ├─
 │  └─
-├─service                   ------ 业务系统
+├─service                        ------ 业务系统
 │  ├─            
 │  ├─            
 │  ├─        
@@ -175,6 +183,24 @@ Skywalking|11800、12800、8080|Skywalking APM
 
 ### 服务APM
 
+**fast-system-service 服务 APM命令**
+
+```
+-javaagent:G:\apache-skywalking-apm-bin-es7\agent\skywalking-agent.jar 
+-Dskywalking.agent.service_name=fast-system-service 
+-Dskywalking.collector.backend_service=172.16.5.81:11800
+```
+
+**fast-uaa-service 服务APM命令**
+
+```
+-javaagent:G:\apache-skywalking-apm-bin-es7\agent\skywalking-agent.jar 
+-Dskywalking.agent.service_name=fast-uaa-service 
+-Dskywalking.collector.backend_service=172.16.5.81:11800
+```
+
+
+
 #### [Skywalking APM]()
 
 <table>
@@ -190,6 +216,6 @@ Skywalking|11800、12800、8080|Skywalking APM
 
 ### 反馈交流
 
-加入QQ群和大家一起~~交流~~吹水：
+加入QQ群和大家一起交流吹水：
 
 ![qq](docs/images/QQ.png)
