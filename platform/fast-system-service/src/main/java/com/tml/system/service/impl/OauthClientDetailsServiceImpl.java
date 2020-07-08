@@ -2,10 +2,16 @@ package com.tml.system.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tml.common.constant.CacheConstant;
 import com.tml.common.exception.APIException;
 import com.tml.common.redis.service.RedisService;
+import com.tml.common.web.dto.CommonDto;
 import com.tml.common.web.service.impl.BaseServiceImpl;
+import com.tml.common.web.vo.PageVo;
+import com.tml.system.dto.OauthClientDetailsDto;
 import com.tml.system.entity.OauthClientDetails;
 import com.tml.system.mapper.OauthClientDetailsMapper;
 import com.tml.system.service.IOauthClientDetailsService;
@@ -32,6 +38,14 @@ public class OauthClientDetailsServiceImpl extends BaseServiceImpl<OauthClientDe
 
     private final PasswordEncoder passwordEncoder;
     private final RedisService redisService;
+
+    public PageVo<OauthClientDetails> pageList(OauthClientDetailsDto oauthClientDetailsDto) {
+        Page page = new Page<>(oauthClientDetailsDto.getPage(), oauthClientDetailsDto.getLimit());
+        QueryWrapper<OauthClientDetails> queryWrapper=new QueryWrapper<>();
+        queryWrapper.lambda().eq(StringUtils.isNoneBlank(oauthClientDetailsDto.getClientId()),OauthClientDetails::getClientId,oauthClientDetailsDto.getClientId());
+        IPage iPage = this.page(page,queryWrapper);
+        return new PageVo<>(iPage);
+    }
 
     @Override
     public OauthClientDetails findById(String clientId) {

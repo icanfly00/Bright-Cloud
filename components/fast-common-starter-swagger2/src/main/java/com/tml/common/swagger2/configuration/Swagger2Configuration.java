@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -16,7 +18,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 import java.util.List;
 
 /**
@@ -27,17 +28,17 @@ import java.util.List;
 @Slf4j
 @EnableSwagger2
 @EnableKnife4j
+@Import(BeanValidatorPluginsConfiguration.class)
 @EnableConfigurationProperties(Swagger2Properties.class)
-@ConditionalOnProperty(prefix = "hdw.swagger2", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "tml.swagger2", name = "enabled", havingValue = "true")
 public class Swagger2Configuration {
 
     private final Swagger2Properties swagger2Properties;
 
     public Swagger2Configuration(Swagger2Properties swagger2Properties) {
         this.swagger2Properties = swagger2Properties;
+        log.info("----Swagger2 init----");
     }
-
-    private static final String SCOPE_PREFIX = "scope.";
 
     @Bean
     public Docket createRestApi() {

@@ -82,6 +82,11 @@ management:
       show-details: always
 
 tml:
+  swagger2:
+    enabled: true
+    description: ${info.description}
+    title: ${info.name}
+    version: ${info.version}
   tenant:
     tenantIdColumn: tenant_id
     ignoreTenantTables:
@@ -92,6 +97,7 @@ tml:
       - sys_role_enterprise
       - sys_dict_item
       - sys_api
+      - oauth_client_details
       - oms_item
       - oms_item_kill
       - oms_item_kill_order
@@ -105,11 +111,11 @@ tml:
     oauthPrefix: fast-cloud
     anonUris: #安全路径白名单
       - /actuator/**
-      - /swagger-ui.html
+      - /v2/api-docs
+      - /v2/api-docs-ext
       - /swagger-resources/**
-      - /swagger/**
-      - /**/v2/api-docs
       - /doc.html
+      - /webjars/**
       - /**/*.ico
       - /bootstrap/**
       - /css/**

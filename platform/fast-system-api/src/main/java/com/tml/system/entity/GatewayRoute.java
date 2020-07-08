@@ -18,12 +18,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @TableName("gateway_route")
 public class GatewayRoute extends Model<GatewayRoute> {
-    private static final long serialVersionUID = -2952097064941740301L;
 
     /**
      * 路由ID
      */
-    @TableId(type = IdType.ID_WORKER)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long routeId;
 
     /**

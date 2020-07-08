@@ -45,9 +45,9 @@ spring:
             group: ${config.group}
             dataId: ${spring.application.name}
             data-type: json
-             rule-type: degrade
+            rule-type: degrade
 
 info:
   name: ${project.artifactId}
   version: ${project.version}
-  descrption: ${project.description}
+  description: ${project.description}

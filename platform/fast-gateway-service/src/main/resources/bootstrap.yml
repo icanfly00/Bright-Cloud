@@ -48,7 +48,7 @@ spring:
 info:
   name: ${project.artifactId}
   version: ${project.version}
-  descrption: ${project.description}
+  description: ${project.description}
 
 tml:
   # 开放api

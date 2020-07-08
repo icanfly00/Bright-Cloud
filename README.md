@@ -14,23 +14,17 @@ fast-cloud是一款使用Spring Cloud Hoxton.SR6、Spring Cloud OAuth2 & Spring 
 1 | 前后端分离架构，客户端和服务端纯Token交互； 
 2 | 认证服务器与资源服务器分离，方便接入自己的微服务系统
 3 | 集成SpringBootAdmin，Skywalking APM
-4 | 网关限流，网关黑名单限制，网关日志（WebFlux编程实践）
+4 | 动态路由，网关限流，网关黑名单限制，网关日志（WebFlux编程实践） 
 5 | 微服务Docker化，使用Docker Compose一键部署，K8S集群
 6 | 社交登录，认证授权，数据权限，前后端参数校验，Starter开箱即用等
 7 | Doc Starter，几行配置自动生成系统api接口文档
-8 | OAuth2 4种模式+刷新令牌模式，提供5种获取系统令牌方式
-9 | 提供详细的导入教程、使用教程和开发教程，对于想深入了解的用户还提供了搭建教程
+8 | OAuth2 4种模式+刷新令牌模式，提供5种获取系统令牌方式                                                            
 
 ### 文档与教程
 
-> 在这浮躁的社会里，还请您耐心阅读文档，99%的问题在文档中都能找到答案。
-
 文档 | 地址
 ---|---
-项目导入教程 | []()
-管理页面使用教程 | []()
-系统常见问题解答 | []()
-系统更新日志 | []()
+ | []()
 
 ### 系统架构
 
@@ -39,21 +33,23 @@ fast-cloud是一款使用Spring Cloud Hoxton.SR6、Spring Cloud OAuth2 & Spring 
     <td align="center" style="background: #fff"><b>fast-cloud</b></td>
   </tr>
   <tr>
+     <td align="center" style="background: #fff"><img src="docs/images/fast-cloud.svg"/></td>
+   </tr>
+   <tr>
+      <td align="center" style="background: #fff"><img src="docs/images/Oauth2.0授权码模式流程.png"/></td>
+    </tr>
+  <tr>
     <td align="center" style="background: #fff"><img src="docs/images/Oauth2.0授权码模式时序图.png"/></td>
   </tr>
    <tr>
-    <td align="center" style="background: #fff"><b>fast Skywalking APM</b></td>
+    <td align="center" style="background: #fff"><b>Skywalking APM</b></td>
   </tr>
   <tr>
-    <td align="center" style="background: #fff"><img src="docs/images/skywalking_apm.png"/></td>
-  </tr>
-   <tr>
-    <td align="center" style="background: #fff"><b>fast Kubernetes</b></td>
-  </tr>
-  <tr>
-    <td align="center" style="background: #fff"><img src="docs/images/fast-k8s.png"/></td>
+    <td align="center" style="background: #fff"><img src="docs/images/SkywalkingAPM.svg"/></td>
   </tr>
 </table>
+
+
 
 ### 项目地址
 
@@ -205,12 +201,12 @@ Skywalking|11800、12800、9080|Skywalking APM
 
 <table>
   <tr>
-     <td width="50%" align="top"><img src="docs/images/skywalking_global.png"/></td>
-     <td width="50%" align="top"><img src="docs/images/skywalking_service.png"/></td>
+     <td width="50%" align="top"><img src=""/></td>
+     <td width="50%" align="top"><img src=""/></td>
   </tr>
   <tr>
-     <td width="50%" align="top"><img src="docs/images/skywalking_topology.png"/></td>
-     <td width="50%" align="top"><img src="docs/images/skywalking_trace.png"/></td>
+     <td width="50%" align="top"><img src=""/></td>
+     <td width="50%" align="top"><img src=""/></td>
   </tr>
 </table>
 
