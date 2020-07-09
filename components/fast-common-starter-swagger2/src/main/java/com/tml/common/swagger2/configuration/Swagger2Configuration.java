@@ -2,6 +2,7 @@ package com.tml.common.swagger2.configuration;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;;
 import com.google.common.collect.Lists;
+import com.tml.common.constant.CommonConstant;
 import com.tml.common.swagger2.properties.Swagger2Properties;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +12,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -49,7 +52,8 @@ public class Swagger2Configuration {
                 .paths(PathSelectors.any())
                 .build()
                 .securityContexts(Lists.newArrayList(securityContext()))
-                .securitySchemes(Lists.<SecurityScheme>newArrayList(apiKey()));
+                .securitySchemes(Lists.<SecurityScheme>newArrayList(apiKey()))
+                .globalOperationParameters(parameters());
     }
 
     private ApiInfo apiInfo() {
@@ -66,7 +70,7 @@ public class Swagger2Configuration {
 
 
     private ApiKey apiKey() {
-        return new ApiKey("Bearer Token", "Authorization", "header");
+        return new ApiKey("Bearer Token", "Authentication", "header");
     }
 
     private SecurityContext securityContext() {
@@ -82,5 +86,19 @@ public class Swagger2Configuration {
         authorizationScopes[0] = authorizationScope;
         return Lists.newArrayList(new SecurityReference("Bearer Token", authorizationScopes));
 
+    }
+
+    /**
+     * 添加header参数
+     * @return
+     */
+    private List<Parameter> parameters(){
+        ParameterBuilder builder = new ParameterBuilder();
+        List<Parameter> pars = Lists.newArrayList();
+        builder.name(CommonConstant.TENANT_KEY).description("租户ID")
+                .modelRef(new ModelRef("string")).parameterType("header")
+                .required(true);
+        pars.add(builder.build());
+        return pars;
     }
 }

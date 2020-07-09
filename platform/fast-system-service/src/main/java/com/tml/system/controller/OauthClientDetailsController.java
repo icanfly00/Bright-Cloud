@@ -36,8 +36,8 @@ public class OauthClientDetailsController {
 
     private final IOauthClientDetailsService oauthClientDetailsService;
 
-    @ApiOperation(value = "检查客户端ID",notes = "检查客户端ID")
-    @ApiImplicitParam(paramType = "path",name="clientId",value = "客户端Id",required = true,dataType = "String")
+    @ApiOperation(value = "检查客户端ID", notes = "检查客户端ID")
+    @ApiImplicitParam(paramType = "path", name = "clientId", value = "客户端Id", required = true, dataType = "String")
     @GetMapping("check/{clientId}")
     public boolean checkUserName(@NotBlank(message = "{required}") @PathVariable String clientId) {
         OauthClientDetails client = this.oauthClientDetailsService.findById(clientId);
@@ -45,8 +45,8 @@ public class OauthClientDetailsController {
     }
 
 
-    @ApiOperation(value = "获取客户端密码明文",notes = "获取客户端密码明文")
-    @ApiImplicitParam(paramType = "path",name="clientId",value = "客户端Id",required = true,dataType = "String")
+    @ApiOperation(value = "获取客户端密码明文", notes = "获取客户端密码明文")
+    @ApiImplicitParam(paramType = "path", name = "clientId", value = "客户端Id", required = true, dataType = "String")
     @GetMapping("secret/{clientId}")
     @PreAuthorize("hasAuthority('client:decrypt')")
     public CommonResult getOriginClientSecret(@NotBlank(message = "{required}") @PathVariable String clientId) {
@@ -55,17 +55,17 @@ public class OauthClientDetailsController {
         return CommonResult.success(origin);
     }
 
-    @ApiOperation(value = "客户端信息分页列表")
-    @GetMapping
-    @PreAuthorize("hasAuthority('client:view')")
+    @ApiOperation(value = "客户端信息分页列表", notes = "客户端信息分页列表")
+    @GetMapping("/list")
+    @PreAuthorize("hasAuthority('client:list')")
     public CommonResult oauthClientDetailsList(OauthClientDetailsDto oauthClientDetailsDto) {
-        PageVo pageVo= this.oauthClientDetailsService.pageList(oauthClientDetailsDto);
+        PageVo pageVo = this.oauthClientDetailsService.pageList(oauthClientDetailsDto);
         return CommonResult.success(pageVo);
     }
 
 
-    @ApiOperation(value = "新增客户端",notes = "新增客户端")
-    @PostMapping
+    @ApiOperation(value = "新增客户端", notes = "新增客户端")
+    @PostMapping("/add")
     @PreAuthorize("hasAuthority('client:add')")
     public CommonResult addOauthClientDetails(@Valid OauthClientDetails oAuthClientDetails) throws APIException {
         try {
@@ -78,9 +78,9 @@ public class OauthClientDetailsController {
         }
     }
 
-    @ApiOperation(value = "删除客户端",notes = "删除客户端")
-    @ApiImplicitParam(paramType = "query",name="clientIds",value = "客户端Id",required = true,dataType = "String")
-    @DeleteMapping
+    @ApiOperation(value = "删除客户端", notes = "删除客户端")
+    @ApiImplicitParam(paramType = "query", name = "clientIds", value = "客户端Id", required = true, dataType = "String")
+    @DeleteMapping("/delete")
     @PreAuthorize("hasAuthority('client:delete')")
     public CommonResult deleteOauthClientDetails(@NotBlank(message = "{required}") String clientIds) throws APIException {
         try {
@@ -93,9 +93,8 @@ public class OauthClientDetailsController {
         }
     }
 
-
-    @ApiOperation(value = "修改客户端",notes = "修改客户端")
-    @PutMapping
+    @ApiOperation(value = "修改客户端", notes = "修改客户端")
+    @PutMapping("/update")
     @PreAuthorize("hasAuthority('client:update')")
     public CommonResult updateOauthClientDetails(@Valid OauthClientDetails oAuthClientDetails) throws APIException {
         try {

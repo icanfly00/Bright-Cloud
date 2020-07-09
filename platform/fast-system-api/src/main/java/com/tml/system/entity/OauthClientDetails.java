@@ -65,9 +65,9 @@ public class OauthClientDetails extends Model<OauthClientDetails> {
     private Integer refreshTokenValidity;
 
     @TableField("autoapprove")
-    private Byte autoapprove;
+    private String autoapprove;
 
-    @TableField(value = "origin_secret",exist = false)
+    @TableField(value = "origin_secret", exist = false)
     private String originSecret;
 
 }

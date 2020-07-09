@@ -31,7 +31,8 @@ public interface ISysUserService extends IBaseService<SysUser> {
     Set<String> findRoleIdByUserId(Integer userId);
 
     /**
-     *通过用户ID查询数据权限
+     * 通过用户ID查询数据权限
+     *
      * @param userId
      * @return
      */

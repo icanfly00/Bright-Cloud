@@ -22,7 +22,8 @@ public interface SysUserMapper extends SuperMapper<SysUser> {
     boolean insertUser(SysUser sysUser);
 
     /**
-     *通过用户ID查询数据权限
+     * 通过用户ID查询数据权限
+     *
      * @param userId
      * @return
      */

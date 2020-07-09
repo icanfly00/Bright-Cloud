@@ -39,11 +39,12 @@ public class OauthClientDetailsServiceImpl extends BaseServiceImpl<OauthClientDe
     private final PasswordEncoder passwordEncoder;
     private final RedisService redisService;
 
+    @Override
     public PageVo<OauthClientDetails> pageList(OauthClientDetailsDto oauthClientDetailsDto) {
         Page page = new Page<>(oauthClientDetailsDto.getPage(), oauthClientDetailsDto.getLimit());
-        QueryWrapper<OauthClientDetails> queryWrapper=new QueryWrapper<>();
-        queryWrapper.lambda().eq(StringUtils.isNoneBlank(oauthClientDetailsDto.getClientId()),OauthClientDetails::getClientId,oauthClientDetailsDto.getClientId());
-        IPage iPage = this.page(page,queryWrapper);
+        QueryWrapper<OauthClientDetails> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(StringUtils.isNoneBlank(oauthClientDetailsDto.getClientId()), OauthClientDetails::getClientId, oauthClientDetailsDto.getClientId());
+        IPage iPage = this.page(page, queryWrapper);
         return new PageVo<>(iPage);
     }
 
@@ -54,7 +55,7 @@ public class OauthClientDetailsServiceImpl extends BaseServiceImpl<OauthClientDe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void createOauthClientDetails(OauthClientDetails oauthClientDetails){
+    public void createOauthClientDetails(OauthClientDetails oauthClientDetails) {
         OauthClientDetails byId = this.findById(oauthClientDetails.getClientId());
         if (byId != null) {
             throw new APIException("该Client已存在");
@@ -64,7 +65,7 @@ public class OauthClientDetailsServiceImpl extends BaseServiceImpl<OauthClientDe
         boolean saved = this.save(oauthClientDetails);
         if (saved) {
             log.info("缓存Client -> {}", oauthClientDetails);
-            redisService.set(CacheConstant.CLIENT_DETAILS_KEY+":"+oauthClientDetails.getClientId(),oauthClientDetails);
+            redisService.set(CacheConstant.CLIENT_DETAILS_KEY + ":" + oauthClientDetails.getClientId(), oauthClientDetails);
         }
     }
 
@@ -81,8 +82,8 @@ public class OauthClientDetailsServiceImpl extends BaseServiceImpl<OauthClientDe
         boolean updated = this.update(oauthClientDetails, queryWrapper);
         if (updated) {
             log.info("更新Client -> {}", oauthClientDetails);
-            redisService.del(CacheConstant.CLIENT_DETAILS_KEY+":"+clientId);
-            redisService.set(CacheConstant.CLIENT_DETAILS_KEY+":"+clientId,oauthClientDetails);
+            redisService.del(CacheConstant.CLIENT_DETAILS_KEY + ":" + clientId);
+            redisService.set(CacheConstant.CLIENT_DETAILS_KEY + ":" + clientId, oauthClientDetails);
         }
     }
 
@@ -95,7 +96,7 @@ public class OauthClientDetailsServiceImpl extends BaseServiceImpl<OauthClientDe
         boolean removed = this.remove(queryWrapper);
         if (removed) {
             log.info("删除ClientId为({})的Client", clientIds);
-            Arrays.stream(clientIdArray).forEach(c ->   redisService.del(CacheConstant.CLIENT_DETAILS_KEY+":"+c));
+            Arrays.stream(clientIdArray).forEach(c -> redisService.del(CacheConstant.CLIENT_DETAILS_KEY + ":" + c));
 
         }
     }

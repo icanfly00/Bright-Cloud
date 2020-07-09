@@ -43,8 +43,8 @@ public class SysUserController {
     @Resource
     private ISysUserLogService sysUserLogService;
 
-    @ApiOperation(value = "根据用户名获取登录用户信息",notes = "根据用户名获取登录用户信息")
-    @ApiImplicitParam(paramType = "query",name="username",value = "用户名",required = true,dataType = "String")
+    @ApiOperation(value = "根据用户名获取登录用户信息", notes = "根据用户名获取登录用户信息")
+    @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType = "String")
     @GetMapping("/findSecurityUserByUsername")
     public CommonResult<SysUser> findSecurityUserByUsername(@RequestParam("username") String username) {
         SysUser sysUser = new SysUser();
@@ -55,8 +55,8 @@ public class SysUserController {
         return CommonResult.success(user);
     }
 
-    @ApiOperation(value = "根据用户手机号获取登录用户信息",notes = "根据用户手机号获取登录用户信息")
-    @ApiImplicitParam(paramType = "query",name="phone",value = "手机号",required = true,dataType = "String")
+    @ApiOperation(value = "根据用户手机号获取登录用户信息", notes = "根据用户手机号获取登录用户信息")
+    @ApiImplicitParam(paramType = "query", name = "phone", value = "手机号", required = true, dataType = "String")
     @GetMapping("/findSecurityUserByPhone")
     public CommonResult<SysUser> findSecurityUserByPhone(@RequestParam("phone") String phone) {
         SysUser sysUser = new SysUser();
@@ -74,8 +74,8 @@ public class SysUserController {
      * @param userId
      * @return
      */
-    @ApiOperation(value = "根据用户Id查询权限",notes = "根据用户Id查询权限")
-    @ApiImplicitParam(paramType = "query",name="userId",value = "用户Id",required = true,dataType = "Integer")
+    @ApiOperation(value = "根据用户Id查询权限", notes = "根据用户Id查询权限")
+    @ApiImplicitParam(paramType = "query", name = "userId", value = "用户Id", required = true, dataType = "Integer")
     @GetMapping("/findPermsByUserId")
     public CommonResult<Set<String>> findPermsByUserId(@RequestParam("userId") Integer userId) {
         Set<String> perms = sysUserService.findPermsByUserId(userId);
@@ -88,8 +88,8 @@ public class SysUserController {
      * @param userId
      * @return
      */
-    @ApiOperation(value = "根据用户Id查询角色集合",notes = "根据用户Id查询角色集合")
-    @ApiImplicitParam(paramType = "query",name="userId",value = "用户Id",required = true,dataType = "Integer")
+    @ApiOperation(value = "根据用户Id查询角色集合", notes = "根据用户Id查询角色集合")
+    @ApiImplicitParam(paramType = "query", name = "userId", value = "用户Id", required = true, dataType = "Integer")
     @GetMapping("/findRoleIdByUserId")
     public CommonResult<Set<String>> findRoleIdByUserId(@RequestParam("userId") Integer userId) {
         Set<String> roles = sysUserService.findRoleIdByUserId(userId);
@@ -102,13 +102,13 @@ public class SysUserController {
      * @param userId
      * @return
      */
-    @ApiOperation(value = "根据用户Id查询数据权限",notes = "根据用户Id查询数据权限")
-    @ApiImplicitParam(paramType = "query",name="userId",value = "用户Id",required = true,dataType = "Integer")
+    @ApiOperation(value = "根据用户Id查询数据权限", notes = "根据用户Id查询数据权限")
+    @ApiImplicitParam(paramType = "query", name = "userId", value = "用户Id", required = true, dataType = "Integer")
     @GetMapping("/findDataPermsByUserId")
     public CommonResult<String> findDataPermsByUserId(@RequestParam("userId") Integer userId) {
-        String dataPerms=null;
+        String dataPerms = null;
         List<Integer> list = sysUserService.findDataPermsByUserId(userId);
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             return null;
         }
         StringBuilder result = new StringBuilder();
@@ -121,7 +121,7 @@ public class SysUserController {
             }
             result.append(integer);
         }
-        dataPerms=result.toString();
+        dataPerms = result.toString();
         return CommonResult.success(dataPerms);
     }
 
@@ -130,7 +130,7 @@ public class SysUserController {
      *
      * @param request
      */
-    @ApiOperation(value = "记录登录日志",notes = "记录登录日志")
+    @ApiOperation(value = "记录登录日志", notes = "记录登录日志")
     @AutoLog(description = "记录登录日志")
     @GetMapping("/success")
     public CommonResult loginSuccess(HttpServletRequest request) {

@@ -19,8 +19,14 @@ import javax.validation.ValidationException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(value = Exception.class)
+    public CommonResult handleException(Exception e) {
+        log.error("系统内部错误：{}",e);
+       return CommonResult.failed();
+    }
+
     @ExceptionHandler(value = APIException.class)
-    public CommonResult handle(APIException e) {
+    public CommonResult handleAPIException(APIException e) {
         if(e.getCode()!=ResultCode.FAILED.getCode()){
             return CommonResult.failed(e.getCode(),e.getMessage());
         }else {

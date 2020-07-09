@@ -12,7 +12,7 @@ import java.util.List;
  * @author liuyadu
  */
 public interface ISysApiService extends IBaseService<SysApi> {
-   
+
 
     /**
      * 查询列表

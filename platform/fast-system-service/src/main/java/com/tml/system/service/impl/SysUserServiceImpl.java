@@ -47,7 +47,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private ISysJobService jobService;
 
     @SentinelResource(value = "findPermsByUserId", blockHandler = "userIdBlockHandler", fallback = "userIdFallback")
-    @Cacheable(cacheNames = CacheConstant.SYS_USERS_PERMS_CACHE, key = "#userId",unless = "#result!=null")
+    @Cacheable(cacheNames = CacheConstant.SYS_USERS_PERMS_CACHE, key = "#userId", unless = "#result!=null")
     @Override
     public Set<String> findPermsByUserId(Integer userId) {
         return menuService.findPermsByUserId(userId)
@@ -57,7 +57,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     @SentinelResource(value = "findRoleIdByUserId", blockHandler = "userIdBlockHandler", fallback = "userIdFallback")
-    @Cacheable(cacheNames = CacheConstant.SYS_USERS_ROLES_CACHE, key = "#userId",unless = "#result!=null")
+    @Cacheable(cacheNames = CacheConstant.SYS_USERS_ROLES_CACHE, key = "#userId", unless = "#result!=null")
     @Override
     public Set<String> findRoleIdByUserId(Integer userId) {
         return userRoleService.selectUserRoleListByUserId(userId)
@@ -67,7 +67,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     @SentinelResource(value = "findDataPermsByUserId", blockHandler = "findDataPermsByUserIdBlockHandler", fallback = "findDataPermsByUserIdFallback")
-    @Cacheable(cacheNames = CacheConstant.SYS_DATA_PERMISSIONS_CACHE, key = "#userId",unless = "#result!=null")
+    @Cacheable(cacheNames = CacheConstant.SYS_DATA_PERMISSIONS_CACHE, key = "#userId", unless = "#result!=null")
     @Override
     public List<Integer> findDataPermsByUserId(Integer userId) {
         return this.baseMapper.findDataPermsByUserId(userId);
@@ -101,7 +101,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     @SentinelResource(value = "findSecurityUserByUser", blockHandler = "findSecurityUserByUserBlockHandler", fallback = "findSecurityUserByUserFallback")
-    @Cacheable(cacheNames = CacheConstant.SYS_USERS_CACHE, key = "#sysUser.username",unless = "#result!=null")
+    @Cacheable(cacheNames = CacheConstant.SYS_USERS_CACHE, key = "#sysUser.username", unless = "#result!=null")
     @Override
     public SysUser findSecurityUserByUser(SysUser sysUser) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();

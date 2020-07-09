@@ -30,7 +30,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptMapper, SysDept> 
     @Override
     public List<SysDept> selectDeptList() {
         List<SysDept> deptList = this.baseMapper.selectList(Wrappers.<SysDept>lambdaQuery()
-                .select(SysDept::getDeptId, SysDept::getDeptName,SysDept::getParentId, SysDept::getSort, SysDept::getCreateTime, SysDept::getUpdateTime));
+                .select(SysDept::getDeptId, SysDept::getDeptName, SysDept::getParentId, SysDept::getSort, SysDept::getCreateTime, SysDept::getUpdateTime));
         List<SysDept> sysDeptList = deptList.stream()
                 .filter(sysDept -> sysDept.getParentId() == 0 || ObjectUtils.isEmpty(sysDept.getParentId()))
                 .peek(sysDept -> sysDept.setLevel(0))

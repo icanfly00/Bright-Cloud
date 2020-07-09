@@ -1,9 +1,12 @@
 package com.tml.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tml.common.constant.CommonConstant;
 import com.tml.common.exception.AlertException;
 import com.tml.common.web.service.impl.BaseServiceImpl;
+import com.tml.common.web.vo.PageVo;
+import com.tml.system.dto.GatewayRouteDto;
 import com.tml.system.entity.GatewayRoute;
 import com.tml.system.mapper.GatewayRouteMapper;
 import com.tml.system.service.IGatewayRouteService;
@@ -25,7 +28,16 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class GatewayRouteServiceImpl extends BaseServiceImpl<GatewayRouteMapper, GatewayRoute> implements IGatewayRouteService {
 
-    
+
+    @Override
+    public PageVo<GatewayRoute> pageList(GatewayRouteDto gatewayRouteDto) {
+        Page<GatewayRoute> page = new Page<>(gatewayRouteDto.getPage(), gatewayRouteDto.getLimit());
+        QueryWrapper<GatewayRoute> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(StringUtils.isNoneBlank(gatewayRouteDto.getServiceId()), GatewayRoute::getServiceId, gatewayRouteDto.getServiceId());
+        return new PageVo<>(this.page(page, queryWrapper));
+    }
+
     /**
      * 查询可用路由列表
      *

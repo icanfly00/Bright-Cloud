@@ -21,7 +21,7 @@ import java.time.Duration;
 import java.util.Map;
 
 /**
- * @Description  接收接口消息
+ * @Description 接收接口消息
  * @Author TuMingLong
  * @Date 2020/7/4 20:11
  */
@@ -39,28 +39,28 @@ public class ResourceScanHandler {
     @RabbitListener(queues = QueueConstant.QUEUE_SCAN_API_RESOURCE)
     public void process(Message message, Channel channel) throws IOException {
         log.info("receive: " + new String(message.getBody()));
-        log.info("线程名:"+Thread.currentThread().getName());
-        log.info("线程ID:"+Thread.currentThread().getId());
+        log.info("线程名:" + Thread.currentThread().getName());
+        log.info("线程ID:" + Thread.currentThread().getId());
         try {
-            JsonNode jsonNode=JacksonUtil.getJsonNode(new String(message.getBody()));
-            String serviceId=jsonNode.get("application").asText();
+            JsonNode jsonNode = JacksonUtil.getJsonNode(new String(message.getBody()));
+            String serviceId = jsonNode.get("application").asText();
             String key = CacheConstant.SCAN_API_RESOURCE_KEY_PREFIX + serviceId;
-            if(redisService.hasKey(key)){
+            if (redisService.hasKey(key)) {
                 return;
             }
-            JsonNode arrNode =jsonNode.get("mapping");
-            if(arrNode .isArray()){
+            JsonNode arrNode = jsonNode.get("mapping");
+            if (arrNode.isArray()) {
                 for (final JsonNode objNode : arrNode) {
-                    String path=objNode.get("path").asText();
-                    String apiName=objNode.get("apiName").asText();
-                    String isAuth=objNode.get("isAuth").asText();
-                    String apiCode=objNode.get("apiCode").asText();
-                    String requestMethod=objNode.get("requestMethod").asText();
-                    String apiDesc=objNode.get("apiDesc").asText();
-                    String methodName=objNode.get("methodName").asText();
-                    String className=objNode.get("className").asText();
-                    String serviceId2 =objNode.get("serviceId").asText();
-                    SysApi sysApi=new SysApi();
+                    String path = objNode.get("path").asText();
+                    String apiName = objNode.get("apiName").asText();
+                    String isAuth = objNode.get("isAuth").asText();
+                    String apiCode = objNode.get("apiCode").asText();
+                    String requestMethod = objNode.get("requestMethod").asText();
+                    String apiDesc = objNode.get("apiDesc").asText();
+                    String methodName = objNode.get("methodName").asText();
+                    String className = objNode.get("className").asText();
+                    String serviceId2 = objNode.get("serviceId").asText();
+                    SysApi sysApi = new SysApi();
                     sysApi.setPath(path);
                     sysApi.setApiName(apiName);
                     sysApi.setApiCode(apiCode);
@@ -81,10 +81,10 @@ public class ResourceScanHandler {
                     }
                 }
             }
-            if(arrNode .isArray() && arrNode.size()>0){
-                redisService.set(key,arrNode.size(), 3*60);
+            if (arrNode.isArray() && arrNode.size() > 0) {
+                redisService.set(key, arrNode.size(), 3 * 60);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("error:", e);
         }
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
