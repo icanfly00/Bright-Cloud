@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("gateway_rule_log")
+@TableName("gateway_route_log")
 public class GatewayRouteLog extends Model<GatewayRouteLog> {
 
     @TableId(type = IdType.AUTO)

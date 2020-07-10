@@ -55,7 +55,7 @@ public class GatewayBlackListController {
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('gateway:blackList:add')")
     public CommonResult addGatewayBlackList(@Valid GatewayBlackList gatewayBlackList) {
-        gatewayBlackListService.save(gatewayBlackList);
+        gatewayBlackListService.saveGatewayBlackList(gatewayBlackList);
         return CommonResult.success("新增黑名单成功");
     }
 
@@ -63,7 +63,7 @@ public class GatewayBlackListController {
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('gateway:blackList:update')")
     public CommonResult updateGatewayBlackList(@Valid GatewayBlackList gatewayBlackList) {
-        gatewayBlackListService.updateById(gatewayBlackList);
+        gatewayBlackListService.updateGatewayBlackList(gatewayBlackList);
         return CommonResult.success("更新黑名单成功");
     }
 
@@ -74,7 +74,7 @@ public class GatewayBlackListController {
     @PreAuthorize("hasAuthority('gateway:blackList:delete')")
     public CommonResult deleteGatewayBlackList(String ids) {
         String[] idArray = StringUtils.splitByWholeSeparatorPreserveAllTokens(ids, ",");
-        gatewayBlackListService.removeByIds(Arrays.asList(idArray));
+        gatewayBlackListService.deleteGatewayBlackList(Arrays.asList(idArray));
         return CommonResult.success("删除黑名单成功");
     }
 }

@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("gateway_rate_limit_log")
-public class GatewayRateLimitLog extends Model<GatewayRateLimitLog> {
+@TableName("gateway_route_limit_log")
+public class GatewayRouteLimitLog extends Model<GatewayRouteLimitLog> {
 
     @TableId(type = IdType.AUTO)
     private Long id;

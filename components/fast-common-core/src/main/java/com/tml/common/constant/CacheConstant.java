@@ -9,20 +9,19 @@ public interface CacheConstant {
     /**
      * 字典信息缓存
      */
-     String SYS_DICT_CACHE = "sys:cache:dict";
+    String SYS_DICT_CACHE = "sys:cache:dict";
     /**
      * 表字典信息缓存
      */
-     String SYS_DICT_TABLE_CACHE = "sys:cache:dictTable";
-
+    String SYS_DICT_TABLE_CACHE = "sys:cache:dictTable";
     /**
      * 数据权限配置缓存
      */
-     String SYS_DATA_PERMISSIONS_CACHE = "sys:cache:permission:dataRules";
+    String SYS_DATA_PERMISSIONS_CACHE = "sys:cache:permission:dataRules";
     /**
      * 用户信息缓存
      */
-     String SYS_USERS_CACHE = "sys:cache:user";
+    String SYS_USERS_CACHE = "sys:cache:user";
     /**
      * 用户拥有角色信息缓存
      */
@@ -31,24 +30,28 @@ public interface CacheConstant {
      * 用户拥有权限信息缓存
      */
     String SYS_USERS_PERMS_CACHE = "sys:cache:user:perms";
-
     /**
      * 全部部门信息缓存
      */
-     String SYS_DEPARTS_CACHE = "sys:cache:depart:allData";
-
-
+    String SYS_DEPARTS_CACHE = "sys:cache:depart:allData";
     /**
      * 全部部门ids缓存
      */
-     String SYS_DEPART_IDS_CACHE = "sys:cache:depart:allIds";
+    String SYS_DEPART_IDS_CACHE = "sys:cache:depart:allIds";
 
+    String CLIENT_DETAILS_CACHE = "oauth:client:details";
+
+    String SCAN_API_RESOURCE_CACHE = "scan_api_resource:";
     /**
-     * 测试缓存key
+     * 网关缓存
      */
-     String TEST_DEMO_CACHE = "test:demo";
-
-     String CLIENT_DETAILS_KEY="oauth:client:details";
-
-    String SCAN_API_RESOURCE_KEY_PREFIX = "scan_api_resource:";
+    String GATEWAY_ROUTE_CACHE="gateway:route";
+    /**
+     * 限流规则缓存
+     */
+    String GATEWAY_ROUTE_LIMIT_RULE_CACHE="gateway:route:limit:rule";
+    /**
+     * 黑名单缓存
+     */
+    String GATEWAY_BLACK_LIST_CACHE="gateway:black:list";
 }

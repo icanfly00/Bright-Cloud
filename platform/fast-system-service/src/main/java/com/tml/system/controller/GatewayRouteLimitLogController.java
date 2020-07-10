@@ -2,9 +2,9 @@ package com.tml.system.controller;
 
 import com.tml.common.api.CommonResult;
 import com.tml.common.web.vo.PageVo;
-import com.tml.system.dto.GatewayRateLimitLogDto;
-import com.tml.system.entity.GatewayRateLimitLog;
-import com.tml.system.service.IGatewayRateLimitLogService;
+import com.tml.system.dto.GatewayRouteLimitLogDto;
+import com.tml.system.entity.GatewayRouteLimitLog;
+import com.tml.system.service.IGatewayRouteLimitLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -30,23 +30,23 @@ import java.util.Arrays;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("gateway/rateLimitLog")
-public class GatewayRateLimitLogController {
+@RequestMapping("gateway/routeLimitLog")
+public class GatewayRouteLimitLogController {
 
-    private final IGatewayRateLimitLogService gatewayRateLimitLogService;
+    private final IGatewayRouteLimitLogService gatewayRateLimitLogService;
 
     @ApiOperation(value = "限流日志分页列表", notes = "限流日志分页列表")
     @GetMapping("/list")
-    @PreAuthorize("hasAuthority('gateway:rateLimitLog:list')")
-    public CommonResult<PageVo<GatewayRateLimitLog>> pageList(GatewayRateLimitLogDto gatewayRateLimitLogDto) {
-        PageVo<GatewayRateLimitLog> pageVo = gatewayRateLimitLogService.pageList(gatewayRateLimitLogDto);
+    @PreAuthorize("hasAuthority('gateway:routeLimitLog:list')")
+    public CommonResult<PageVo<GatewayRouteLimitLog>> pageList(GatewayRouteLimitLogDto gatewayRouteLimitLogDto) {
+        PageVo<GatewayRouteLimitLog> pageVo = gatewayRateLimitLogService.pageList(gatewayRouteLimitLogDto);
         return CommonResult.success(pageVo);
     }
 
     @ApiOperation(value = "删除限流日志", notes = "删除限流日志")
     @ApiImplicitParam(paramType = "query", name = "ids", value = "黑名单ID集合", required = true, dataType = "String")
     @PostMapping("/delete")
-    @PreAuthorize("hasAuthority('gateway:rateLimitLog:delete')")
+    @PreAuthorize("hasAuthority('gateway:routeLimitLog:delete')")
     public CommonResult deleteGatewayBlackList(String ids) {
         String[] idArray = StringUtils.splitByWholeSeparatorPreserveAllTokens(ids, ",");
         gatewayRateLimitLogService.removeByIds(Arrays.asList(idArray));

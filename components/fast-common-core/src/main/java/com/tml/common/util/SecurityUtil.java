@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -58,8 +59,7 @@ public class SecurityUtil {
             System.out.println(oAuth2Authentication);
             if (authentication.getPrincipal() instanceof RestUserDetails) {
                 return (RestUserDetails) authentication.getPrincipal();
-            }
-            else if (authentication.getPrincipal() instanceof Map) {
+            } else if (authentication.getPrincipal() instanceof Map) {
                 return BeanConvertUtil.mapToObject((Map) authentication.getPrincipal(), RestUserDetails.class);
             } else {
                 RestUserDetails restUserDetails = new RestUserDetails();

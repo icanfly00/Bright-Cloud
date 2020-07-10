@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @ApiModel("限流日志查询参数")
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class GatewayRateLimitLogDto extends CommonDto {
+public class GatewayRouteLimitLogDto extends CommonDto {
 
     /**
      * 请求IP

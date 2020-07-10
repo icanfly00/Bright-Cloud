@@ -15,13 +15,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class GatewayBlackListDto extends CommonDto {
-
     /**
      * 请求IP
      */
     @ApiModelProperty(value = "请求IP")
     private String ip;
-
     /**
      * 请求URI
      */
@@ -32,4 +30,9 @@ public class GatewayBlackListDto extends CommonDto {
      */
     @ApiModelProperty(value = "请求方法")
     private String requestMethod;
+    /**
+     * 状态，0关闭，1开启
+     */
+    @ApiModelProperty(value = "状态，0关闭，1开启",example = "1")
+    private String status;
 }

@@ -44,7 +44,7 @@ public class ResourceScanHandler {
         try {
             JsonNode jsonNode = JacksonUtil.getJsonNode(new String(message.getBody()));
             String serviceId = jsonNode.get("application").asText();
-            String key = CacheConstant.SCAN_API_RESOURCE_KEY_PREFIX + serviceId;
+            String key = CacheConstant.SCAN_API_RESOURCE_CACHE + serviceId;
             if (redisService.hasKey(key)) {
                 return;
             }

@@ -65,7 +65,7 @@ public class OauthClientDetailsServiceImpl extends BaseServiceImpl<OauthClientDe
         boolean saved = this.save(oauthClientDetails);
         if (saved) {
             log.info("缓存Client -> {}", oauthClientDetails);
-            redisService.set(CacheConstant.CLIENT_DETAILS_KEY + ":" + oauthClientDetails.getClientId(), oauthClientDetails);
+            redisService.set(CacheConstant.CLIENT_DETAILS_CACHE + ":" + oauthClientDetails.getClientId(), oauthClientDetails);
         }
     }
 
@@ -82,8 +82,8 @@ public class OauthClientDetailsServiceImpl extends BaseServiceImpl<OauthClientDe
         boolean updated = this.update(oauthClientDetails, queryWrapper);
         if (updated) {
             log.info("更新Client -> {}", oauthClientDetails);
-            redisService.del(CacheConstant.CLIENT_DETAILS_KEY + ":" + clientId);
-            redisService.set(CacheConstant.CLIENT_DETAILS_KEY + ":" + clientId, oauthClientDetails);
+            redisService.del(CacheConstant.CLIENT_DETAILS_CACHE + ":" + clientId);
+            redisService.set(CacheConstant.CLIENT_DETAILS_CACHE + ":" + clientId, oauthClientDetails);
         }
     }
 
@@ -96,7 +96,7 @@ public class OauthClientDetailsServiceImpl extends BaseServiceImpl<OauthClientDe
         boolean removed = this.remove(queryWrapper);
         if (removed) {
             log.info("删除ClientId为({})的Client", clientIds);
-            Arrays.stream(clientIdArray).forEach(c -> redisService.del(CacheConstant.CLIENT_DETAILS_KEY + ":" + c));
+            Arrays.stream(clientIdArray).forEach(c -> redisService.del(CacheConstant.CLIENT_DETAILS_CACHE + ":" + c));
 
         }
     }

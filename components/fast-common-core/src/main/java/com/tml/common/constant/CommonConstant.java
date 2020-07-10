@@ -97,5 +97,5 @@ public interface CommonConstant {
      */
     int ENABLED = 1;
     int DISABLED = 0;
-    
+
 }

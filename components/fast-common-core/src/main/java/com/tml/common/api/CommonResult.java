@@ -48,12 +48,12 @@ public class CommonResult<T> {
     /**
      * 失败返回结果
      *
-     * @param code 错误码
+     * @param code    错误码
      * @param message 提示信息
      * @param <T>
      * @return
      */
-    public static <T> CommonResult<T> failed(int code,String message) {
+    public static <T> CommonResult<T> failed(int code, String message) {
         return new CommonResult<T>(code, message, null);
     }
 
@@ -87,7 +87,7 @@ public class CommonResult<T> {
      * @return
      */
     public static <T> CommonResult<T> failed() {
-        return failed(ResultCode.FAILED.getCode(),ResultCode.FAILED.getMessage());
+        return failed(ResultCode.FAILED.getCode(), ResultCode.FAILED.getMessage());
     }
 
     /**
@@ -97,7 +97,7 @@ public class CommonResult<T> {
      * @return
      */
     public static <T> CommonResult<T> validateFailed() {
-        return failed(ResultCode.VALIDATE_FAILED.getCode(),ResultCode.VALIDATE_FAILED.getMessage());
+        return failed(ResultCode.VALIDATE_FAILED.getCode(), ResultCode.VALIDATE_FAILED.getMessage());
     }
 
     /**

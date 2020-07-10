@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @ApiModel("黑名单查询参数")
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class GatewayRateLimitRuleDto extends CommonDto {
+public class GatewayRouteLimitRuleDto extends CommonDto {
 
     /**
      * 请求URI
@@ -26,4 +26,9 @@ public class GatewayRateLimitRuleDto extends CommonDto {
      */
     @ApiModelProperty(value = "请求方法")
     private String requestMethod;
+    /**
+     * 状态，0关闭，1开启
+     */
+    @ApiModelProperty(value = "状态，0关闭，1开启",example = "1")
+    private String status;
 }

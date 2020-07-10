@@ -28,7 +28,7 @@ public class GatewayBlackList extends Model<GatewayBlackList> {
     @TableId(type = IdType.AUTO)
     private Long id;
     /**
-     * 黑名单ip
+     * 请求ip
      */
     private String ip;
     /**

@@ -65,6 +65,7 @@
         <redisson.version>3.12.4</redisson.version>
         <ip2region.version>1.7.2</ip2region.version>
         <feign-from.version>3.8.0</feign-from.version>
+        <bucket4j.version>4.10.0</bucket4j.version>
         <elasticsearch.version>7.6.2</elasticsearch.version>
 
         <fast-common-core.version>0.0.1-SNAPSHOT</fast-common-core.version>

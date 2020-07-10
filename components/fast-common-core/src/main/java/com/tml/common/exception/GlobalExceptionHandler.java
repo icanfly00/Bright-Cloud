@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
@@ -21,15 +22,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public CommonResult handleException(Exception e) {
-        log.error("系统内部错误：{}",e);
-       return CommonResult.failed();
+        log.error("系统内部错误：{}", e);
+        return CommonResult.failed();
     }
 
     @ExceptionHandler(value = APIException.class)
     public CommonResult handleAPIException(APIException e) {
-        if(e.getCode()!=ResultCode.FAILED.getCode()){
-            return CommonResult.failed(e.getCode(),e.getMessage());
-        }else {
+        if (e.getCode() != ResultCode.FAILED.getCode()) {
+            return CommonResult.failed(e.getCode(), e.getMessage());
+        } else {
             return CommonResult.failed(e.getMessage());
         }
     }
@@ -72,31 +73,31 @@ public class GlobalExceptionHandler {
         String message = ex.getMessage();
         String className = ex.getClass().getName();
         if (className.contains("UsernameNotFoundException")) {
-           
+
             code = ResultCode.USERNAME_NOT_FOUND;
         } else if (className.contains("BadCredentialsException")) {
-           
+
             code = ResultCode.BAD_CREDENTIALS;
         } else if (className.contains("AccountExpiredException")) {
-           
+
             code = ResultCode.ACCOUNT_EXPIRED;
         } else if (className.contains("LockedException")) {
-           
+
             code = ResultCode.ACCOUNT_LOCKED;
         } else if (className.contains("DisabledException")) {
-           
+
             code = ResultCode.ACCOUNT_DISABLED;
         } else if (className.contains("CredentialsExpiredException")) {
-           
+
             code = ResultCode.CREDENTIALS_EXPIRED;
         } else if (className.contains("InvalidClientException")) {
-           
+
             code = ResultCode.INVALID_CLIENT;
         } else if (className.contains("UnauthorizedClientException")) {
-           
+
             code = ResultCode.UNAUTHORIZED_CLIENT;
         } else if (className.contains("InsufficientAuthenticationException") || className.contains("AuthenticationCredentialsNotFoundException")) {
-           
+
             code = ResultCode.UNAUTHORIZED;
         } else if (className.contains("InvalidGrantException")) {
             code = ResultCode.ALERT;
@@ -108,10 +109,10 @@ public class GlobalExceptionHandler {
                 code = ResultCode.ACCOUNT_LOCKED;
             }
         } else if (className.contains("InvalidScopeException")) {
-           
+
             code = ResultCode.INVALID_SCOPE;
         } else if (className.contains("InvalidTokenException")) {
-           
+
             code = ResultCode.INVALID_TOKEN;
         } else if (className.contains("InvalidRequestException")) {
             code = ResultCode.INVALID_REQUEST;

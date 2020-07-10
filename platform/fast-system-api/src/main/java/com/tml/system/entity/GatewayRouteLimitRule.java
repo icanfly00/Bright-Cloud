@@ -1,7 +1,6 @@
 package com.tml.system.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -19,8 +18,8 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("gateway_rate_limit_rule")
-public class GatewayRateLimitRule extends Model<GatewayRateLimitRule> {
+@TableName("gateway_route_limit_rule")
+public class GatewayRouteLimitRule extends Model<GatewayRouteLimitRule> {
 
     public static final String CLOSE = "0";
     public static final String OPEN = "1";
@@ -73,10 +72,4 @@ public class GatewayRateLimitRule extends Model<GatewayRateLimitRule> {
      * 更新用户
      */
     private Integer updateUserId;
-
-    @TableField(exist = false)
-    private String createTimeFrom;
-
-    @TableField(exist = false)
-    private String createTimeTo;
 }
