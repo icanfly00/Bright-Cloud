@@ -1,7 +1,11 @@
-package com.tml.gateway.swagger2;
+package com.tml.gateway.swagger2.configuration;
 
 import com.google.common.collect.Lists;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 
@@ -12,13 +16,13 @@ import java.util.List;
  * @Author TuMingLong
  * @Date 2020/7/8 14:35
  */
+@Slf4j
+@Component
+@Primary
+@AllArgsConstructor
 public class FastSwagger2GatewayResourceProvider implements SwaggerResourcesProvider {
 
     private final RouteDefinitionLocator definitionLocator;
-
-    public FastSwagger2GatewayResourceProvider(RouteDefinitionLocator definitionLocator) {
-        this.definitionLocator = definitionLocator;
-    }
 
     @Override
     public List<SwaggerResource> get() {

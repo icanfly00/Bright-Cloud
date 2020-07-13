@@ -3,6 +3,7 @@ package com.tml.gateway.swagger2.filter;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 
@@ -12,6 +13,7 @@ import org.springframework.web.server.ServerWebExchange;
  * @Author TuMingLong
  * @Date 2020/7/8 15:02
  */
+@Component
 public class FastSwagger2GatewayHeaderFilter extends AbstractGatewayFilterFactory {
     private static final String HEADER_NAME = "X-Forwarder-Prefix";
     private static final String URI = "/v2/api-docs";

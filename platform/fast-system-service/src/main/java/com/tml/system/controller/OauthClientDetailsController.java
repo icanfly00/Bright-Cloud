@@ -26,7 +26,7 @@ import javax.validation.constraints.NotBlank;
  * @Author TuMingLong
  * @Date 2020/5/10 16:12
  */
-@Api(value = "OAuth2.0客户端信息接口")
+@Api(value = "OAuth2.0客户端信息接口",tags = "OAuth2.0客户端信息接口")
 @Slf4j
 @Validated
 @RestController

@@ -1,6 +1,6 @@
 package com.tml.common.swagger2.configuration;
 
-import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;;
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import com.google.common.collect.Lists;
 import com.tml.common.constant.CommonConstant;
 import com.tml.common.swagger2.properties.Swagger2Properties;
@@ -51,8 +51,8 @@ public class Swagger2Configuration {
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
                 .build()
-                .securityContexts(Lists.newArrayList(securityContext()))
-                .securitySchemes(Lists.<SecurityScheme>newArrayList(apiKey()))
+                .securityContexts(Lists.newArrayList(securityContext(),securityContext2()))
+                .securitySchemes(Lists.<SecurityScheme>newArrayList(apiKey(),apiKey2()))
                 .globalOperationParameters(parameters());
     }
 
@@ -69,8 +69,12 @@ public class Swagger2Configuration {
     }
 
 
+
     private ApiKey apiKey() {
-        return new ApiKey("Bearer Token", "Authentication", "header");
+        return new ApiKey("BearerToken", "Authorization", "header");
+    }
+    private ApiKey apiKey2() {
+        return new ApiKey("BearerToken1", "Authorization-x", "header");
     }
 
     private SecurityContext securityContext() {
@@ -79,14 +83,26 @@ public class Swagger2Configuration {
                 .forPaths(PathSelectors.regex("/.*"))
                 .build();
     }
+    private SecurityContext securityContext2() {
+        return SecurityContext.builder()
+                .securityReferences(defaultAuth2())
+                .forPaths(PathSelectors.regex("/.*"))
+                .build();
+    }
 
     List<SecurityReference> defaultAuth() {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Lists.newArrayList(new SecurityReference("Bearer Token", authorizationScopes));
-
+        return Lists.newArrayList(new SecurityReference("BearerToken", authorizationScopes));
     }
+    List<SecurityReference> defaultAuth2() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Lists.newArrayList(new SecurityReference("BearerToken1", authorizationScopes));
+    }
+
 
     /**
      * 添加header参数

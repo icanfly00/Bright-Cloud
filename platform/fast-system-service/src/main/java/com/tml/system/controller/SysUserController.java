@@ -31,7 +31,7 @@ import java.util.Set;
  * @Author TuMingLong
  * @Date 2020/5/20 14:52
  */
-@Api(value = "系统用户管理接口")
+@Api(value = "系统用户管理接口",tags = "系统用户管理接口")
 @Slf4j
 @Validated
 @RestController
