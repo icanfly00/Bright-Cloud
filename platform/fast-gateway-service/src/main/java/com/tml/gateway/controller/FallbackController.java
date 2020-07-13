@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 public class FallbackController {
 
     @RequestMapping("/fallback")
-    public Mono<CommonResult> fallback(){
+    public Mono<CommonResult> fallback() {
         return Mono.just(CommonResult.failed("服务访问超时，请稍后再试"));
     }
 }

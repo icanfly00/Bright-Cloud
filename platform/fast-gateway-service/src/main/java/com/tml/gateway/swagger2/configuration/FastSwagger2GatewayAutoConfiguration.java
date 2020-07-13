@@ -16,7 +16,7 @@ import springfox.documentation.swagger.web.UiConfiguration;
  * @Author TuMingLong
  * @Date 2020/7/8 15:38
  */
-@Configuration
+//@Configuration
 public class FastSwagger2GatewayAutoConfiguration {
 
     private SecurityConfiguration securityConfiguration;
@@ -34,18 +34,18 @@ public class FastSwagger2GatewayAutoConfiguration {
     }
 
     @Bean
-    public FastSwagger2GatewayResourceProvider fastSwagger2GatewayResourceProvider(RouteDefinitionLocator routeDefinitionLocator){
+    public FastSwagger2GatewayResourceProvider fastSwagger2GatewayResourceProvider(RouteDefinitionLocator routeDefinitionLocator) {
         return new FastSwagger2GatewayResourceProvider(routeDefinitionLocator);
     }
 
     @Bean
-    public FastSwagger2GatewayHeaderFilter fastSwagger2GatewayHeaderFilter(){
+    public FastSwagger2GatewayHeaderFilter fastSwagger2GatewayHeaderFilter() {
         return new FastSwagger2GatewayHeaderFilter();
     }
 
     @Bean
-    public FastSwagger2GatewayHandler fastSwagger2GatewayHandler(SwaggerResourcesProvider swaggerResources){
-        FastSwagger2GatewayHandler fastSwagger2GatewayHandler=new FastSwagger2GatewayHandler();
+    public FastSwagger2GatewayHandler fastSwagger2GatewayHandler(SwaggerResourcesProvider swaggerResources) {
+        FastSwagger2GatewayHandler fastSwagger2GatewayHandler = new FastSwagger2GatewayHandler();
         fastSwagger2GatewayHandler.setSecurityConfiguration(securityConfiguration);
         fastSwagger2GatewayHandler.setUiConfiguration(uiConfiguration);
         fastSwagger2GatewayHandler.setSwaggerResources(swaggerResources);

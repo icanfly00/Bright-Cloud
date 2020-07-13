@@ -99,10 +99,10 @@ tml:
       - sys_api
       - gateway_route
       - gateway_route_log
-      - gateway_back_list
-      - gateway_back_list_log
-      - gateway_rate_limit_rule
-      - gateway_rate_limit_log
+      - gateway_black_list
+      - gateway_black_list_log
+      - gateway_route_limit_rule
+      - gateway_route_limit_log
       - oauth_client_details
       - oms_item
       - oms_item_kill
@@ -138,4 +138,5 @@ tml:
       - /sys/user/findDataPermsByUserId
       - /sys/user/register
       - /sys/user/mobile/login/**
+      - /gateway/enhance/**
       - /auth/**

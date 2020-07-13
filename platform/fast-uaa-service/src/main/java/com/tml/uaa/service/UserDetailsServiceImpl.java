@@ -158,10 +158,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @return
      */
     private String getUserDataPerms(int userId) {
-        String dataPerms=null;
+        String dataPerms = null;
         CommonResult<String> commonResult = userService.findDataPermsByUserId(userId);
         if (commonResult.getCode() == 200) {
-            dataPerms =commonResult.getData();
+            dataPerms = commonResult.getData();
         }
         return dataPerms;
     }

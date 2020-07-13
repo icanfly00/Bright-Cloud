@@ -29,7 +29,7 @@ public class FastGatewayGlobalExceptionHandler {
             message = "目标服务拒绝连接";
         } else if (className.contains("TimeoutException")) {
             message = "访问服务超时";
-        } else if ( className.contains("ResponseStatusException")
+        } else if (className.contains("ResponseStatusException")
                 && StringUtils.containsIgnoreCase(e.getMessage(), HttpStatus.NOT_FOUND.toString())) {
             message = "未找到该资源";
         } else {

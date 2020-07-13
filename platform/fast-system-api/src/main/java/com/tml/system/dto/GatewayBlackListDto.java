@@ -33,6 +33,6 @@ public class GatewayBlackListDto extends CommonDto {
     /**
      * 状态，0关闭，1开启
      */
-    @ApiModelProperty(value = "状态，0关闭，1开启",example = "1")
+    @ApiModelProperty(value = "状态，0关闭，1开启", example = "1")
     private String status;
 }

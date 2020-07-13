@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -18,7 +17,6 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
 @TableName("sys_api")
 public class SysApi extends Model<SysApi> {
     /**

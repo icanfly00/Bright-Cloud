@@ -26,6 +26,7 @@ public interface IGatewayRouteLimitRuleService extends IBaseService<GatewayRoute
 
     /**
      * 获取所有状态为开启（1）的限流规则
+     *
      * @return
      */
     List<GatewayRouteLimitRule> findAllRouteLimitRule();

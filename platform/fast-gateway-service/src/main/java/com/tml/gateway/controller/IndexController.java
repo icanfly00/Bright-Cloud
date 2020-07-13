@@ -16,8 +16,8 @@ public class IndexController {
     private ApiProperties properties;
 
     @GetMapping("/")
-    public String index(){
-        if(properties.getApiDebug()){
+    public String index() {
+        if (properties.getApiDebug()) {
             return "redirect:doc.html";
         }
         return "index";

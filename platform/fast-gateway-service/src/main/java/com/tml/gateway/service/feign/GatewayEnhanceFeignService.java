@@ -12,4 +12,5 @@ import org.springframework.cloud.openfeign.FeignClient;
 @FeignClient(name = ServiceConstant.SYSTEM_SERVER,
         fallbackFactory = GatewayEnhanceFeignServiceFallbackFactory.class)
 public interface GatewayEnhanceFeignService extends IGatewayEnhanceFeignService {
+
 }

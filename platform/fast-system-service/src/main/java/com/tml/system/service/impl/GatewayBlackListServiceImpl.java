@@ -54,20 +54,20 @@ public class GatewayBlackListServiceImpl extends BaseServiceImpl<GatewayBlackLis
         return this.getOne(queryWrapper);
     }
 
-    @CachePut(value = CacheConstant.GATEWAY_BLACK_LIST_CACHE,key = "#gatewayBlackList.ip+':'+#gatewayBlackList.requestUri+':'+#gatewayBlackList.requestMethod",unless = "#gatewayBlackList.status!=0")
+    @CachePut(value = CacheConstant.GATEWAY_BLACK_LIST_CACHE, key = "#gatewayBlackList.ip+':'+#gatewayBlackList.requestUri+':'+#gatewayBlackList.requestMethod", unless = "#gatewayBlackList.status!=0")
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveGatewayBlackList(GatewayBlackList gatewayBlackList) {
-        boolean flag=this.save(gatewayBlackList);
+        boolean flag = this.save(gatewayBlackList);
         //TODO: 刷新网关
         return flag;
     }
 
-    @CachePut(value = CacheConstant.GATEWAY_BLACK_LIST_CACHE,key = "#gatewayBlackList.ip+':'+#gatewayBlackList.requestUri+':'+#gatewayBlackList.requestMethod",unless = "#gatewayBlackList.status!=0")
+    @CachePut(value = CacheConstant.GATEWAY_BLACK_LIST_CACHE, key = "#gatewayBlackList.ip+':'+#gatewayBlackList.requestUri+':'+#gatewayBlackList.requestMethod", unless = "#gatewayBlackList.status!=0")
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateGatewayBlackList(GatewayBlackList gatewayBlackList) {
-        boolean flag= this.updateById(gatewayBlackList);
+        boolean flag = this.updateById(gatewayBlackList);
         //TODO: 刷新网关
         return flag;
     }
@@ -75,26 +75,26 @@ public class GatewayBlackListServiceImpl extends BaseServiceImpl<GatewayBlackLis
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean deleteGatewayBlackList(List<String> ids) {
-        ids.stream().forEach(id ->{
-            GatewayBlackList gatewayBlackList=this.getById(id);
-            String key=CacheConstant.GATEWAY_BLACK_LIST_CACHE+":"
-                    +gatewayBlackList.getIp()+":"
-                    +gatewayBlackList.getRequestUri()+":"
-                    +gatewayBlackList.getRequestMethod();
-            if(redisService.hasKey(key)){
+        ids.stream().forEach(id -> {
+            GatewayBlackList gatewayBlackList = this.getById(id);
+            String key = CacheConstant.GATEWAY_BLACK_LIST_CACHE + ":"
+                    + gatewayBlackList.getIp() + ":"
+                    + gatewayBlackList.getRequestUri() + ":"
+                    + gatewayBlackList.getRequestMethod();
+            if (redisService.hasKey(key)) {
                 redisService.del(key);
             }
 
         });
-        boolean flag=this.removeByIds(ids);
+        boolean flag = this.removeByIds(ids);
         //TODO: 刷新网关
         return flag;
     }
 
     @Override
     public List<GatewayBlackList> findAllBackList() {
-        QueryWrapper<GatewayBlackList> queryWrapper=new QueryWrapper<>();
-        queryWrapper.lambda().eq(GatewayBlackList::getStatus,1);
+        QueryWrapper<GatewayBlackList> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(GatewayBlackList::getStatus, 1);
         return this.list(queryWrapper);
     }
 }

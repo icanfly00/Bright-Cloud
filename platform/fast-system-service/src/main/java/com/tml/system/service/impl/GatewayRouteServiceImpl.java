@@ -2,8 +2,10 @@ package com.tml.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tml.common.constant.CacheConstant;
 import com.tml.common.constant.CommonConstant;
 import com.tml.common.exception.AlertException;
+import com.tml.common.redis.service.RedisService;
 import com.tml.common.web.service.impl.BaseServiceImpl;
 import com.tml.common.web.vo.PageVo;
 import com.tml.system.dto.GatewayRouteDto;
@@ -12,9 +14,11 @@ import com.tml.system.mapper.GatewayRouteMapper;
 import com.tml.system.service.IGatewayRouteService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -28,6 +32,8 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class GatewayRouteServiceImpl extends BaseServiceImpl<GatewayRouteMapper, GatewayRoute> implements IGatewayRouteService {
 
+    @Resource
+    private RedisService redisService;
 
     @Override
     public PageVo<GatewayRoute> pageList(GatewayRouteDto gatewayRouteDto) {
@@ -67,6 +73,7 @@ public class GatewayRouteServiceImpl extends BaseServiceImpl<GatewayRouteMapper,
      *
      * @param route
      */
+    @CachePut(value = CacheConstant.GATEWAY_ROUTE_CACHE, key = "#route.routeId", unless = "#gatewayRouteLimitRule.status!=0")
     @Override
     public void addRoute(GatewayRoute route) {
         if (StringUtils.isBlank(route.getPath())) {
@@ -84,6 +91,7 @@ public class GatewayRouteServiceImpl extends BaseServiceImpl<GatewayRouteMapper,
      *
      * @param route
      */
+    @CachePut(value = CacheConstant.GATEWAY_ROUTE_CACHE, key = "#route.routeId", unless = "#gatewayRouteLimitRule.status!=0")
     @Override
     public void updateRoute(GatewayRoute route) {
         if (StringUtils.isBlank(route.getPath())) {
@@ -117,6 +125,10 @@ public class GatewayRouteServiceImpl extends BaseServiceImpl<GatewayRouteMapper,
             throw new AlertException(String.format("保留数据,不允许删除"));
         }
         removeById(routeId);
+        String key = CacheConstant.GATEWAY_ROUTE_CACHE + ":" + routeId;
+        if (redisService.hasKey(key)) {
+            redisService.del(key);
+        }
     }
 
     /**

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tml.system.mapper.GatewayRouteLimitRuleMapper">
+    <resultMap id="BaseResultMap" type="com.tml.system.entity.GatewayRouteLimitRule">
+        <id column="id" property="id"/>
+        <result column="request_uri" property="requestUri"/>
+        <result column="request_method" property="requestMethod"/>
+        <result column="limit_from" property="limitFrom"/>
+        <result column="limit_to" property="limitTo"/>
+        <result column="count" property="count"/>
+        <result column="interval_sec" property="intervalSec"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_user_id" property="createUserId"/>
+        <result column="update_user_id" property="updateUserId"/>
+    </resultMap>
+</mapper>

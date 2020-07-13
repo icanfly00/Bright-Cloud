@@ -20,7 +20,7 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*/*Mapper.xml
-  type-aliases-package: com.tml.*.entity,com.tml.commonlog
+  type-aliases-package: com.tml.*.entity,com.tml.common.log
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: true

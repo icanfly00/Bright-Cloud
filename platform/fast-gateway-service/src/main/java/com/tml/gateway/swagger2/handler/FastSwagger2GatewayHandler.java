@@ -37,17 +37,17 @@ public class FastSwagger2GatewayHandler {
     }
 
     @GetMapping("/swagger-resources/configuration/security")
-    public Mono<ResponseEntity<SecurityConfiguration>> securityConfiguration(){
-        return Mono.just(new ResponseEntity<>(Optional.ofNullable(securityConfiguration).orElse(SecurityConfigurationBuilder.builder().build()),HttpStatus.OK));
+    public Mono<ResponseEntity<SecurityConfiguration>> securityConfiguration() {
+        return Mono.just(new ResponseEntity<>(Optional.ofNullable(securityConfiguration).orElse(SecurityConfigurationBuilder.builder().build()), HttpStatus.OK));
     }
 
     @GetMapping("/swagger-resources/configuration/ui")
-    public Mono<ResponseEntity<UiConfiguration>> uiConfiguration(){
-        return Mono.just(new ResponseEntity<>(Optional.ofNullable(uiConfiguration).orElse(UiConfigurationBuilder.builder().build()),HttpStatus.OK));
+    public Mono<ResponseEntity<UiConfiguration>> uiConfiguration() {
+        return Mono.just(new ResponseEntity<>(Optional.ofNullable(uiConfiguration).orElse(UiConfigurationBuilder.builder().build()), HttpStatus.OK));
     }
 
     @GetMapping("/swagger-resources")
-    public Mono<ResponseEntity<List<SwaggerResource>>> swaggerResources(){
-        return Mono.just(new ResponseEntity<>(this.swaggerResources.get(),HttpStatus.OK));
+    public Mono<ResponseEntity<List<SwaggerResource>>> swaggerResources() {
+        return Mono.just(new ResponseEntity<>(this.swaggerResources.get(), HttpStatus.OK));
     }
 }

@@ -5,11 +5,8 @@ import com.tml.common.constant.CacheConstant;
 import com.tml.common.redis.service.RedisService;
 import com.tml.system.dto.GatewayBlackListDto;
 import com.tml.system.dto.GatewayRouteLimitRuleDto;
-import com.tml.system.entity.GatewayBlackList;
-import com.tml.system.entity.GatewayRouteLimitRule;
-import com.tml.system.service.IGatewayBlackListService;
-import com.tml.system.service.IGatewayRouteLimitRuleService;
-import com.tml.system.service.IGatewayRouteService;
+import com.tml.system.entity.*;
+import com.tml.system.service.*;
 import com.tml.system.service.feign.IGatewayEnhanceFeignService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +35,12 @@ public class GatewayEnhanceController implements IGatewayEnhanceFeignService {
 
     private final IGatewayRouteLimitRuleService gatewayRouteLimitRuleService;
 
+    private final IGatewayRouteLogService gatewayRouteLogService;
+
+    private final IGatewayBlackListLogService gatewayBlackListLogService;
+
+    private final IGatewayRouteLimitLogService gatewayRouteLimitLogService;
+
     private final ExecutorService threadPool = new ThreadPoolExecutor(
             Runtime.getRuntime().availableProcessors(),
             new Double(Runtime.getRuntime().availableProcessors() / (1 - 0.9)).intValue(),
@@ -51,31 +54,34 @@ public class GatewayEnhanceController implements IGatewayEnhanceFeignService {
 
     @Override
     public CommonResult<Integer> loadAllBackList() {
-        List<GatewayBlackList> list=gatewayBlackListService.findAllBackList();
-        final CountDownLatch latch=new CountDownLatch(list.size());
-        if(!list.isEmpty()){
-            try{
+        List<GatewayBlackList> list = gatewayBlackListService.findAllBackList();
+        final CountDownLatch latch = new CountDownLatch(list.size());
+        if (!list.isEmpty()) {
+            try {
                 list.stream().forEach(gatewayBlackList -> {
-                    threadPool.execute(() ->{
+                    threadPool.execute(() -> {
                         try {
-                            String key= CacheConstant.GATEWAY_BLACK_LIST_CACHE+":"
-                                    +gatewayBlackList.getIp()+":"
-                                    +gatewayBlackList.getRequestUri()+":"
-                                    +gatewayBlackList.getRequestMethod();
-                            redisService.set(key,gatewayBlackList);
-                        }finally {
+                            String key = CacheConstant.GATEWAY_BLACK_LIST_CACHE + ":"
+                                    + gatewayBlackList.getIp() + ":"
+                                    + gatewayBlackList.getRequestUri() + ":"
+                                    + gatewayBlackList.getRequestMethod();
+                            if (redisService.hasKey(key)) {
+                                redisService.del(key);
+                            }
+                            redisService.set(key, gatewayBlackList);
+                        } finally {
                             latch.countDown();
                         }
                     });
                 });
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 try {
                     //TODO: 等待所有线程执行完毕
                     latch.await();
                     //TODO: 关闭线程池
-                    threadPool.shutdown();
+                    //threadPool.shutdown();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -87,9 +93,9 @@ public class GatewayEnhanceController implements IGatewayEnhanceFeignService {
 
     @Override
     public CommonResult<Integer> loadAllRouteLimitRule() {
-        List<GatewayRouteLimitRule> list=gatewayRouteLimitRuleService.findAllRouteLimitRule();
-        final CountDownLatch latch=new CountDownLatch(list.size());
-        if(!list.isEmpty()) {
+        List<GatewayRouteLimitRule> list = gatewayRouteLimitRuleService.findAllRouteLimitRule();
+        final CountDownLatch latch = new CountDownLatch(list.size());
+        if (!list.isEmpty()) {
             try {
                 list.stream().forEach(routeLimitRule -> {
                     threadPool.execute(() -> {
@@ -97,6 +103,9 @@ public class GatewayEnhanceController implements IGatewayEnhanceFeignService {
                             String key = CacheConstant.GATEWAY_ROUTE_LIMIT_RULE_CACHE + ":"
                                     + routeLimitRule.getRequestUri() + ":"
                                     + routeLimitRule.getRequestMethod();
+                            if (redisService.hasKey(key)) {
+                                redisService.del(key);
+                            }
                             redisService.set(key, routeLimitRule);
                         } finally {
                             latch.countDown();
@@ -110,7 +119,7 @@ public class GatewayEnhanceController implements IGatewayEnhanceFeignService {
                     //TODO: 等待所有线程执行完毕
                     latch.await();
                     //TODO: 关闭线程池
-                    threadPool.shutdown();
+                    //threadPool.shutdown();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -122,19 +131,51 @@ public class GatewayEnhanceController implements IGatewayEnhanceFeignService {
 
     @Override
     public CommonResult<Integer> loadAllRoute() {
-        return null;
+        List<GatewayRoute> list = gatewayRouteService.findRouteList();
+        final CountDownLatch latch = new CountDownLatch(list.size());
+        if (!list.isEmpty()) {
+            try {
+                list.stream().forEach(gatewayRoute -> {
+                    threadPool.execute(() -> {
+                        try {
+                            String key = CacheConstant.GATEWAY_ROUTE_CACHE + ":"
+                                    + gatewayRoute.getRouteId();
+                            if (redisService.hasKey(key)) {
+                                redisService.del(key);
+                            }
+                            redisService.set(key, gatewayRoute);
+                        } finally {
+                            latch.countDown();
+                        }
+                    });
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    //TODO: 等待所有线程执行完毕
+                    latch.await();
+                    //TODO: 关闭线程池
+                    //threadPool.shutdown();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return CommonResult.success(list.size());
+        }
+        return CommonResult.success(0);
     }
 
     @Override
     public CommonResult<GatewayBlackList> findGatewayBlackList(String ip, String requestUri, String requestMethod) {
-        String key= CacheConstant.GATEWAY_BLACK_LIST_CACHE+":"
-                +ip+":"
-                +requestUri+":"
-                +requestMethod;
-        if(redisService.hasKey(key)){
-            return CommonResult.success((GatewayBlackList)redisService.get(key));
+        String key = CacheConstant.GATEWAY_BLACK_LIST_CACHE + ":"
+                + ip + ":"
+                + requestUri + ":"
+                + requestMethod;
+        if (redisService.hasKey(key)) {
+            return CommonResult.success((GatewayBlackList) redisService.get(key));
         }
-        GatewayBlackListDto dto=new GatewayBlackListDto();
+        GatewayBlackListDto dto = new GatewayBlackListDto();
         dto.setIp(ip);
         dto.setRequestUri(requestUri);
         dto.setRequestMethod(requestMethod);
@@ -147,13 +188,40 @@ public class GatewayEnhanceController implements IGatewayEnhanceFeignService {
         String key = CacheConstant.GATEWAY_ROUTE_LIMIT_RULE_CACHE + ":"
                 + requestUri + ":"
                 + requestMethod;
-        if(redisService.hasKey(key)){
-            return CommonResult.success((GatewayRouteLimitRule)redisService.get(key));
+        if (redisService.hasKey(key)) {
+            return CommonResult.success((GatewayRouteLimitRule) redisService.get(key));
         }
-        GatewayRouteLimitRuleDto dto=new GatewayRouteLimitRuleDto();
+        GatewayRouteLimitRuleDto dto = new GatewayRouteLimitRuleDto();
         dto.setRequestUri(requestUri);
         dto.setRequestMethod(requestMethod);
         dto.setStatus("1");
         return CommonResult.success(gatewayRouteLimitRuleService.findByCondition(dto));
+    }
+
+    @Override
+    public CommonResult<Integer> addGatewayRouteLog(GatewayRouteLog gatewayRouteLog) {
+        boolean flag = gatewayRouteLogService.save(gatewayRouteLog);
+        if (flag) {
+            return CommonResult.success(1);
+        }
+        return CommonResult.success(0);
+    }
+
+    @Override
+    public CommonResult<Integer> addGatewayBackListLog(GatewayBlackListLog gatewayBlackListLog) {
+        boolean flag = gatewayBlackListLogService.save(gatewayBlackListLog);
+        if (flag) {
+            return CommonResult.success(1);
+        }
+        return CommonResult.success(0);
+    }
+
+    @Override
+    public CommonResult<Integer> addGatewayRouteLimitLog(GatewayRouteLimitLog gatewayRouteLimitLog) {
+        boolean flag = gatewayRouteLimitLogService.save(gatewayRouteLimitLog);
+        if (flag) {
+            return CommonResult.success(1);
+        }
+        return CommonResult.success(0);
     }
 }

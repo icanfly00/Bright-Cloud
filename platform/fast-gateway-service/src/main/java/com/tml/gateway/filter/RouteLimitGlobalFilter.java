@@ -21,14 +21,13 @@ import java.time.Duration;
 @Slf4j
 public class RouteLimitGlobalFilter implements GlobalFilter, Ordered {
     //TODO: 桶的最大容量，即能装载Token的最大数量
-    int capacity=1000000;
+    int capacity = 1000000;
     //每次Token补充量
     int refillTokens = 1;
     //补充Token的时间间隔
     Duration duration = Duration.ofSeconds(1);
 
-    private Bucket createNewBucket()
-    {
+    private Bucket createNewBucket() {
 
         Refill refill = Refill.greedy(refillTokens, duration);
         Bandwidth limit = Bandwidth.classic(capacity, refill);
@@ -39,7 +38,7 @@ public class RouteLimitGlobalFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         log.info("----RouteLimitGlobalFilter init----");
-        String uri=exchange.getRequest().getURI().getPath();
+        String uri = exchange.getRequest().getURI().getPath();
 
         return chain.filter(exchange);
     }

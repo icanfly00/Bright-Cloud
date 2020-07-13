@@ -49,35 +49,37 @@ public class ApiConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(SpringUtil.class)
-    public SpringUtil springUtil(){
-        SpringUtil springUtil=new SpringUtil();
-        log.info("SpringUtil [{}]",springUtil);
+    public SpringUtil springUtil() {
+        SpringUtil springUtil = new SpringUtil();
+        log.info("SpringUtil [{}]", springUtil);
         return springUtil;
     }
 
     /**
      * Jackson全局配置
+     *
      * @param properties
      * @return
      */
     @Bean
     @Primary
-    public JacksonProperties jacksonProperties(JacksonProperties properties){
+    public JacksonProperties jacksonProperties(JacksonProperties properties) {
         properties.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
-        properties.getSerialization().put(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS,true);
+        properties.getSerialization().put(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS, true);
         properties.setDateFormat("yyyy-MM-dd HH:mm:ss");
         properties.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-        log.info("JacksonProperties [{}]",properties);
+        log.info("JacksonProperties [{}]", properties);
         return properties;
     }
 
     /**
      * 转换器配置
+     *
      * @param converters
      * @return
      */
     @Bean
-    public HttpMessageConverters httpMessageConverters(List<HttpMessageConverter<?>> converters){
+    public HttpMessageConverters httpMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
 
         ObjectMapper objectMapper = jackson2HttpMessageConverter.getObjectMapper();
@@ -116,7 +118,7 @@ public class ApiConfiguration {
 
         jackson2HttpMessageConverter.setObjectMapper(objectMapper);
 
-        log.info("MappingJackson2HttpMessageConverter [{}]",jackson2HttpMessageConverter);
+        log.info("MappingJackson2HttpMessageConverter [{}]", jackson2HttpMessageConverter);
         return new HttpMessageConverters(jackson2HttpMessageConverter);
     }
 

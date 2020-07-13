@@ -52,20 +52,20 @@ public class GatewayRouteLimitRuleServiceImpl extends BaseServiceImpl<GatewayRou
         return this.getOne(queryWrapper);
     }
 
-    @CachePut(value = CacheConstant.GATEWAY_ROUTE_LIMIT_RULE_CACHE,key = "#gatewayRouteLimitRule.requestUri+':'+#gatewayRouteLimitRule.requestMethod",unless = "#gatewayRouteLimitRule.status!=0")
+    @CachePut(value = CacheConstant.GATEWAY_ROUTE_LIMIT_RULE_CACHE, key = "#gatewayRouteLimitRule.requestUri+':'+#gatewayRouteLimitRule.requestMethod", unless = "#gatewayRouteLimitRule.status!=0")
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveGatewayRouteLimitRule(GatewayRouteLimitRule gatewayRouteLimitRule) {
-        boolean flag= this.save(gatewayRouteLimitRule);
+        boolean flag = this.save(gatewayRouteLimitRule);
         //TODO: 刷新网关
         return flag;
     }
 
-    @CachePut(value = CacheConstant.GATEWAY_ROUTE_LIMIT_RULE_CACHE,key = "#gatewayRouteLimitRule.requestUri+':'+#gatewayRouteLimitRule.requestMethod",unless = "#gatewayRouteLimitRule.status!=0")
+    @CachePut(value = CacheConstant.GATEWAY_ROUTE_LIMIT_RULE_CACHE, key = "#gatewayRouteLimitRule.requestUri+':'+#gatewayRouteLimitRule.requestMethod", unless = "#gatewayRouteLimitRule.status!=0")
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateGatewayRouteLimitRule(GatewayRouteLimitRule gatewayRouteLimitRule) {
-        boolean flag= this.updateById(gatewayRouteLimitRule);
+        boolean flag = this.updateById(gatewayRouteLimitRule);
         //TODO: 刷新网关
         return flag;
     }
@@ -73,24 +73,24 @@ public class GatewayRouteLimitRuleServiceImpl extends BaseServiceImpl<GatewayRou
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean deleteGatewayRouteLimitRule(List<String> ids) {
-        ids.stream().forEach(id ->{
-            GatewayRouteLimitRule routeLimitRule=this.getById(id);
-            String key=CacheConstant.GATEWAY_ROUTE_LIMIT_RULE_CACHE+":"
-                    +routeLimitRule.getRequestUri()+":"
-                    +routeLimitRule.getRequestMethod();
-            if(redisService.hasKey(key)){
+        ids.stream().forEach(id -> {
+            GatewayRouteLimitRule routeLimitRule = this.getById(id);
+            String key = CacheConstant.GATEWAY_ROUTE_LIMIT_RULE_CACHE + ":"
+                    + routeLimitRule.getRequestUri() + ":"
+                    + routeLimitRule.getRequestMethod();
+            if (redisService.hasKey(key)) {
                 redisService.del(key);
             }
         });
-        boolean flag= this.removeByIds(ids);
+        boolean flag = this.removeByIds(ids);
         //TODO: 刷新网关
         return flag;
     }
 
     @Override
     public List<GatewayRouteLimitRule> findAllRouteLimitRule() {
-        QueryWrapper<GatewayRouteLimitRule> queryWrapper=new QueryWrapper<>();
-        queryWrapper.lambda().eq(GatewayRouteLimitRule::getStatus,1);
+        QueryWrapper<GatewayRouteLimitRule> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(GatewayRouteLimitRule::getStatus, 1);
         return this.list(queryWrapper);
     }
 }

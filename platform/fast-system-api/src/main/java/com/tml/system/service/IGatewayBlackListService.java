@@ -26,6 +26,7 @@ public interface IGatewayBlackListService extends IBaseService<GatewayBlackList>
 
     /**
      * 获取所有状态为开启（1）的黑名单
+     *
      * @return
      */
     List<GatewayBlackList> findAllBackList();

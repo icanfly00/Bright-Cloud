@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("gateway_back_list")
+@TableName("gateway_black_list")
 public class GatewayBlackList extends Model<GatewayBlackList> {
 
     public static final String CLOSE = "0";
