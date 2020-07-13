@@ -30,7 +30,6 @@ import java.util.List;
  */
 @Slf4j
 @EnableSwagger2
-@EnableKnife4j
 @Import(BeanValidatorPluginsConfiguration.class)
 @EnableConfigurationProperties(Swagger2Properties.class)
 @ConditionalOnProperty(prefix = "tml.swagger2", name = "enabled", havingValue = "true")
