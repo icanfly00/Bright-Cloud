@@ -36,8 +36,8 @@ public class BootstrapRunner implements ApplicationRunner {
         CommonResult<Integer> commonResult2 = gatewayEnhanceFeignService.loadAllRouteLimitRule();
         CommonResult<Integer> commonResult3 = gatewayEnhanceFeignService.loadAllBackList();
         int count = commonResult.getCode() == ResultCode.FAILED.getCode() ? 0 : commonResult.getData();
-        int count2 = commonResult2.getCode() == ResultCode.FAILED.getCode() ? 0 : commonResult.getData();
-        int count3 = commonResult3.getCode() == ResultCode.FAILED.getCode() ? 0 : commonResult.getData();
+        int count2 = commonResult2.getCode() == ResultCode.FAILED.getCode() ? 0 : commonResult2.getData();
+        int count3 = commonResult3.getCode() == ResultCode.FAILED.getCode() ? 0 : commonResult3.getData();
 
         if (context.isActive()) {
             String banner = "-----------------------------------------\n" +
