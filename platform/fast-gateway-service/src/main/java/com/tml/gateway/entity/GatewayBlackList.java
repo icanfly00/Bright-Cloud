@@ -42,11 +42,11 @@ public class GatewayBlackList extends Model<GatewayBlackList> {
     /**
      * 限制时间起
      */
-    private String limitFrom;
+    private LocalDateTime limitFrom;
     /**
      * 限制时间止
      */
-    private String limitTo;
+    private LocalDateTime limitTo;
     /**
      * ip对应地址
      */
@@ -54,7 +54,7 @@ public class GatewayBlackList extends Model<GatewayBlackList> {
     /**
      * 状态，0关闭，1开启
      */
-    private String status;
+    private Integer status;
     /**
      * 规则创建时间
      */

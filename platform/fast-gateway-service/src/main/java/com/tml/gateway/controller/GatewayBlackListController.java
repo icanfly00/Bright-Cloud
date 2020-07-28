@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 /**
@@ -43,17 +44,11 @@ public class GatewayBlackListController {
         return CommonResult.success(pageVo);
     }
 
-    @ApiOperation(value = "根据参数查找黑名单是否存在", notes = "根据参数查找黑名单是否存在")
-    @GetMapping("/findByCondition")
-    //@PreAuthorize("hasAuthority('gateway:blackList:findByCondition')")
-    public CommonResult<GatewayBlackList> findByCondition(GatewayBlackListDto gatewayBlackListDto) {
-        return CommonResult.success(gatewayBlackListService.findByCondition(gatewayBlackListDto));
-    }
-
     @ApiOperation(value = "新增黑名单", notes = "新增黑名单")
     @PostMapping("/add")
     //@PreAuthorize("hasAuthority('gateway:blackList:add')")
     public CommonResult addGatewayBlackList(@Valid GatewayBlackList gatewayBlackList) {
+        gatewayBlackList.setCreateTime(LocalDateTime.now());
         gatewayBlackListService.saveGatewayBlackList(gatewayBlackList);
         return CommonResult.success("新增黑名单成功");
     }
@@ -62,6 +57,7 @@ public class GatewayBlackListController {
     @PostMapping("/update")
     //@PreAuthorize("hasAuthority('gateway:blackList:update')")
     public CommonResult updateGatewayBlackList(@Valid GatewayBlackList gatewayBlackList) {
+        gatewayBlackList.setUpdateTime(LocalDateTime.now());
         gatewayBlackListService.updateGatewayBlackList(gatewayBlackList);
         return CommonResult.success("更新黑名单成功");
     }

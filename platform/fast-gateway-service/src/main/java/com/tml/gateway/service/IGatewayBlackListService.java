@@ -7,6 +7,7 @@ import com.tml.gateway.dto.GatewayBlackListDto;
 import com.tml.gateway.entity.GatewayBlackList;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Description 黑名单服务类接口
@@ -17,7 +18,12 @@ public interface IGatewayBlackListService extends IBaseService<GatewayBlackList>
 
     PageVo<GatewayBlackList> pageList(GatewayBlackListDto gatewayBlackListDto);
 
-    GatewayBlackList findByCondition(GatewayBlackListDto gatewayBlackListDto);
+    /**
+     * 按条件查询
+     * @param gatewayBlackListDto
+     * @return
+     */
+    List<GatewayBlackList> findByCondition(GatewayBlackListDto gatewayBlackListDto);
 
     boolean saveGatewayBlackList(GatewayBlackList gatewayBlackList);
 
@@ -31,5 +37,18 @@ public interface IGatewayBlackListService extends IBaseService<GatewayBlackList>
      * @return
      */
     List<GatewayBlackList> findAllBackList();
+
+    /**
+     * 缓存黑名单
+     * @param gatewayBlackList
+     */
+    void saveGatewayBlackListCache(GatewayBlackList gatewayBlackList);
+
+    /**
+     * 按IP获取缓存
+     * @param ip
+     * @return
+     */
+    Set<Object> getGatewayBlackListCache(String ip);
 
 }

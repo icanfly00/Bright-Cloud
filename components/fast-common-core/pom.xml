@@ -152,6 +152,13 @@
         </dependency>
         <!-- jsoup end -->
 
+        <!-- jackson-datatype-jsr310 begin -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <!-- jackson-datatype-jsr310 end -->
+
         <!-- fastjson begin -->
         <dependency>
             <groupId>com.alibaba</groupId>

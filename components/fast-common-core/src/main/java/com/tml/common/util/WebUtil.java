@@ -1,12 +1,11 @@
 package com.tml.common.util;
 
-import com.alibaba.fastjson.JSON;
+
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.net.HttpHeaders;
+import com.tml.common.constant.RegexpConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -23,6 +22,9 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 /**
  * @Description Http与Servlet工具类
@@ -30,21 +32,6 @@ import java.util.Map.Entry;
  * @Date 2020/3/5 19:40
  */
 public class WebUtil {
-
-    private final static String staticSuffix = ".css,.js,.png,.jpg,.gif,.jpeg,.bmp,.ico,.swf,.psd,.htc,.htm,.html,.crx,.xpi,.exe,.ipa,.apk,.woff2,.ico,.swf,.ttf,.otf,.svg,.woff";
-    /**
-     * 静态文件后缀
-     */
-    private final static String[] staticFiles = StringUtils.split(staticSuffix, ",");
-
-    /**
-     * 动态映射URL后缀
-     */
-    private final static String urlSuffix = ".html";
-
-    public static String[] getStaticFiles() {
-        return staticFiles;
-    }
 
     /**
      * 设置 Cookie（生成时间为1天）
@@ -162,7 +149,9 @@ public class WebUtil {
     }
 
     /**
-     * 设置客户端缓存过期时间 的Header.
+     * 设置客户端缓存过期时间的Header
+     * @param response
+     * @param expiresSeconds
      */
     public static void setExpiresHeader(HttpServletResponse response, long expiresSeconds) {
         // Http 1.0 header, set model fix expires date.
@@ -171,9 +160,9 @@ public class WebUtil {
         response.setHeader(HttpHeaders.CACHE_CONTROL, "private, max-age=" + expiresSeconds);
     }
 
-
     /**
-     * 设置禁止客户端缓存的Header.
+     * 设置禁止客户端缓存的Header
+     * @param response
      */
     public static void setNoCacheHeader(HttpServletResponse response) {
         // Http 1.0 header
@@ -184,14 +173,18 @@ public class WebUtil {
     }
 
     /**
-     * 设置LastModified Header.
+     * 设置LastModified的Header
+     * @param response
+     * @param lastModifiedDate
      */
     public static void setLastModifiedHeader(HttpServletResponse response, long lastModifiedDate) {
         response.setDateHeader(HttpHeaders.LAST_MODIFIED, lastModifiedDate);
     }
 
     /**
-     * 设置Etag Header.
+     * 设置Etag的Header
+     * @param response
+     * @param etag
      */
     public static void setEtag(HttpServletResponse response, String etag) {
         response.setHeader(HttpHeaders.ETAG, etag);
@@ -199,10 +192,11 @@ public class WebUtil {
 
     /**
      * 根据浏览器If-Modified-Since Header, 计算文件是否已被修改.
-     * <p>
      * 如果无修改, checkIfModify返回false ,设置304 not modify status.
-     *
-     * @param lastModified 内容的最后修改时间.
+     * @param request
+     * @param response
+     * @param lastModified 内容的最后修改时间
+     * @return
      */
     public static boolean checkIfModifiedSince(HttpServletRequest request, HttpServletResponse response,
                                                long lastModified) {
@@ -216,10 +210,11 @@ public class WebUtil {
 
     /**
      * 根据浏览器 If-None-Match Header, 计算Etag是否已无效.
-     * <p>
      * 如果Etag有效, checkIfNoneMatch返回false, 设置304 not modify status.
-     *
-     * @param etag 内容的ETag.
+     * @param request
+     * @param response
+     * @param etag 内容的ETag
+     * @return
      */
     public static boolean checkIfNoneMatchEtag(HttpServletRequest request, HttpServletResponse response, String etag) {
         String headerValue = request.getHeader(HttpHeaders.IF_NONE_MATCH);
@@ -247,52 +242,6 @@ public class WebUtil {
         return true;
     }
 
-    /**
-     * 设置让浏览器弹出下载对话框的Header.
-     *
-     * @param fileName 下载后的文件名.
-     */
-    public static void setFileDownloadHeader(HttpServletResponse response, String fileName) {
-        try {
-            // 中文文件名支持
-            String encodedfileName = new String(fileName.getBytes(), "ISO8859-1");
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedfileName + "\"");
-        } catch (UnsupportedEncodingException e) {
-            e.getMessage();
-        }
-    }
-
-    /**
-     * 取得带相同前缀的Request Parameters, copy from spring WebUtils.
-     * <p>
-     * 返回的结果的Parameter名已去除前缀.
-     */
-    @SuppressWarnings("rawtypes")
-    public static Map<String, Object> getParametersWith(ServletRequest request, String prefix) {
-        Assert.notNull(request, "Request must not be null");
-        Enumeration paramNames = request.getParameterNames();
-        Map<String, Object> params = new TreeMap<String, Object>();
-        String pre = prefix;
-        if (pre == null) {
-            pre = "";
-        }
-        while (paramNames != null && paramNames.hasMoreElements()) {
-            String paramName = (String) paramNames.nextElement();
-            if ("".equals(pre) || paramName.startsWith(pre)) {
-                String unprefixed = paramName.substring(pre.length());
-                String[] values = request.getParameterValues(paramName);
-                if (values == null || values.length == 0) {
-                    values = new String[]{};
-                    // Do nothing, no values found at all.
-                } else if (values.length > 1) {
-                    params.put(unprefixed, values);
-                } else {
-                    params.put(unprefixed, values[0]);
-                }
-            }
-        }
-        return params;
-    }
 
     /**
      * 获取请求Body
@@ -334,9 +283,8 @@ public class WebUtil {
 
     /**
      * 复制输入流
-     *
      * @param inputStream
-     * @return</br>
+     * @return
      */
     public static InputStream cloneInputStream(ServletInputStream inputStream) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -419,9 +367,11 @@ public class WebUtil {
         return returnMap;
     }
 
-
     /**
-     * 组合Parameters生成Query String的Parameter部分,并在paramter name上加上prefix.
+     * 组合Parameters生成Query String的Parameter部分,并在Parameter name上加上prefix
+     * @param params
+     * @param prefix
+     * @return
      */
     public static String encodeParameterWithPrefix(Map<String, Object> params, String prefix) {
         StringBuilder queryStringBuilder = new StringBuilder();
@@ -442,21 +392,16 @@ public class WebUtil {
     }
 
     /**
-     * 客户端对Http Basic验证的 Header进行编码.
+     * 客户端对Http Basic验证的 Header进行编码
+     * @param userName
+     * @param password
+     * @return
      */
     public static String encodeHttpBasic(String userName, String password) {
         String encode = userName + ":" + password;
         return "Basic " + EncodeUtil.encodeBase64(encode.getBytes());
     }
 
-    /**
-     * 是否是Ajax异步请求
-     *
-     * @param request
-     */
-    public static boolean isAjaxRequest(HttpServletRequest request) {
-        return (request.getHeader("X-Requested-With") != null && "XMLHttpRequest".equals(request.getHeader("X-Requested-With").toString())) || (request.getHeader("Content-Type") != null && request.getHeader("Content-Type").startsWith("application/json"));
-    }
 
     /**
      * 获取IP地址
@@ -496,76 +441,140 @@ public class WebUtil {
     }
 
     /**
-     * 判断访问URI是否是静态文件请求
+     * 驼峰转下划线
      *
-     * @throws Exception
+     * @param value 待转换值
+     * @return 结果
      */
-    public static boolean isStaticFile(String uri) {
-        return StringUtils.endsWithAny(uri, staticFiles) && !StringUtils.endsWithAny(uri, new String[]{urlSuffix})
-                && !StringUtils.endsWithAny(uri, new String[]{".jsp"}) && !StringUtils.endsWithAny(uri, new String[]{".java"});
-    }
-
-    /**
-     * 客户端返回JSON字符串
-     *
-     * @param response
-     * @param object
-     * @return
-     */
-    public static void writeJson(HttpServletResponse response, Object object) {
-        writeJson(response, JSON.toJSONString(object), MediaType.APPLICATION_JSON_UTF8_VALUE);
-    }
-
-    /**
-     * 客户端返回字符串
-     *
-     * @param response
-     * @param string
-     * @return
-     */
-    public static void writeJson(HttpServletResponse response, String string, String type) {
-        try {
-            response.setContentType(type);
-            response.setCharacterEncoding("utf-8");
-            response.getWriter().print(string);
-            response.getWriter().flush();
-            response.getWriter().close();
-        } catch (IOException e) {
+    public static String camelToUnderscore(String value) {
+        if (StringUtils.isBlank(value)) {
+            return value;
         }
-    }
-
-    public static String getServerUrl(HttpServletRequest request) {
-        String url = request.getScheme() + "://" + request.getServerName()
-                + ":" + request.getServerPort() + request.getContextPath();
-        return url;
-    }
-
-
-    public static String getContextPath(HttpServletRequest request) {
-        return request.getContextPath();
-    }
-
-    public static HttpServletRequest getHttpServletRequest() {
-        try {
-            return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        } catch (Exception e) {
-            return null;
+        String[] arr = StringUtils.splitByCharacterTypeCamelCase(value);
+        if (arr.length == 0) {
+            return value;
         }
-    }
-
-    public static Map<String, String> getHttpHeaders(HttpServletRequest request) {
-        Map<String, String> map = new LinkedHashMap<>();
-        if (request != null) {
-            Enumeration<String> enumeration = request.getHeaderNames();
-            if (enumeration != null) {
-                while (enumeration.hasMoreElements()) {
-                    String key = enumeration.nextElement();
-                    String value = request.getHeader(key);
-                    map.put(key, value);
-                }
+        StringBuilder result = new StringBuilder();
+        IntStream.range(0, arr.length).forEach(i -> {
+            if (i != arr.length - 1) {
+                result.append(arr[i]).append("_");
+            } else {
+                result.append(arr[i]);
             }
-        }
-
-        return map;
+        });
+        return StringUtils.lowerCase(result.toString());
     }
+
+    /**
+     * 下划线转驼峰
+     *
+     * @param value 待转换值
+     * @return 结果
+     */
+    public static String underscoreToCamel(String value) {
+        StringBuilder result = new StringBuilder();
+        String[] arr = value.split("_");
+        for (String s : arr) {
+            result.append((String.valueOf(s.charAt(0))).toUpperCase()).append(s.substring(1));
+        }
+        return result.toString();
+    }
+
+    /**
+     * 判断是否为 ajax请求
+     *
+     * @param request HttpServletRequest
+     * @return boolean
+     */
+    public static boolean isAjaxRequest(HttpServletRequest request) {
+        return (request.getHeader("X-Requested-With") != null
+                && "XMLHttpRequest".equals(request.getHeader("X-Requested-With")));
+    }
+
+    /**
+     * 正则校验
+     *
+     * @param regex 正则表达式字符串
+     * @param value 要匹配的字符串
+     * @return 正则校验结果
+     */
+    public static boolean match(String regex, String value) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(value);
+        return matcher.matches();
+    }
+
+    /**
+     * 设置响应
+     *
+     * @param response    HttpServletResponse
+     * @param contentType content-type
+     * @param status      http状态码
+     * @param value       响应内容
+     * @throws IOException IOException
+     */
+    public static void makeResponse(HttpServletResponse response, String contentType,
+                                    int status, Object value) throws IOException {
+        response.setContentType(contentType);
+        response.setStatus(status);
+        response.getOutputStream().write(JSONObject.toJSONString(value).getBytes());
+    }
+
+    /**
+     * 设置成功响应
+     *
+     * @param response HttpServletResponse
+     * @param value    响应内容
+     * @throws IOException IOException
+     */
+    public static void makeSuccessResponse(HttpServletResponse response, Object value) throws IOException {
+        makeResponse(response, MediaType.APPLICATION_JSON_VALUE, HttpServletResponse.SC_OK, value);
+    }
+
+    /**
+     * 设置失败响应
+     *
+     * @param response HttpServletResponse
+     * @param value    响应内容
+     * @throws IOException IOException
+     */
+    public static void makeFailureResponse(HttpServletResponse response, Object value) throws IOException {
+        makeResponse(response, MediaType.APPLICATION_JSON_VALUE, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, value);
+    }
+
+    /**
+     * 设置JSON类型响应
+     *
+     * @param response HttpServletResponse
+     * @param status   http状态码
+     * @param value    响应内容
+     * @throws IOException IOException
+     */
+    public static void makeJsonResponse(HttpServletResponse response, int status, Object value) throws IOException {
+        makeResponse(response, MediaType.APPLICATION_JSON_VALUE, status, value);
+    }
+
+    /**
+     * 获取HttpServletRequest
+     *
+     * @return HttpServletRequest
+     */
+    public static HttpServletRequest getHttpServletRequest() {
+        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+    }
+
+    /**
+     * 判断是否包含中文
+     *
+     * @param value 内容
+     * @return 结果
+     */
+    public static boolean containChinese(String value) {
+        if (StringUtils.isBlank(value)) {
+            return Boolean.FALSE;
+        }
+        Matcher matcher = RegexpConstant.CHINESE.matcher(value);
+        return matcher.find();
+    }
+
 }
