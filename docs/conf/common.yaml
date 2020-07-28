@@ -97,7 +97,7 @@ tml:
       - sys_role_enterprise
       - sys_dict_item
       - sys_api
-      - gateway_route
+      - gateway_dynamic_route
       - gateway_route_log
       - gateway_black_list
       - gateway_black_list_log

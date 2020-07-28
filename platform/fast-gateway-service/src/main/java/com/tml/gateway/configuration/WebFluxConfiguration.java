@@ -1,6 +1,7 @@
-package com.tml.common.web.configuration;
+package com.tml.gateway.configuration;
 
 import cn.hutool.core.date.DatePattern;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -18,45 +19,72 @@ import com.tml.common.jackson.deserializer.JacksonDateDeserializer;
 import com.tml.common.jackson.deserializer.JacksonDoubleDeserializer;
 import com.tml.common.jackson.serializer.JacksonDateSerializer;
 import com.tml.common.jackson.serializer.JacksonIntegerDeserializer;
+import com.tml.common.util.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
- * @Description WebMvc配置
+ * @Description com.tml.gateway.configuration
  * @Author TuMingLong
- * @Date 2020/4/1 17:35
+ * @Date 2020/7/8 15:51
  */
 @Slf4j
-public class WebMvcConfiguration implements WebMvcConfigurer {
+@Configuration
+public class WebFluxConfiguration {
 
-    /**
-     * 资源处理器
-     *
-     * @param registry
-     */
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
-        registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-
+    @Bean
+    @ConditionalOnMissingBean(SpringUtil.class)
+    public SpringUtil springUtil() {
+        SpringUtil springUtil = new SpringUtil();
+        log.info("SpringUtil [{}]", springUtil);
+        return springUtil;
     }
 
-    @Override
-    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+    /**
+     * Jackson全局配置
+     *
+     * @param properties
+     * @return
+     */
+    @Bean
+    @Primary
+    public JacksonProperties jacksonProperties(JacksonProperties properties) {
+        properties.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
+        properties.getSerialization().put(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS, true);
+        properties.setDateFormat("yyyy-MM-dd HH:mm:ss");
+        properties.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        log.info("JacksonProperties [{}]", properties);
+        return properties;
+    }
+
+    /**
+     * 转换器配置
+     *
+     * @param converters
+     * @return
+     */
+    @Bean
+    public HttpMessageConverters httpMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
 
         ObjectMapper objectMapper = jackson2HttpMessageConverter.getObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        objectMapper.getSerializationConfig().withFeatures(
+                SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS);
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
 
@@ -90,7 +118,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
         jackson2HttpMessageConverter.setObjectMapper(objectMapper);
 
-        converters.add(jackson2HttpMessageConverter);
-
+        log.info("MappingJackson2HttpMessageConverter [{}]", jackson2HttpMessageConverter);
+        return new HttpMessageConverters(jackson2HttpMessageConverter);
     }
 }

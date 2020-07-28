@@ -13,12 +13,13 @@ fast-cloud是一款使用Spring Cloud Hoxton.SR6、Spring Cloud OAuth2 & Spring 
 ---|---
 1 | 前后端分离架构，客户端和服务端纯Token交互； 
 2 | 认证服务器与资源服务器分离，方便接入自己的微服务系统
-3 | 集成SpringBootAdmin，Skywalking APM
-4 | 动态路由，网关限流，网关黑名单限制，网关日志（WebFlux编程实践） 
-5 | 微服务Docker化，使用Docker Compose一键部署，K8S集群
-6 | 社交登录，认证授权，数据权限，前后端参数校验，Starter开箱即用等
-7 | Doc Starter，几行配置自动生成系统api接口文档
-8 | OAuth2 4种模式+刷新令牌模式，提供5种获取系统令牌方式                                                            
+3 | 服务之间调用采用OpenFeign+Sentienl
+4 | 集成SpringBootAdmin，Skywalking APM
+5 | 动态路由、网关限流、网关黑名单限制、网关日志
+6 | 微服务Docker化，使用Docker Compose一键部署。
+7 | 认证授权，数据权限，前后端参数校验，Starter开箱即用等
+8 | 系统API接口文档
+9 | OAuth2 4种模式+刷新令牌模式，提供5种获取系统令牌方式                                                            
 
 ### 文档与教程
 
@@ -88,11 +89,10 @@ APM平台相关账号密码：
 平台 | 账号| 密码
 ---|---|---
 fast-admin | admin |123456
-febs-tx-manager | 无 | 123456
 
 ### 服务模块
 
-FEBS模块：
+fast-cloud模块：
 
 服务名称 | 端口 | 描述
 ---|---|---
@@ -104,7 +104,7 @@ FastMsgApplication|8004 | 微服务子系统，消息模块
 FastGeneratorApplication|8005| 微服务子系统，代码生成模块
 FastAdminApplication|8006|微服务监控子系统
 FastTestApplication|8007 | 微服务子系统，Demo模块
-FastTxManagerApplication|8008|微服务分布式事务控制器
+FastSeataApplication|8008|微服务分布式事务控制器
 
 第三方模块：
 

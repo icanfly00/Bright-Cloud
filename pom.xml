@@ -35,7 +35,7 @@
         <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
         <spring-security-jwt.version>1.1.0.RELEASE</spring-security-jwt.version>
         <thymeleaf-extras-springsecurity5.version>3.0.4.RELEASE</thymeleaf-extras-springsecurity5.version>
-        <spring-boot-admin.version>2.2.3</spring-boot-admin.version>
+        <spring-boot-admin.version>2.2.4</spring-boot-admin.version>
         <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
         <alibaba.fastjson.version>1.2.70</alibaba.fastjson.version>
         <alibaba.druid.version>1.1.23</alibaba.druid.version>
