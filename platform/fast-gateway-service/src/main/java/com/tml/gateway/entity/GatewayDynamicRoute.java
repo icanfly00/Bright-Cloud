@@ -1,15 +1,21 @@
 package com.tml.gateway.entity;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.tml.common.util.JacksonUtil;
+import com.tml.gateway.dto.GatewayFilterDefinition;
+import com.tml.gateway.dto.GatewayPredicateDefinition;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @Description 动态路由配置
@@ -24,6 +30,11 @@ public class GatewayDynamicRoute extends Model<GatewayDynamicRoute> {
 
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
+    /**
+     * 路由名称
+     */
+    @TableField("route_name")
+    private String routeName;
     /**
      * 路由Id
      */
@@ -53,7 +64,7 @@ public class GatewayDynamicRoute extends Model<GatewayDynamicRoute> {
      * 状态：0-不可用；1-可用
      */
     @TableField("enable")
-    private Boolean enable;
+    private Integer enable;
     /**
      * 创建时间
      */
@@ -71,5 +82,25 @@ public class GatewayDynamicRoute extends Model<GatewayDynamicRoute> {
      */
     private Integer updateUserId;
 
+    /**
+     * 获取断言集合
+     * @return
+     */
+    public List<GatewayPredicateDefinition> getPredicateDefinitionList(){
+        if(StringUtils.isNoneBlank(this.predicates)){
+            return JSON.parseArray(this.predicates,GatewayPredicateDefinition.class);
+        }
+        return null;
+    }
 
+    /**
+     * 获取过滤器集合
+     * @return
+     */
+    public List<GatewayFilterDefinition> getFilterDefinitionList(){
+        if(StringUtils.isNoneBlank(this.filters)){
+            return JSON.parseArray(this.filters,GatewayFilterDefinition.class);
+        }
+        return null;
+    }
 }

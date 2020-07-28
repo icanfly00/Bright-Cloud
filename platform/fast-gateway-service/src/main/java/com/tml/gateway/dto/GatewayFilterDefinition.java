@@ -1,8 +1,9 @@
-package com.tml.gateway.entity;
+package com.tml.gateway.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -13,11 +14,15 @@ import java.util.Map;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@NoArgsConstructor
+@Accessors(chain = true)
 public class GatewayFilterDefinition {
-
+    /**
+     * 过滤器名称
+     */
     private String name;
-    //对应的路由规则
+    /**
+     * 配置的路由规则
+     */
     private Map<String, String> args = new LinkedHashMap<>();
 
 }

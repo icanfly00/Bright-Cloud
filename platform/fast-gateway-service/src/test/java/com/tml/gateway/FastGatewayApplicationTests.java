@@ -28,7 +28,7 @@ public class FastGatewayApplicationTests {
         dynamicRoute.setRouteOrder(1);
         String sysPredicates="[{\"name\":\"Path\",\"args\":{\"pattern\":\"/system/**\"}}]";
         dynamicRoute.setPredicates(sysPredicates);
-        dynamicRoute.setEnable(true);
+        dynamicRoute.setEnable(1);
         dynamicRoute.setCreateTime(LocalDateTime.now());
         dynamicRoute.setUpdateTime(LocalDateTime.now());
         dynamicRoute.setCreateUserId(1);

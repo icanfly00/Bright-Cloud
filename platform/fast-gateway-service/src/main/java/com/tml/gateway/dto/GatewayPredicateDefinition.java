@@ -1,8 +1,8 @@
-package com.tml.gateway.entity;
+package com.tml.gateway.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@NoArgsConstructor
+@Accessors(chain = true)
 public class GatewayPredicateDefinition {
     /**
      * 断言名称

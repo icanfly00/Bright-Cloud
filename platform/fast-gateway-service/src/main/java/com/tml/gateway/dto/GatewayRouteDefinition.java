@@ -1,8 +1,8 @@
-package com.tml.gateway.entity;
+package com.tml.gateway.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@NoArgsConstructor
+@Accessors(chain = true)
 public class GatewayRouteDefinition {
     /**
      * 路由Id
@@ -35,5 +35,4 @@ public class GatewayRouteDefinition {
      * 路由执行的顺序
      */
     private int order = 0;
-    //此处省略get和set方法
 }

@@ -2,6 +2,7 @@ package com.tml.gateway.runner;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import com.tml.gateway.service.IGatewayDynamicRouteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -23,14 +24,17 @@ public class BootstrapRunner implements ApplicationRunner {
 
     private final Environment environment;
 
+    private final IGatewayDynamicRouteService gatewayDynamicRouteService;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         if (context.isActive()) {
+            gatewayDynamicRouteService.loadRoue();
+
             String banner = "-----------------------------------------\n" +
                     "服务启动成功，时间：" + DateUtil.format(LocalDateTime.now(), DatePattern.NORM_DATETIME_PATTERN) + "\n" +
                     "服务名称：" + environment.getProperty("spring.application.name") + "\n" +
                     "端口号：" + environment.getProperty("server.port") + "\n" +
-                    "已开启网关增强功能：请求日志、动态网关、黑名单、限流" + "\n" +
                     "-----------------------------------------";
             System.out.println(banner);
         }
