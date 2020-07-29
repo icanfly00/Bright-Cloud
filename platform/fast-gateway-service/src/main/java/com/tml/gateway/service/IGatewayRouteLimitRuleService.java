@@ -55,24 +55,27 @@ public interface IGatewayRouteLimitRuleService extends IBaseService<GatewayRoute
 
     /**
      * 缓存请求次数
+     *
      * @param uri
      * @param ip
      * @param time
      */
-    void saveCurrentRequestCount(String uri,String ip,Long time);
+    void saveCurrentRequestCount(String uri, String ip, Long time);
 
     /**
      * 获取当前请求次数
+     *
      * @param uri
      * @param ip
      * @return
      */
-    int getCurrentRequestCount(String uri,String ip);
+    int getCurrentRequestCount(String uri, String ip);
 
     /**
      * 递增请求次数
+     *
      * @param uri
      * @param ip
      */
-    void incrCurrentRequestCount(String uri,String ip);
+    void incrCurrentRequestCount(String uri, String ip);
 }

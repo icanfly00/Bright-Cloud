@@ -1,5 +1,6 @@
 package com.tml.gateway.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
@@ -9,9 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 public class IndexController {
 
+    @Value("${tml.doc.enable}")
+    private Boolean enable;
+
     @GetMapping("/")
     public String index() {
-        return "redirect:doc.html";
+        if (enable) {
+            return "redirect:doc.html";
+        }
+        return "index";
     }
 
 }

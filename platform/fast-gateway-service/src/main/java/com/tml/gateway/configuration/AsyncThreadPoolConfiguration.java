@@ -14,8 +14,8 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @Author TuMingLong
  * @Date 2020/4/3 21:16
  */
-@Configuration
-@EnableAsync
+//@Configuration
+//@EnableAsync
 public class AsyncThreadPoolConfiguration {
 
     @Resource
@@ -42,6 +42,8 @@ public class AsyncThreadPoolConfiguration {
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         // 等待所有任务结束后再关闭线程池
         executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setAwaitTerminationMillis(60);
+        executor.initialize();
         return executor;
     }
 }

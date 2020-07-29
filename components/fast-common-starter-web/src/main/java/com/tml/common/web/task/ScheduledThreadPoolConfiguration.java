@@ -41,12 +41,13 @@ public class ScheduledThreadPoolConfiguration implements SchedulingConfigurer {
         executor.setThreadNamePrefix(env.getProperty("spring.application.name") + "-task-");
         // 设置最大线程数
         executor.setPoolSize(new Double(Math.floor(Runtime.getRuntime().availableProcessors() / (1 - 0.9))).intValue());
-        // 设置线程活跃时间（秒）
+
         executor.setAwaitTerminationSeconds(60);
         // 设置拒绝策略
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         // 等待所有任务结束后再关闭线程池
         executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.initialize();
         return executor;
     }
 }

@@ -11,7 +11,7 @@
  Target Server Version : 50730
  File Encoding         : 65001
 
- Date: 28/07/2020 17:46:48
+ Date: 29/07/2020 20:16:58
 */
 
 SET NAMES utf8mb4;
@@ -46,38 +46,40 @@ CREATE TABLE `clientdetails`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `gateway_black_list`;
 CREATE TABLE `gateway_black_list`  (
-  `id` bigint(19) NOT NULL COMMENT '主键ID',
+  `id` bigint(19) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '黑名单IP',
   `request_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求URI',
   `request_method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求方法',
-  `limit_from` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '限制时间起',
-  `limit_to` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '限制时间止',
+  `limit_from` datetime(0) NULL DEFAULT NULL COMMENT '限制时间起',
+  `limit_to` datetime(0) NULL DEFAULT NULL COMMENT '限制时间止',
   `location` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'IP对应地址',
-  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '状态(0-关闭，1-开启)',
+  `status` tinyint(1) NULL DEFAULT NULL COMMENT '状态(0-关闭，1-开启)',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `create_user_id` int(11) NULL DEFAULT NULL COMMENT '创建用户',
   `update_user_id` int(11) NULL DEFAULT NULL COMMENT '更新用户',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '黑名单' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '黑名单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gateway_black_list
 -- ----------------------------
+INSERT INTO `gateway_black_list` VALUES (9, '127.0.0.1', '/**/actuator/**', 'All', '2020-07-30 00:30:00', '2020-07-30 23:59:59', NULL, 1, '2020-07-28 21:52:46', '2020-07-28 21:52:46', 1, 1);
+INSERT INTO `gateway_black_list` VALUES (10, '192.168.0.106', '/**/actuator/**', 'All', '2020-07-30 00:30:00', '2020-07-30 23:59:59', NULL, 1, '2020-07-28 21:52:46', '2020-07-28 21:52:46', 1, 1);
 
 -- ----------------------------
 -- Table structure for gateway_black_list_log
 -- ----------------------------
 DROP TABLE IF EXISTS `gateway_black_list_log`;
 CREATE TABLE `gateway_black_list_log`  (
-  `id` bigint(19) NOT NULL COMMENT '主键ID',
+  `id` bigint(19) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '黑名单IP',
   `request_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求URI',
   `request_method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求方法',
   `location` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'IP对应地址',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '拦截时间点',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '黑名单日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '黑名单日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gateway_black_list_log
@@ -102,64 +104,52 @@ CREATE TABLE `gateway_dynamic_route`  (
   `update_user_id` bigint(19) NULL DEFAULT NULL COMMENT '修改人ID',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `route_id`(`route_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1288004131295485955 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '动态路由配置表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1288004131295485956 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '动态路由配置表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gateway_dynamic_route
 -- ----------------------------
-INSERT INTO `gateway_dynamic_route` VALUES (1288004131295485954, '系统管理服务', 'fast-system-service', 'lb://fast-system-service', 1, '[{\"name\":\"Path\",\"args\":{\"pattern\":\"/system/**\"}}]', NULL, 1, '2020-07-28 15:46:17', '2020-07-28 14:51:29', 1, 1);
-
--- ----------------------------
--- Table structure for gateway_dynamic_route_version
--- ----------------------------
-DROP TABLE IF EXISTS `gateway_dynamic_route_version`;
-CREATE TABLE `gateway_dynamic_route_version`  (
-  `id` bigint(19) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '动态路由版本号表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of gateway_dynamic_route_version
--- ----------------------------
+INSERT INTO `gateway_dynamic_route` VALUES (2, '系统管理服务', 'fast-system-service', 'lb://fast-system-service', 1, '[{\"name\":\"Path\",\"args\":{\"pattern\":\"/system/**\"}}]', '', 1, '2020-07-29 17:22:49', '2020-07-28 14:51:29', 1, 1);
 
 -- ----------------------------
 -- Table structure for gateway_route_limit_rule
 -- ----------------------------
 DROP TABLE IF EXISTS `gateway_route_limit_rule`;
 CREATE TABLE `gateway_route_limit_rule`  (
-  `id` bigint(19) NOT NULL COMMENT '主键ID',
+  `id` bigint(19) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `request_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求URI',
   `request_method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求方法',
-  `limit_from` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '限制时间起',
-  `limit_to` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '限制时间止',
-  `count` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '次数',
-  `interval_sec` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '时间周期，单位秒',
-  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '状态(0-关闭，1-开启)',
+  `limit_from` datetime(0) NULL DEFAULT NULL COMMENT '限制时间起',
+  `limit_to` datetime(0) NULL DEFAULT NULL COMMENT '限制时间止',
+  `count` int(19) NULL DEFAULT NULL COMMENT '次数',
+  `interval_sec` int(19) NULL DEFAULT NULL COMMENT '时间周期，单位秒',
+  `status` tinyint(1) NULL DEFAULT NULL COMMENT '状态(0-关闭，1-开启)',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `create_user_id` int(11) NULL DEFAULT NULL COMMENT '创建用户',
   `update_user_id` int(11) NULL DEFAULT NULL COMMENT '更新用户',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '限流规则' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '限流规则' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gateway_route_limit_rule
 -- ----------------------------
+INSERT INTO `gateway_route_limit_rule` VALUES (3, '/auth/**', 'GET', '2020-07-30 00:30:00', '2020-07-30 23:59:59', 3, 10, 1, '2020-07-29 10:26:49', '2020-07-29 10:26:49', 1, 1);
+INSERT INTO `gateway_route_limit_rule` VALUES (4, '/gateway/**', 'GET', '2020-07-30 00:30:00', '2020-07-30 23:59:59', 3, 10, 1, '2020-07-29 10:26:50', '2020-07-29 10:26:50', 1, 1);
 
 -- ----------------------------
 -- Table structure for gateway_route_limit_rule_log
 -- ----------------------------
 DROP TABLE IF EXISTS `gateway_route_limit_rule_log`;
 CREATE TABLE `gateway_route_limit_rule_log`  (
-  `id` bigint(19) NOT NULL COMMENT '主键ID',
+  `id` bigint(19) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '黑名单IP',
   `request_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求URI',
   `request_method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求方法',
   `location` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'IP对应地址',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '拦截时间点',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '限流规则日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '限流规则日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gateway_route_limit_rule_log
@@ -170,7 +160,7 @@ CREATE TABLE `gateway_route_limit_rule_log`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `gateway_route_log`;
 CREATE TABLE `gateway_route_log`  (
-  `id` bigint(19) NOT NULL COMMENT '主键ID',
+  `id` bigint(19) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '黑名单IP',
   `request_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求URI',
   `request_method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求方法',
@@ -179,11 +169,12 @@ CREATE TABLE `gateway_route_log`  (
   `location` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'IP对应地址',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '拦截时间点',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '网关日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '网关日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gateway_route_log
 -- ----------------------------
+INSERT INTO `gateway_route_log` VALUES (2, '127.0.0.1', '/system/sys/user/findSecurityUserByUsername', 'GET', '/system/sys/user/findSecurityUserByUsername', 'fast-system-service', '0|0|0|内网IP|内网IP', '2020-07-29 14:33:30');
 
 -- ----------------------------
 -- Table structure for oauth_access_token
@@ -412,59 +403,30 @@ CREATE TABLE `sys_api`  (
 -- ----------------------------
 INSERT INTO `sys_api` VALUES (1, 'all', '全部', 'default', '所有请求', 'get,post', NULL, 'fast-gateway-service', '/**', 0, 1, '2019-03-07 21:52:17', '2019-03-14 21:41:28', 1, 1, 1, NULL, NULL);
 INSERT INTO `sys_api` VALUES (2, 'actuator', '监控端点', 'default', '监控端点', 'post', NULL, 'fast-gateway-service', '/actuator/**', 0, 1, '2019-03-07 21:52:17', '2019-03-14 21:41:28', 1, 1, 1, NULL, NULL);
-INSERT INTO `sys_api` VALUES (1283637381154111490, 'ba11318a520b7b338cab2c3894ad8660', '黑名单分页列表', 'default', '黑名单分页列表', 'GET', NULL, 'fast-system-service', '/gateway/blackList/list', 0, 1, '2020-07-16 13:39:35', '2020-07-16 13:47:55', 1, 1, 0, 'com.tml.system.controller.GatewayBlackListController', 'pageList');
-INSERT INTO `sys_api` VALUES (1283637381951029250, '30ae15a67def520cf1b1d9b6bb871481', '根据参数查找黑名单是否存在', 'default', '根据参数查找黑名单是否存在', 'GET', NULL, 'fast-system-service', '/gateway/blackList/findByCondition', 0, 1, '2020-07-16 13:39:35', '2020-07-16 13:47:55', 1, 1, 0, 'com.tml.system.controller.GatewayBlackListController', 'findByCondition');
-INSERT INTO `sys_api` VALUES (1283637382118801410, '79a305f49ea56f791fdef40302d34ceb', '新增黑名单', 'default', '新增黑名单', 'POST', NULL, 'fast-system-service', '/gateway/blackList/add', 0, 1, '2020-07-16 13:39:35', '2020-07-16 13:47:55', 1, 1, 0, 'com.tml.system.controller.GatewayBlackListController', 'addGatewayBlackList');
-INSERT INTO `sys_api` VALUES (1283637382223659009, '7fd0073ec766dfe24dbe91e0f5fcfdb2', '更新黑名单', 'default', '更新黑名单', 'POST', NULL, 'fast-system-service', '/gateway/blackList/update', 0, 1, '2020-07-16 13:39:35', '2020-07-16 13:47:55', 1, 1, 0, 'com.tml.system.controller.GatewayBlackListController', 'updateGatewayBlackList');
-INSERT INTO `sys_api` VALUES (1283637382341099521, 'ccf6836d4708eb4e4f61c6b9b9933661', '删除黑名单', 'default', '删除黑名单', 'POST', NULL, 'fast-system-service', '/gateway/blackList/delete', 0, 1, '2020-07-16 13:39:35', '2020-07-16 13:47:55', 1, 1, 0, 'com.tml.system.controller.GatewayBlackListController', 'deleteGatewayBlackList');
-INSERT INTO `sys_api` VALUES (1283637382471122945, 'a90679e94a356004a29ab71ee5de6700', '黑名单日志分页列表', 'default', '黑名单日志分页列表', 'GET', NULL, 'fast-system-service', '/gateway/blackListLog/list', 0, 1, '2020-07-16 13:39:35', '2020-07-16 13:47:55', 1, 1, 0, 'com.tml.system.controller.GatewayBlackListLogController', 'pageList');
-INSERT INTO `sys_api` VALUES (1283637382550814722, '627af329e39eab94e6a2af0dd8ba8c84', '删除黑名单日志', 'default', '删除黑名单日志', 'POST', NULL, 'fast-system-service', '/gateway/blackListLog/delete', 0, 1, '2020-07-16 13:39:35', '2020-07-16 13:47:55', 1, 1, 0, 'com.tml.system.controller.GatewayBlackListLogController', 'deleteGatewayBlackList');
-INSERT INTO `sys_api` VALUES (1283637382626312193, 'c2971661fc26cb7349868c7c4e27d070', 'loadAllBackList', 'default', '', 'GET', NULL, 'fast-system-service', '/gateway/enhance/loadAllBackList', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 0, 0, 'com.tml.system.controller.GatewayEnhanceController', 'loadAllBackList');
-INSERT INTO `sys_api` VALUES (1283637382689226753, '582c190d3b375d2cf200236c30324026', 'loadAllRoute', 'default', '', 'GET', NULL, 'fast-system-service', '/gateway/enhance/loadAllRoute', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 0, 0, 'com.tml.system.controller.GatewayEnhanceController', 'loadAllRoute');
-INSERT INTO `sys_api` VALUES (1283637382760529921, 'bf7fcf0afd5775b324f2896b5c6465c9', 'findGatewayRouteLimitRule', 'default', '', 'GET', NULL, 'fast-system-service', '/gateway/enhance/findGatewayRouteLimitRule', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:55', 1, 0, 0, 'com.tml.system.controller.GatewayEnhanceController', 'findGatewayRouteLimitRule');
-INSERT INTO `sys_api` VALUES (1283637382852804609, 'e07419c8ea6c8d8894c15ec6f0b61d0c', 'addGatewayBackListLog', 'default', '', 'GET', NULL, 'fast-system-service', '/gateway/enhance/addGatewayBackListLog', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:55', 1, 0, 0, 'com.tml.system.controller.GatewayEnhanceController', 'addGatewayBackListLog');
-INSERT INTO `sys_api` VALUES (1283637382957662209, '898315432361d7a290f18c9272a7463a', 'findGatewayBlackList', 'default', '', 'GET', NULL, 'fast-system-service', '/gateway/enhance/findGatewayBlackList', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:55', 1, 0, 0, 'com.tml.system.controller.GatewayEnhanceController', 'findGatewayBlackList');
-INSERT INTO `sys_api` VALUES (1283637383016382466, 'eb1ac7c8447a17ec815cb44477f68131', 'loadAllRouteLimitRule', 'default', '', 'GET', NULL, 'fast-system-service', '/gateway/enhance/loadAllRouteLimitRule', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:55', 1, 0, 0, 'com.tml.system.controller.GatewayEnhanceController', 'loadAllRouteLimitRule');
-INSERT INTO `sys_api` VALUES (1283637383054131201, 'f851dd58dd254996b38694f6834c90e8', 'addGatewayRouteLimitLog', 'default', '', 'GET', NULL, 'fast-system-service', '/gateway/enhance/addGatewayRouteLimitLog', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:55', 1, 0, 0, 'com.tml.system.controller.GatewayEnhanceController', 'addGatewayRouteLimitLog');
-INSERT INTO `sys_api` VALUES (1283637383171571713, 'f38191987a4dcac769541d78f802eadd', 'addGatewayRouteLog', 'default', '', 'GET', NULL, 'fast-system-service', '/gateway/enhance/addGatewayRouteLog', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:55', 1, 0, 0, 'com.tml.system.controller.GatewayEnhanceController', 'addGatewayRouteLog');
-INSERT INTO `sys_api` VALUES (1283637383234486274, 'dbc37580a003f0c6a61686c75774aa48', '获取路由信息', 'default', '获取路由信息', 'GET', NULL, 'fast-system-service', '/gateway/route/info/{routeId}', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteController', 'info');
-INSERT INTO `sys_api` VALUES (1283637383297400833, 'f75113f6d4d24fc89120b2bf6d96f136', '动态网关分页列表', 'default', '动态网关分页列表', 'GET', NULL, 'fast-system-service', '/gateway/route/list', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteController', 'pageList');
-INSERT INTO `sys_api` VALUES (1283637383343538177, 'cd590dffaa9c5ed13cd6e3602a110858', '新增网关', 'default', '新增网关', 'POST', NULL, 'fast-system-service', '/gateway/route/add', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteController', 'addGatewayRoute');
-INSERT INTO `sys_api` VALUES (1283637383402258434, '95171e4c36a5eba20c133ec0821e6718', '更新网关', 'default', '更新网关', 'POST', NULL, 'fast-system-service', '/gateway/route/update', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteController', 'updateGatewayRoute');
-INSERT INTO `sys_api` VALUES (1283637383452590081, 'f230e2ceb510c59c9da0c2b24b027279', '删除网关', 'default', '删除网关', 'POST', NULL, 'fast-system-service', '/gateway/route/delete', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteController', 'deleteGatewayRoute');
-INSERT INTO `sys_api` VALUES (1283637383486144513, '482848a1c70937ecbdacdfdf8438a45f', '限流日志分页列表', 'default', '限流日志分页列表', 'GET', NULL, 'fast-system-service', '/gateway/routeLimitLog/list', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteLimitLogController', 'pageList');
-INSERT INTO `sys_api` VALUES (1283637383561641986, '9bc02caa640b19a69081a9feba779a49', '删除限流日志', 'default', '删除限流日志', 'POST', NULL, 'fast-system-service', '/gateway/routeLimitLog/delete', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteLimitLogController', 'deleteGatewayBlackList');
-INSERT INTO `sys_api` VALUES (1283637383611973633, '9fa10ccae6d75635e58b5bfedf37ea7f', '限流规则分页列表', 'default', '限流规则分页列表', 'GET', NULL, 'fast-system-service', '/gateway/routeLimitRule/list', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteLimitRuleController', 'pageList');
-INSERT INTO `sys_api` VALUES (1283637383662305282, '580f5e17fc2bf46ddac5f9f4409761ac', '根据参数查找限流规则是否存在', 'default', '根据参数查找限流规则是否存在', 'GET', NULL, 'fast-system-service', '/gateway/routeLimitRule/findByCondition', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteLimitRuleController', 'findByCondition');
-INSERT INTO `sys_api` VALUES (1283637383721025538, '0087407bf4d529b448da5f5c363779a2', '更新限流规则', 'default', '更新限流规则', 'POST', NULL, 'fast-system-service', '/gateway/routeLimitRule/update', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteLimitRuleController', 'updateGatewayRateLimitRule');
-INSERT INTO `sys_api` VALUES (1283637383796523009, '7ac14650614e7f36743c41feb23718b5', '新增限流规则', 'default', '新增限流规则', 'POST', NULL, 'fast-system-service', '/gateway/routeLimitRule/add', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteLimitRuleController', 'addGatewayRateLimitRule');
-INSERT INTO `sys_api` VALUES (1283637383838466049, '99c4e1f5bf73b0d498b8f3689df66c6d', '删除限流规则', 'default', '删除限流规则', 'POST', NULL, 'fast-system-service', '/gateway/routeLimitRule/delete', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteLimitRuleController', 'deleteGatewayRateLimitRule');
-INSERT INTO `sys_api` VALUES (1283637383897186305, '6a54bb1a9f255066c86486160f2f9856', '网关日志分页列表', 'default', '网关日志分页列表', 'GET', NULL, 'fast-system-service', '/gateway/routeLog/list', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteLogController', 'pageList');
-INSERT INTO `sys_api` VALUES (1283637383939129346, '3adc3aa9757929fb54a8ba1f2098ec13', '删除网关日志', 'default', '删除网关日志', 'POST', NULL, 'fast-system-service', '/gateway/routeLog/delete', 0, 1, '2020-07-16 13:39:36', '2020-07-16 13:47:56', 1, 1, 0, 'com.tml.system.controller.GatewayRouteLogController', 'deleteGatewayBlackList');
-INSERT INTO `sys_api` VALUES (1283637384014626817, '3b314778e33c5c192f44fd99a6481a41', '检查客户端ID', 'default', '检查客户端ID', 'GET', NULL, 'fast-system-service', '/client/check/{clientId}', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 1, 0, 'com.tml.system.controller.OauthClientDetailsController', 'checkUserName');
-INSERT INTO `sys_api` VALUES (1283637384140455938, '070ed98790be54cdd3133a8737ac01c1', '删除客户端', 'default', '删除客户端', 'DELETE', NULL, 'fast-system-service', '/client/delete', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 1, 0, 'com.tml.system.controller.OauthClientDetailsController', 'deleteOauthClientDetails');
-INSERT INTO `sys_api` VALUES (1283637384190787586, 'a2ca522442bc988faf01a21d2be57651', '获取客户端密码明文', 'default', '获取客户端密码明文', 'GET', NULL, 'fast-system-service', '/client/secret/{clientId}', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 1, 0, 'com.tml.system.controller.OauthClientDetailsController', 'getOriginClientSecret');
-INSERT INTO `sys_api` VALUES (1283637384241119233, '736e372c15004332f0e86ba686edd2d6', '客户端信息分页列表', 'default', '客户端信息分页列表', 'GET', NULL, 'fast-system-service', '/client/list', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 1, 0, 'com.tml.system.controller.OauthClientDetailsController', 'oauthClientDetailsList');
-INSERT INTO `sys_api` VALUES (1283637384291450882, '51877c66df6969cb296c6543761d4b23', '修改客户端', 'default', '修改客户端', 'PUT', NULL, 'fast-system-service', '/client/update', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 1, 0, 'com.tml.system.controller.OauthClientDetailsController', 'updateOauthClientDetails');
-INSERT INTO `sys_api` VALUES (1283637384350171137, '23a3f4be93cdd093e2f51359de0b1d62', '新增客户端', 'default', '新增客户端', 'POST', NULL, 'fast-system-service', '/client/add', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 1, 0, 'com.tml.system.controller.OauthClientDetailsController', 'addOauthClientDetails');
-INSERT INTO `sys_api` VALUES (1283637384413085698, '9c57e44696fef150b97f5485aa221b03', '记录登录日志', 'default', '记录登录日志', 'GET', NULL, 'fast-system-service', '/sys/user/success', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 1, 0, 'com.tml.system.controller.SysUserController', 'loginSuccess');
-INSERT INTO `sys_api` VALUES (1283637384463417345, 'eeede8ece30c69e4886a1dc785844dc8', '根据用户Id查询角色集合', 'default', '根据用户Id查询角色集合', 'GET', NULL, 'fast-system-service', '/sys/user/findRoleIdByUserId', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 0, 0, 'com.tml.system.controller.SysUserController', 'findRoleIdByUserId');
-INSERT INTO `sys_api` VALUES (1283637384572469250, '544bec30e6c547a9713a4153397f3e67', '根据用户手机号获取登录用户信息', 'default', '根据用户手机号获取登录用户信息', 'GET', NULL, 'fast-system-service', '/sys/user/findSecurityUserByPhone', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 0, 0, 'com.tml.system.controller.SysUserController', 'findSecurityUserByPhone');
-INSERT INTO `sys_api` VALUES (1283637384631189505, '0eea3878d32ee24fa1a070d70019e416', '根据用户名获取登录用户信息', 'default', '根据用户名获取登录用户信息', 'GET', NULL, 'fast-system-service', '/sys/user/findSecurityUserByUsername', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 0, 0, 'com.tml.system.controller.SysUserController', 'findSecurityUserByUsername');
-INSERT INTO `sys_api` VALUES (1283637384677326850, 'b3af28de64bf8ee21455c7e84f5b79d1', '根据用户Id查询权限', 'default', '根据用户Id查询权限', 'GET', NULL, 'fast-system-service', '/sys/user/findPermsByUserId', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 0, 0, 'com.tml.system.controller.SysUserController', 'findPermsByUserId');
-INSERT INTO `sys_api` VALUES (1283637384744435714, '7490bc2ec9a8e497c6fb61fa47779ce9', '根据用户Id查询数据权限', 'default', '根据用户Id查询数据权限', 'GET', NULL, 'fast-system-service', '/sys/user/findDataPermsByUserId', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 0, 0, 'com.tml.system.controller.SysUserController', 'findDataPermsByUserId');
-INSERT INTO `sys_api` VALUES (1283637384790573057, 'fdbca130083c452274fefa40b00146a6', 'securityConfiguration', 'default', '', '', NULL, 'fast-system-service', '/swagger-resources/configuration/security', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 0, 0, 'springfox.documentation.swagger.web.ApiResourceController', 'securityConfiguration');
-INSERT INTO `sys_api` VALUES (1283637384849293314, 'c02545151be2a464f2944bec1a7cd998', 'uiConfiguration', 'default', '', '', NULL, 'fast-system-service', '/swagger-resources/configuration/ui', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 0, 0, 'springfox.documentation.swagger.web.ApiResourceController', 'uiConfiguration');
-INSERT INTO `sys_api` VALUES (1283637384895430658, '9296f0b873c778f885820635841aa3fd', 'swaggerResources', 'default', '', '', NULL, 'fast-system-service', '/swagger-resources', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 0, 0, 'springfox.documentation.swagger.web.ApiResourceController', 'swaggerResources');
-INSERT INTO `sys_api` VALUES (1283637384945762306, 'c1954176f5d8935238bd12cc668348fc', 'errorHtml', 'default', '', '', NULL, 'fast-system-service', '/error', 0, 1, '2020-07-16 13:39:36', '2020-07-28 17:44:11', 1, 1, 0, 'org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController', 'errorHtml');
-INSERT INTO `sys_api` VALUES (1283637505662025730, 'b4857e6cc7ae11744bd703880327ab93', 'login', 'default', '', '', NULL, 'fast-uaa-service', '/login', 0, 1, '2020-07-16 13:40:05', '2020-07-16 13:58:44', 1, 0, 0, 'com.tml.uaa.controller.IndexController', 'login');
-INSERT INTO `sys_api` VALUES (1283637505695580162, '4f19dccf7fc6483f783c7aed460927d3', 'welcome', 'default', '', '', NULL, 'fast-uaa-service', '/,/welcome', 0, 1, '2020-07-16 13:40:05', '2020-07-16 13:58:44', 1, 0, 0, 'com.tml.uaa.controller.IndexController', 'welcome');
-INSERT INTO `sys_api` VALUES (1283637505741717506, '947c2db96141a109822e66f9d64ca0c1', '获取当前登录用户信息-SSO单点登录', 'default', '获取当前登录用户信息-SSO单点登录', 'GET', NULL, 'fast-uaa-service', '/current/user/sso', 0, 1, '2020-07-16 13:40:05', '2020-07-16 13:58:44', 1, 1, 0, 'com.tml.uaa.controller.LoginController', 'principal');
-INSERT INTO `sys_api` VALUES (1283637505825603586, '73ff31ef4020ecaa76e19d934ab22381', '获取当前登录用户信息', 'default', '获取当前登录用户信息', 'GET', NULL, 'fast-uaa-service', '/current/user', 0, 1, '2020-07-16 13:40:05', '2020-07-16 13:58:44', 1, 1, 0, 'com.tml.uaa.controller.LoginController', 'getUserProfile');
-INSERT INTO `sys_api` VALUES (1283637505871740930, 'c25a04b149316180872f40ba55d17b9d', 'securityConfiguration', 'default', '', '', NULL, 'fast-uaa-service', '/swagger-resources/configuration/security', 0, 1, '2020-07-16 13:40:05', '2020-07-16 13:58:44', 1, 0, 0, 'springfox.documentation.swagger.web.ApiResourceController', 'securityConfiguration');
-INSERT INTO `sys_api` VALUES (1283637505926266881, '38965f6d1bdadc7bab2e13da4f40b368', 'uiConfiguration', 'default', '', '', NULL, 'fast-uaa-service', '/swagger-resources/configuration/ui', 0, 1, '2020-07-16 13:40:05', '2020-07-16 13:58:44', 1, 0, 0, 'springfox.documentation.swagger.web.ApiResourceController', 'uiConfiguration');
-INSERT INTO `sys_api` VALUES (1283637505951432705, 'c420402979d1ae57ac6c92295ce10212', 'swaggerResources', 'default', '', '', NULL, 'fast-uaa-service', '/swagger-resources', 0, 1, '2020-07-16 13:40:05', '2020-07-16 13:58:44', 1, 0, 0, 'springfox.documentation.swagger.web.ApiResourceController', 'swaggerResources');
-INSERT INTO `sys_api` VALUES (1283637506035318786, 'c012ca98162c2f2ee7344cc3bd0ac2f2', 'errorHtml', 'default', '', '', NULL, 'fast-uaa-service', '/error', 0, 1, '2020-07-16 13:40:05', '2020-07-16 13:58:44', 1, 1, 0, 'org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController', 'errorHtml');
+INSERT INTO `sys_api` VALUES (1288351187168071681, '3b314778e33c5c192f44fd99a6481a41', '检查客户端ID', 'default', '检查客户端ID', 'GET', NULL, 'fast-system-service', '/client/check/{clientId}', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 1, 0, 'com.tml.system.controller.OauthClientDetailsController', 'checkUserName');
+INSERT INTO `sys_api` VALUES (1288351187344232450, 'a2ca522442bc988faf01a21d2be57651', '获取客户端密码明文', 'default', '获取客户端密码明文', 'GET', NULL, 'fast-system-service', '/client/secret/{clientId}', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 1, 0, 'com.tml.system.controller.OauthClientDetailsController', 'getOriginClientSecret');
+INSERT INTO `sys_api` VALUES (1288351187440701442, '736e372c15004332f0e86ba686edd2d6', '客户端信息分页列表', 'default', '客户端信息分页列表', 'GET', NULL, 'fast-system-service', '/client/list', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 1, 0, 'com.tml.system.controller.OauthClientDetailsController', 'oauthClientDetailsList');
+INSERT INTO `sys_api` VALUES (1288351187520393217, '51877c66df6969cb296c6543761d4b23', '修改客户端', 'default', '修改客户端', 'PUT', NULL, 'fast-system-service', '/client/update', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 1, 0, 'com.tml.system.controller.OauthClientDetailsController', 'updateOauthClientDetails');
+INSERT INTO `sys_api` VALUES (1288351187591696386, '23a3f4be93cdd093e2f51359de0b1d62', '新增客户端', 'default', '新增客户端', 'POST', NULL, 'fast-system-service', '/client/add', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 1, 0, 'com.tml.system.controller.OauthClientDetailsController', 'addOauthClientDetails');
+INSERT INTO `sys_api` VALUES (1288351187667193857, '070ed98790be54cdd3133a8737ac01c1', '删除客户端', 'default', '删除客户端', 'DELETE', NULL, 'fast-system-service', '/client/delete', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 1, 0, 'com.tml.system.controller.OauthClientDetailsController', 'deleteOauthClientDetails');
+INSERT INTO `sys_api` VALUES (1288351187734302721, '9c57e44696fef150b97f5485aa221b03', '记录登录日志', 'default', '记录登录日志', 'GET', NULL, 'fast-system-service', '/sys/user/success', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 1, 0, 'com.tml.system.controller.SysUserController', 'loginSuccess');
+INSERT INTO `sys_api` VALUES (1288351187809800194, '7490bc2ec9a8e497c6fb61fa47779ce9', '根据用户Id查询数据权限', 'default', '根据用户Id查询数据权限', 'GET', NULL, 'fast-system-service', '/sys/user/findDataPermsByUserId', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 0, 0, 'com.tml.system.controller.SysUserController', 'findDataPermsByUserId');
+INSERT INTO `sys_api` VALUES (1288351187876909058, 'eeede8ece30c69e4886a1dc785844dc8', '根据用户Id查询角色集合', 'default', '根据用户Id查询角色集合', 'GET', NULL, 'fast-system-service', '/sys/user/findRoleIdByUserId', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 0, 0, 'com.tml.system.controller.SysUserController', 'findRoleIdByUserId');
+INSERT INTO `sys_api` VALUES (1288351187948212225, '544bec30e6c547a9713a4153397f3e67', '根据用户手机号获取登录用户信息', 'default', '根据用户手机号获取登录用户信息', 'GET', NULL, 'fast-system-service', '/sys/user/findSecurityUserByPhone', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 0, 0, 'com.tml.system.controller.SysUserController', 'findSecurityUserByPhone');
+INSERT INTO `sys_api` VALUES (1288351188015321090, '0eea3878d32ee24fa1a070d70019e416', '根据用户名获取登录用户信息', 'default', '根据用户名获取登录用户信息', 'GET', NULL, 'fast-system-service', '/sys/user/findSecurityUserByUsername', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 0, 0, 'com.tml.system.controller.SysUserController', 'findSecurityUserByUsername');
+INSERT INTO `sys_api` VALUES (1288351188128567297, 'b3af28de64bf8ee21455c7e84f5b79d1', '根据用户Id查询权限', 'default', '根据用户Id查询权限', 'GET', NULL, 'fast-system-service', '/sys/user/findPermsByUserId', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 0, 0, 'com.tml.system.controller.SysUserController', 'findPermsByUserId');
+INSERT INTO `sys_api` VALUES (1288351188304728065, 'c02545151be2a464f2944bec1a7cd998', 'uiConfiguration', 'default', '', '', NULL, 'fast-system-service', '/swagger-resources/configuration/ui', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 0, 0, 'springfox.documentation.swagger.web.ApiResourceController', 'uiConfiguration');
+INSERT INTO `sys_api` VALUES (1288351188376031233, '9296f0b873c778f885820635841aa3fd', 'swaggerResources', 'default', '', '', NULL, 'fast-system-service', '/swagger-resources', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 0, 0, 'springfox.documentation.swagger.web.ApiResourceController', 'swaggerResources');
+INSERT INTO `sys_api` VALUES (1288351188426362881, 'fdbca130083c452274fefa40b00146a6', 'securityConfiguration', 'default', '', '', NULL, 'fast-system-service', '/swagger-resources/configuration/security', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 0, 0, 'springfox.documentation.swagger.web.ApiResourceController', 'securityConfiguration');
+INSERT INTO `sys_api` VALUES (1288351188514443265, 'c1954176f5d8935238bd12cc668348fc', 'errorHtml', 'default', '', '', NULL, 'fast-system-service', '/error', 0, 1, '2020-07-29 13:50:34', '2020-07-29 18:49:26', 1, 1, 0, 'org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController', 'errorHtml');
+INSERT INTO `sys_api` VALUES (1288351363282702338, 'b4857e6cc7ae11744bd703880327ab93', 'login', 'default', '', '', NULL, 'fast-uaa-service', '/login', 0, 1, '2020-07-29 13:51:16', '2020-07-29 16:55:02', 1, 0, 0, 'com.tml.uaa.controller.IndexController', 'login');
+INSERT INTO `sys_api` VALUES (1288351363345616898, '4f19dccf7fc6483f783c7aed460927d3', 'welcome', 'default', '', '', NULL, 'fast-uaa-service', '/,/welcome', 0, 1, '2020-07-29 13:51:16', '2020-07-29 16:55:02', 1, 0, 0, 'com.tml.uaa.controller.IndexController', 'welcome');
+INSERT INTO `sys_api` VALUES (1288351363408531458, '947c2db96141a109822e66f9d64ca0c1', '获取当前登录用户信息-SSO单点登录', 'default', '获取当前登录用户信息-SSO单点登录', 'GET', NULL, 'fast-uaa-service', '/current/user/sso', 0, 1, '2020-07-29 13:51:16', '2020-07-29 16:55:02', 1, 1, 0, 'com.tml.uaa.controller.LoginController', 'principal');
+INSERT INTO `sys_api` VALUES (1288351363471446018, '73ff31ef4020ecaa76e19d934ab22381', '获取当前登录用户信息', 'default', '获取当前登录用户信息', 'GET', NULL, 'fast-uaa-service', '/current/user', 0, 1, '2020-07-29 13:51:16', '2020-07-29 16:55:02', 1, 1, 0, 'com.tml.uaa.controller.LoginController', 'getUserProfile');
+INSERT INTO `sys_api` VALUES (1288351363534360578, 'c25a04b149316180872f40ba55d17b9d', 'securityConfiguration', 'default', '', '', NULL, 'fast-uaa-service', '/swagger-resources/configuration/security', 0, 1, '2020-07-29 13:51:16', '2020-07-29 16:55:02', 1, 0, 0, 'springfox.documentation.swagger.web.ApiResourceController', 'securityConfiguration');
+INSERT INTO `sys_api` VALUES (1288351363601469442, 'c420402979d1ae57ac6c92295ce10212', 'swaggerResources', 'default', '', '', NULL, 'fast-uaa-service', '/swagger-resources', 0, 1, '2020-07-29 13:51:16', '2020-07-29 16:55:02', 1, 0, 0, 'springfox.documentation.swagger.web.ApiResourceController', 'swaggerResources');
+INSERT INTO `sys_api` VALUES (1288351363664384002, '38965f6d1bdadc7bab2e13da4f40b368', 'uiConfiguration', 'default', '', '', NULL, 'fast-uaa-service', '/swagger-resources/configuration/ui', 0, 1, '2020-07-29 13:51:16', '2020-07-29 16:55:02', 1, 0, 0, 'springfox.documentation.swagger.web.ApiResourceController', 'uiConfiguration');
+INSERT INTO `sys_api` VALUES (1288351363727298562, 'c012ca98162c2f2ee7344cc3bd0ac2f2', 'errorHtml', 'default', '', '', NULL, 'fast-uaa-service', '/error', 0, 1, '2020-07-29 13:51:16', '2020-07-29 16:55:02', 1, 1, 0, 'org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController', 'errorHtml');
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -628,7 +590,7 @@ CREATE TABLE `sys_log`  (
   `del_flag` int(2) NULL DEFAULT NULL COMMENT '是否删除  -1：已删除  0：正常',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `index_type`(`type`) USING BTREE COMMENT '日志类型'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '系统日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '系统日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_log
@@ -941,7 +903,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (4, 'admin', '$2a$10$uvVjwDE7sYtPlI5Gy5v9H.jj9BigZjokirpGeTIZTiZ1uhu3CJasu', 'lihaodongmail@163.com', '17521296869', NULL, 1, 6, 3, '2019-04-23 23:29:51', '2020-07-09 11:51:04', '2020-07-09 11:51:04', '0', '0', 1);
+INSERT INTO `sys_user` VALUES (4, 'admin', '$2a$10$uvVjwDE7sYtPlI5Gy5v9H.jj9BigZjokirpGeTIZTiZ1uhu3CJasu', 'lihaodongmail@163.com', '17521296869', NULL, 1, 6, 3, '2019-04-23 23:29:51', '2020-07-29 16:03:30', '2020-07-29 16:03:31', '0', '0', 1);
 INSERT INTO `sys_user` VALUES (5, 'develop', '$2a$10$fUuz8/5DGZOGX4zsZC./f.fMAu1LcZT8/DGWf5aAVRzqLYjJZEbwC', 'lihaodongmail@163.com', '17521296869', NULL, 1, 6, NULL, '2020-03-18 14:45:30', '2020-06-04 17:50:56', NULL, '0', '0', 1);
 
 -- ----------------------------
@@ -960,47 +922,11 @@ CREATE TABLE `sys_user_log`  (
   `del_flag` int(2) NULL DEFAULT NULL COMMENT '是否删除  -1：已删除  0：正常',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `t_login_log_login_time`(`login_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '登录日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 49 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '登录日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user_log
 -- ----------------------------
-INSERT INTO `sys_user_log` VALUES (12, 'admin', '2020-06-04 11:05:35', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Windows 10 or Windows Server 2016', 'Chrome', 1, 0);
-INSERT INTO `sys_user_log` VALUES (13, 'admin', '2020-06-04 11:10:09', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Windows 10 or Windows Server 2016', 'Chrome', 1, 0);
-INSERT INTO `sys_user_log` VALUES (14, 'admin', '2020-06-04 11:16:32', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Windows 10 or Windows Server 2016', 'Chrome', 1, 0);
-INSERT INTO `sys_user_log` VALUES (15, 'admin', '2020-06-04 18:38:47', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Windows 10 or Windows Server 2016', 'Chrome', 1, 0);
-INSERT INTO `sys_user_log` VALUES (16, 'admin', '2020-06-04 18:42:28', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Windows 10 or Windows Server 2016', 'Chrome', 1, 0);
-INSERT INTO `sys_user_log` VALUES (17, NULL, '2020-07-03 22:32:16', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (18, NULL, '2020-07-03 22:53:04', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (19, NULL, '2020-07-03 23:02:35', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (20, NULL, '2020-07-03 23:03:17', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (21, NULL, '2020-07-03 23:10:18', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (22, NULL, '2020-07-03 23:11:52', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (23, NULL, '2020-07-03 23:12:33', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (24, NULL, '2020-07-03 23:18:08', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (25, 'admin', '2020-07-03 23:34:11', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (26, NULL, '2020-07-03 23:42:43', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (27, 'admin', '2020-07-03 23:51:08', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (28, NULL, '2020-07-03 23:58:44', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (29, NULL, '2020-07-04 00:05:31', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (30, NULL, '2020-07-04 00:12:22', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (31, NULL, '2020-07-04 00:17:25', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (32, NULL, '2020-07-04 00:28:21', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (33, 'admin', '2020-07-04 00:32:08', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (34, 'admin', '2020-07-04 01:00:13', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (35, 'admin', '2020-07-04 01:04:02', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (36, 'admin', '2020-07-04 01:08:21', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (37, 'admin', '2020-07-04 16:39:52', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (38, 'admin', '2020-07-04 16:46:51', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (39, 'admin', '2020-07-04 16:47:34', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (40, 'admin', '2020-07-04 16:49:00', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (41, 'admin', '2020-07-04 16:53:45', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (42, 'admin', '2020-07-08 09:22:12', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (43, 'admin', '2020-07-08 09:23:17', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (44, 'admin', '2020-07-08 09:23:21', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (45, 'admin', '2020-07-09 11:29:32', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (46, 'admin', '2020-07-09 11:30:35', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
-INSERT INTO `sys_user_log` VALUES (47, 'admin', '2020-07-09 11:51:04', '0|0|0|内网IP|内网IP', '127.0.0.1', 'Unknown', 'Unknown', 1, 0);
 
 -- ----------------------------
 -- Table structure for sys_user_role

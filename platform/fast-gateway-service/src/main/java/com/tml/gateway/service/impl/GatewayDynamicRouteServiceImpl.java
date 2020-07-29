@@ -128,7 +128,7 @@ public class GatewayDynamicRouteServiceImpl extends BaseServiceImpl<GatewayDynam
     @Override
     public void loadRoue() {
         List<RouteDefinition> list = getRouteList();
-        if (!list.isEmpty()) {
+        if (list != null && list.size() > 0) {
             list.stream().forEach(routeDefinition -> {
                 dynamicRouteService.addRoute(routeDefinition);
             });

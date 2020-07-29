@@ -22,18 +22,18 @@ import reactor.core.publisher.Mono;
 public class CustomGlobalFilter implements GlobalFilter, Ordered {
 
     private final IGatewayRouteEnhanceService gatewayRouteEnhanceService;
-    private final AntPathMatcher pathMatcher=new AntPathMatcher();
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        Mono<Void> blackListResult=gatewayRouteEnhanceService.filterBackList(exchange);
-        if(blackListResult!=null){
+        Mono<Void> blackListResult = gatewayRouteEnhanceService.filterBackList(exchange);
+        if (blackListResult != null) {
             gatewayRouteEnhanceService.saveBlackListLog(exchange);
             return blackListResult;
         }
-        Mono<Void> routeLimitResult=gatewayRouteEnhanceService.filterRateLimit(exchange);
-        if(routeLimitResult!=null){
+        Mono<Void> routeLimitResult = gatewayRouteEnhanceService.filterRateLimit(exchange);
+        if (routeLimitResult != null) {
             gatewayRouteEnhanceService.saveRateLimitLog(exchange);
             return routeLimitResult;
         }

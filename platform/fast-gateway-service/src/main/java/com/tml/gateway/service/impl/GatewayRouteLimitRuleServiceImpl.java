@@ -47,7 +47,7 @@ public class GatewayRouteLimitRuleServiceImpl extends BaseServiceImpl<GatewayRou
                 + gatewayRouteLimitRuleDto.getRequestUri() + ":"
                 + gatewayRouteLimitRuleDto.getRequestMethod();
         if (redisService.hasKey(key)) {
-           return getGatewayRouteLimitRuleCache(gatewayRouteLimitRuleDto.getRequestUri(),gatewayRouteLimitRuleDto.getRequestMethod());
+            return getGatewayRouteLimitRuleCache(gatewayRouteLimitRuleDto.getRequestUri(), gatewayRouteLimitRuleDto.getRequestMethod());
         } else {
             QueryWrapper<GatewayRouteLimitRule> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda()
@@ -129,20 +129,20 @@ public class GatewayRouteLimitRuleServiceImpl extends BaseServiceImpl<GatewayRou
 
     @Override
     public void saveCurrentRequestCount(String uri, String ip, Long time) {
-        String key=CacheConstant.GATEWAY_ROUTE_LIMIT_COUNT_CACHE+":"+ uri+":"+ ip;
-        redisService.set(key,1,time);
+        String key = CacheConstant.GATEWAY_ROUTE_LIMIT_COUNT_CACHE + ":" + uri + ":" + ip;
+        redisService.set(key, 1, time);
     }
 
     @Override
     public int getCurrentRequestCount(String uri, String ip) {
-        String key=CacheConstant.GATEWAY_ROUTE_LIMIT_COUNT_CACHE+":"+ uri+":"+ ip;
-        return redisService.hasKey(key)? (int) redisService.get(key) :0;
+        String key = CacheConstant.GATEWAY_ROUTE_LIMIT_COUNT_CACHE + ":" + uri + ":" + ip;
+        return redisService.hasKey(key) ? (int) redisService.get(key) : 0;
     }
 
     @Override
     public void incrCurrentRequestCount(String uri, String ip) {
-        String key=CacheConstant.GATEWAY_ROUTE_LIMIT_COUNT_CACHE+":"+ uri+":"+ ip;
-        redisService.incr(key,1L);
+        String key = CacheConstant.GATEWAY_ROUTE_LIMIT_COUNT_CACHE + ":" + uri + ":" + ip;
+        redisService.incr(key, 1L);
 
     }
 }

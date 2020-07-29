@@ -22,15 +22,23 @@ import com.tml.common.jackson.deserializer.JacksonDoubleDeserializer;
 import com.tml.common.jackson.serializer.JacksonDateSerializer;
 import com.tml.common.jackson.serializer.JacksonIntegerDeserializer;
 import com.tml.common.util.SpringUtil;
+import com.tml.gateway.handler.FastExceptionHandler;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
-import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
+import org.springframework.boot.autoconfigure.web.ResourceProperties;
+import org.springframework.boot.web.reactive.error.ErrorAttributes;
+import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.reactive.result.view.ViewResolver;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,7 +46,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * @Description com.tml.gateway.configuration
@@ -47,7 +54,28 @@ import java.util.TimeZone;
  */
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class WebFluxConfiguration {
+
+    private final ApplicationContext applicationContext;
+    private final ResourceProperties resourceProperties;
+    private final List<ViewResolver> viewResolvers;
+    private final ServerCodecConfigurer serverCodecConfigurer;
+
+    @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public ErrorWebExceptionHandler errorWebExceptionHandler(ErrorAttributes errorAttributes) {
+
+        FastExceptionHandler exceptionHandler = new FastExceptionHandler(
+                errorAttributes,
+                this.resourceProperties,
+                this.applicationContext);
+        exceptionHandler.setViewResolvers(this.viewResolvers);
+        exceptionHandler.setMessageWriters(this.serverCodecConfigurer.getWriters());
+        exceptionHandler.setMessageReaders(this.serverCodecConfigurer.getReaders());
+        return exceptionHandler;
+    }
+
 
     @Bean
     @ConditionalOnMissingBean(SpringUtil.class)
@@ -57,22 +85,6 @@ public class WebFluxConfiguration {
         return springUtil;
     }
 
-    /**
-     * Jackson全局配置
-     *
-     * @param properties
-     * @return
-     */
-    @Bean
-    @Primary
-    public JacksonProperties jacksonProperties(JacksonProperties properties) {
-        properties.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
-        properties.getSerialization().put(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS, true);
-        properties.setDateFormat("yyyy-MM-dd HH:mm:ss");
-        properties.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-        log.info("JacksonProperties [{}]", properties);
-        return properties;
-    }
 
     /**
      * 转换器配置

@@ -19,6 +19,16 @@ spring:
           enabled: true
           #将请求路径上的服务名配置为小写（因为服务注册的时候，向注册中心注册时将服务名转成大写的了,比如以/service-hi/*的请求路径被路由转发到服务名为service-hi的服务上
           lower-case-service-id: true
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+      default-filters:
+        - StripPrefix=1
+        - SwaggerHeaderFilter
     nacos:
       config:
         server-addr: ${discovery.server-addr}
@@ -49,3 +59,7 @@ info:
   name: ${project.artifactId}
   version: ${project.version}
   description: ${project.description}
+
+tml:
+  doc:
+    enable: true

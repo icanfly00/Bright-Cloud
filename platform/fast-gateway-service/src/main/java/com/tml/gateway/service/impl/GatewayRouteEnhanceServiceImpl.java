@@ -37,8 +37,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @RequiredArgsConstructor
 public class GatewayRouteEnhanceServiceImpl implements IGatewayRouteEnhanceService {
 
-    private static final String METHOD_ALL="All";
-    private static final String TOKEN_CHECK_URL="/auth/**";
+    private static final String METHOD_ALL = "All";
+    private static final String TOKEN_CHECK_URL = "/auth/**";
 
     private final IGatewayBlackListService gatewayBlackListService;
     private final IGatewayBlackListLogService gatewayBlackListLogService;
@@ -88,18 +88,18 @@ public class GatewayRouteEnhanceServiceImpl implements IGatewayRouteEnhanceServi
                 String requestMethod = request.getMethodValue();
                 AtomicBoolean limit = new AtomicBoolean(false);
 
-               GatewayRouteLimitRule routeLimitRule= gatewayRouteLimitRuleService.getGatewayRouteLimitRuleCache(originUri.getPath(),METHOD_ALL);
-               if(routeLimitRule==null){
-                   routeLimitRule=gatewayRouteLimitRuleService.getGatewayRouteLimitRuleCache(originUri.getPath(),requestMethod);
-               }
-               if(routeLimitRule!=null){
-                   Mono<Void> result=checkRouteLimitRule(limit,routeLimitRule,originUri,requestIp,requestMethod,response);
-                   log.info("RouteLimitRule verification completed: {}", stopwatch.stop());
-                   if(result!=null){
-                       return result;
-                   }
-               }
-            }else {
+                GatewayRouteLimitRule routeLimitRule = gatewayRouteLimitRuleService.getGatewayRouteLimitRuleCache(originUri.getPath(), METHOD_ALL);
+                if (routeLimitRule == null) {
+                    routeLimitRule = gatewayRouteLimitRuleService.getGatewayRouteLimitRuleCache(originUri.getPath(), requestMethod);
+                }
+                if (routeLimitRule != null) {
+                    Mono<Void> result = checkRouteLimitRule(limit, routeLimitRule, originUri, requestIp, requestMethod, response);
+                    log.info("RouteLimitRule verification completed: {}", stopwatch.stop());
+                    if (result != null) {
+                        return result;
+                    }
+                }
+            } else {
                 log.info("RouteLimitRule verification completed: no rate limit filter - {}", stopwatch.stop());
             }
 
@@ -115,8 +115,8 @@ public class GatewayRouteEnhanceServiceImpl implements IGatewayRouteEnhanceServi
         URI originUri = getGatewayOriginalRequestUri(exchange);
         ServerHttpRequest request = exchange.getRequest();
         String requestIp = GatewayUtil.getServerHttpRequestIpAddress(request);
-        if(originUri!=null){
-            GatewayBlackListLog blackListLog=new GatewayBlackListLog();
+        if (originUri != null) {
+            GatewayBlackListLog blackListLog = new GatewayBlackListLog();
             blackListLog.setIp(requestIp);
             blackListLog.setRequestMethod(request.getMethodValue());
             blackListLog.setRequestUri(originUri.getPath());
@@ -130,8 +130,8 @@ public class GatewayRouteEnhanceServiceImpl implements IGatewayRouteEnhanceServi
         URI originUri = getGatewayOriginalRequestUri(exchange);
         ServerHttpRequest request = exchange.getRequest();
         String requestIp = GatewayUtil.getServerHttpRequestIpAddress(request);
-        if(originUri!=null){
-            GatewayRouteLimitLog routeLimitLog=new GatewayRouteLimitLog();
+        if (originUri != null) {
+            GatewayRouteLimitLog routeLimitLog = new GatewayRouteLimitLog();
             routeLimitLog.setIp(requestIp);
             routeLimitLog.setRequestMethod(request.getMethodValue());
             routeLimitLog.setRequestUri(originUri.getPath());
@@ -143,21 +143,21 @@ public class GatewayRouteEnhanceServiceImpl implements IGatewayRouteEnhanceServi
     @Override
     public void saveRouteLog(ServerWebExchange exchange) {
         URI originUri = getGatewayOriginalRequestUri(exchange);
-            URI uri=getGatewayRequestUri(exchange);
-            Route route=getGatewayRoute(exchange);
-            ServerHttpRequest request=exchange.getRequest();
-            String ipAddress=GatewayUtil.getServerHttpRequestIpAddress(request);
-            if(uri!=null && route!=null){
-                GatewayRouteLog routeLog=new GatewayRouteLog();
-                routeLog.setIp(ipAddress);
-                routeLog.setRequestUri(originUri.getPath());
-                routeLog.setRequestMethod(request.getMethodValue());
-                routeLog.setTargetServer(route.getId());
-                routeLog.setTargetUri(uri.getPath());
-                routeLog.setLocation(AddressUtil.getCityInfo(ipAddress));
-                routeLog.setCreateTime(LocalDateTime.now());
-                gatewayRouteLogService.save(routeLog);
-            }
+        URI uri = getGatewayRequestUri(exchange);
+        Route route = getGatewayRoute(exchange);
+        ServerHttpRequest request = exchange.getRequest();
+        String ipAddress = GatewayUtil.getServerHttpRequestIpAddress(request);
+        if (uri != null && route != null) {
+            GatewayRouteLog routeLog = new GatewayRouteLog();
+            routeLog.setIp(ipAddress);
+            routeLog.setRequestUri(originUri.getPath());
+            routeLog.setRequestMethod(request.getMethodValue());
+            routeLog.setTargetServer(route.getId());
+            routeLog.setTargetUri(uri.getPath());
+            routeLog.setLocation(AddressUtil.getCityInfo(ipAddress));
+            routeLog.setCreateTime(LocalDateTime.now());
+            gatewayRouteLogService.save(routeLog);
+        }
 
     }
 
@@ -189,31 +189,31 @@ public class GatewayRouteEnhanceServiceImpl implements IGatewayRouteEnhanceServi
         });
     }
 
-    private Mono<Void> checkRouteLimitRule(AtomicBoolean limit,GatewayRouteLimitRule routeLimitRule,
-                                           URI uri,String requestIp,String requestMethod,ServerHttpResponse response){
-        boolean flag=GatewayRouteLimitRule.OPEN.equals(routeLimitRule.getStatus())
+    private Mono<Void> checkRouteLimitRule(AtomicBoolean limit, GatewayRouteLimitRule routeLimitRule,
+                                           URI uri, String requestIp, String requestMethod, ServerHttpResponse response) {
+        boolean flag = GatewayRouteLimitRule.OPEN.equals(routeLimitRule.getStatus())
                 && (GatewayRouteLimitRule.METHOD_ALL.equalsIgnoreCase(routeLimitRule.getRequestMethod()))
-                || StringUtils.equalsIgnoreCase(requestMethod,routeLimitRule.getRequestMethod());
-        if(flag) {
+                || StringUtils.equalsIgnoreCase(requestMethod, routeLimitRule.getRequestMethod());
+        if (flag) {
             if (routeLimitRule.getLimitFrom() != null && routeLimitRule.getLimitTo() != null) {
                 LocalDateTime now = LocalDateTime.now();
                 if (now.isAfter(routeLimitRule.getLimitFrom()) && now.isBefore(routeLimitRule.getLimitTo())) {
                     limit.set(true);
                 }
-            }else {
+            } else {
                 limit.set(true);
             }
         }
-        if(limit.get()){
-            String requestUri=uri.getPath();
-            int count=gatewayRouteLimitRuleService.getCurrentRequestCount(requestUri,requestIp);
-            if(count==0){
-                gatewayRouteLimitRuleService.saveCurrentRequestCount(requestUri,requestIp,routeLimitRule.getIntervalSec());
-            }else if(count>routeLimitRule.getCount()){
+        if (limit.get()) {
+            String requestUri = uri.getPath();
+            int count = gatewayRouteLimitRuleService.getCurrentRequestCount(requestUri, requestIp);
+            if (count == 0) {
+                gatewayRouteLimitRuleService.saveCurrentRequestCount(requestUri, requestIp, routeLimitRule.getIntervalSec());
+            } else if (count > routeLimitRule.getCount()) {
                 return GatewayUtil.makeWebFluxResponse(response, MediaType.APPLICATION_JSON_VALUE,
                         HttpStatus.TOO_MANY_REQUESTS, CommonResult.failed("访问频率超限，请稍后再试"));
-            }else {
-                gatewayRouteLimitRuleService.incrCurrentRequestCount(requestUri,requestIp);
+            } else {
+                gatewayRouteLimitRuleService.incrCurrentRequestCount(requestUri, requestIp);
             }
         }
         return null;
