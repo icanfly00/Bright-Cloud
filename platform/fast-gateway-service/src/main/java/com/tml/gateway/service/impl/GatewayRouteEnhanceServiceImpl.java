@@ -143,7 +143,6 @@ public class GatewayRouteEnhanceServiceImpl implements IGatewayRouteEnhanceServi
     @Override
     public void saveRouteLog(ServerWebExchange exchange) {
         URI originUri = getGatewayOriginalRequestUri(exchange);
-        if(!StringUtils.equalsIgnoreCase(TOKEN_CHECK_URL,originUri.getPath())){
             URI uri=getGatewayRequestUri(exchange);
             Route route=getGatewayRoute(exchange);
             ServerHttpRequest request=exchange.getRequest();
@@ -156,9 +155,10 @@ public class GatewayRouteEnhanceServiceImpl implements IGatewayRouteEnhanceServi
                 routeLog.setTargetServer(route.getId());
                 routeLog.setTargetUri(uri.getPath());
                 routeLog.setLocation(AddressUtil.getCityInfo(ipAddress));
+                routeLog.setCreateTime(LocalDateTime.now());
                 gatewayRouteLogService.save(routeLog);
             }
-        }
+
     }
 
     @Override

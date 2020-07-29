@@ -47,7 +47,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private ISysJobService jobService;
 
     @SentinelResource(value = "findPermsByUserId", blockHandler = "userIdBlockHandler", fallback = "userIdFallback")
-    @Cacheable(cacheNames = CacheConstant.SYS_USERS_PERMS_CACHE, key = "#userId", unless = "#result!=null")
+    @Cacheable(cacheNames = CacheConstant.SYS_USERS_PERMS_CACHE, key = "#userId", unless = "#result==null")
     @Override
     public Set<String> findPermsByUserId(Integer userId) {
         return menuService.findPermsByUserId(userId)
@@ -57,7 +57,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     @SentinelResource(value = "findRoleIdByUserId", blockHandler = "userIdBlockHandler", fallback = "userIdFallback")
-    @Cacheable(cacheNames = CacheConstant.SYS_USERS_ROLES_CACHE, key = "#userId", unless = "#result!=null")
+    @Cacheable(cacheNames = CacheConstant.SYS_USERS_ROLES_CACHE, key = "#userId", unless = "#result==null")
     @Override
     public Set<String> findRoleIdByUserId(Integer userId) {
         return userRoleService.selectUserRoleListByUserId(userId)
@@ -67,13 +67,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     @SentinelResource(value = "findDataPermsByUserId", blockHandler = "findDataPermsByUserIdBlockHandler", fallback = "findDataPermsByUserIdFallback")
-    @Cacheable(cacheNames = CacheConstant.SYS_DATA_PERMISSIONS_CACHE, key = "#userId", unless = "#result!=null")
+    @Cacheable(cacheNames = CacheConstant.SYS_DATA_PERMISSIONS_CACHE, key = "#userId", unless = "#result==null")
     @Override
     public List<Integer> findDataPermsByUserId(Integer userId) {
         return this.baseMapper.findDataPermsByUserId(userId);
     }
 
-    @Cacheable(cacheNames = CacheConstant.SYS_USERS_CACHE, key = "#username")
+    @Cacheable(cacheNames = CacheConstant.SYS_USERS_CACHE, key = "#username", unless = "#result==null")
     @Override
     public SysUser findByUsername(String username) {
         SysUser sysUser = this.baseMapper.selectOne(Wrappers.<SysUser>lambdaQuery()
@@ -101,17 +101,15 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     @SentinelResource(value = "findSecurityUserByUser", blockHandler = "findSecurityUserByUserBlockHandler", fallback = "findSecurityUserByUserFallback")
-    @Cacheable(cacheNames = CacheConstant.SYS_USERS_CACHE, key = "#sysUser.username", unless = "#result!=null")
+    @Cacheable(cacheNames = CacheConstant.SYS_USERS_CACHE, key = "#p0.username", unless = "#result==null")
     @Override
     public SysUser findSecurityUserByUser(SysUser sysUser) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        if (StrUtil.isNotEmpty(sysUser.getUsername())) {
-            queryWrapper.lambda().eq(SysUser::getUsername, sysUser.getUsername());
-        } else if (StrUtil.isNotEmpty(sysUser.getPhone())) {
-            queryWrapper.lambda().eq(SysUser::getPhone, sysUser.getPhone());
-        } else if (ObjectUtil.isNotNull(sysUser.getUserId()) && sysUser.getUserId() != 0) {
-            queryWrapper.lambda().eq(SysUser::getUserId, sysUser.getUserId());
-        }
+        queryWrapper.lambda()
+                .eq(StringUtils.isNoneBlank(sysUser.getUsername()),SysUser::getUsername,sysUser.getUsername())
+                .eq(StringUtils.isNoneBlank(sysUser.getPhone()),SysUser::getPhone,sysUser.getPhone())
+                .eq(sysUser.getUserId()!=null && sysUser.getUserId()!=0,SysUser::getUserId,sysUser.getUserId())
+        ;
         return baseMapper.selectOne(queryWrapper);
     }
 
