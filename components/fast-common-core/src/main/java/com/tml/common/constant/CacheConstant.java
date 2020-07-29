@@ -51,6 +51,10 @@ public interface CacheConstant {
      */
     String GATEWAY_ROUTE_LIMIT_RULE_CACHE="gateway:route:limit:rule";
     /**
+     * 限流次数缓存
+     */
+    String GATEWAY_ROUTE_LIMIT_COUNT_CACHE="gateway:route:limit:count";
+    /**
      * 黑名单缓存
      */
     String GATEWAY_BLACK_LIST_CACHE="gateway:black:list";

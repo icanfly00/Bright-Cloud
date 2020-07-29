@@ -61,7 +61,7 @@ public class GatewayBlackListServiceImpl extends BaseServiceImpl<GatewayBlackLis
                 }
             });
             return gatewayBlackLists;
-        }else {
+        } else {
             QueryWrapper<GatewayBlackList> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda()
                     .eq(StringUtils.isNoneBlank(gatewayBlackListDto.getIp()), GatewayBlackList::getIp, gatewayBlackListDto.getIp())
@@ -105,20 +105,9 @@ public class GatewayBlackListServiceImpl extends BaseServiceImpl<GatewayBlackLis
 
     @Override
     public List<GatewayBlackList> findAllBackList() {
-        String key = CacheConstant.GATEWAY_BLACK_LIST_CACHE + ":";
-        if(redisService.hasKey(key)){
-            List<GatewayBlackList> gatewayBlackLists = Lists.newArrayList();
-            Set<Object> set = redisService.sMembers(key);
-            set.stream().forEach(o -> {
-                GatewayBlackList blackList = JacksonUtil.toObject(o.toString(), GatewayBlackList.class);
-                gatewayBlackLists.add(blackList);
-            });
-            return gatewayBlackLists;
-        }else {
-            QueryWrapper<GatewayBlackList> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(GatewayBlackList::getStatus, 1);
-            return this.list(queryWrapper);
-        }
+        QueryWrapper<GatewayBlackList> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(GatewayBlackList::getStatus, 1);
+        return this.list(queryWrapper);
     }
 
     @Override
@@ -134,5 +123,15 @@ public class GatewayBlackListServiceImpl extends BaseServiceImpl<GatewayBlackLis
             return redisService.sMembers(key);
         }
         return null;
+    }
+
+    @Override
+    public void saveAllGatewayBlackListCache() {
+        List<GatewayBlackList> gatewayBlackLists = findAllBackList();
+        if (gatewayBlackLists != null && gatewayBlackLists.size() > 0) {
+            gatewayBlackLists.stream().forEach(gatewayBlackList -> {
+                saveGatewayBlackListCache(gatewayBlackList);
+            });
+        }
     }
 }

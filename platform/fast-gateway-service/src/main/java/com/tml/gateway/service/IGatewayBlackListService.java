@@ -20,6 +20,7 @@ public interface IGatewayBlackListService extends IBaseService<GatewayBlackList>
 
     /**
      * 按条件查询
+     *
      * @param gatewayBlackListDto
      * @return
      */
@@ -40,15 +41,22 @@ public interface IGatewayBlackListService extends IBaseService<GatewayBlackList>
 
     /**
      * 缓存黑名单
+     *
      * @param gatewayBlackList
      */
     void saveGatewayBlackListCache(GatewayBlackList gatewayBlackList);
 
     /**
      * 按IP获取缓存
+     *
      * @param ip
      * @return
      */
     Set<Object> getGatewayBlackListCache(String ip);
+
+    /**
+     * 缓存所有黑名单
+     */
+    void saveAllGatewayBlackListCache();
 
 }

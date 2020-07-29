@@ -138,5 +138,4 @@ tml:
       - /sys/user/findDataPermsByUserId
       - /sys/user/register
       - /sys/user/mobile/login/**
-      - /gateway/enhance/**
       - /auth/**

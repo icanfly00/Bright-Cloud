@@ -31,4 +31,48 @@ public interface IGatewayRouteLimitRuleService extends IBaseService<GatewayRoute
      * @return
      */
     List<GatewayRouteLimitRule> findAllRouteLimitRule();
+
+    /**
+     * 缓存限流规则
+     *
+     * @param gatewayRouteLimitRule
+     */
+    void saveGatewayRouteLimitRuleCache(GatewayRouteLimitRule gatewayRouteLimitRule);
+
+    /**
+     * 按路径和方法获取缓存
+     *
+     * @param uri
+     * @param method
+     * @return
+     */
+    GatewayRouteLimitRule getGatewayRouteLimitRuleCache(String uri, String method);
+
+    /**
+     * 缓存所有限流规则
+     */
+    void saveAllGatewayRouteLimitRuleCache();
+
+    /**
+     * 缓存请求次数
+     * @param uri
+     * @param ip
+     * @param time
+     */
+    void saveCurrentRequestCount(String uri,String ip,Long time);
+
+    /**
+     * 获取当前请求次数
+     * @param uri
+     * @param ip
+     * @return
+     */
+    int getCurrentRequestCount(String uri,String ip);
+
+    /**
+     * 递增请求次数
+     * @param uri
+     * @param ip
+     */
+    void incrCurrentRequestCount(String uri,String ip);
 }

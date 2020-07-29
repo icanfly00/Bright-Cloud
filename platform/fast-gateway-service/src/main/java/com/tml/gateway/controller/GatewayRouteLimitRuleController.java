@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 /**
@@ -37,31 +39,26 @@ public class GatewayRouteLimitRuleController {
     @ApiOperation(value = "限流规则分页列表", notes = "限流规则分页列表")
     @GetMapping("/list")
     //@PreAuthorize("hasAuthority('gateway:routeLimitRule:list')")
-    public CommonResult<PageVo<GatewayRouteLimitRule>> pageList(GatewayRouteLimitRuleDto gatewayRouteLimitRuleDto) {
-        PageVo<GatewayRouteLimitRule> pageVo = gatewayRateLimitRuleService.pageList(gatewayRouteLimitRuleDto);
+    public CommonResult<PageVo<GatewayRouteLimitRule>> pageList(GatewayRouteLimitRuleDto routeLimitRuleDto) {
+        PageVo<GatewayRouteLimitRule> pageVo = gatewayRateLimitRuleService.pageList(routeLimitRuleDto);
         return CommonResult.success(pageVo);
-    }
-
-    @ApiOperation(value = "根据参数查找限流规则是否存在", notes = "根据参数查找限流规则是否存在")
-    @GetMapping("/findByCondition")
-    //@PreAuthorize("hasAuthority('gateway:routeLimitRule:findByCondition')")
-    public CommonResult<GatewayRouteLimitRule> findByCondition(GatewayRouteLimitRuleDto gatewayRouteLimitRuleDto) {
-        return CommonResult.success(gatewayRateLimitRuleService.findByCondition(gatewayRouteLimitRuleDto));
     }
 
     @ApiOperation(value = "新增限流规则", notes = "新增限流规则")
     @PostMapping("/add")
     //@PreAuthorize("hasAuthority('gateway:routeLimitRule:add')")
-    public CommonResult addGatewayRateLimitRule(@Valid GatewayRouteLimitRule gatewayBlackList) {
-        gatewayRateLimitRuleService.saveGatewayRouteLimitRule(gatewayBlackList);
+    public CommonResult addGatewayRateLimitRule(@Valid GatewayRouteLimitRule routeLimitRule) {
+        routeLimitRule.setCreateTime(LocalDateTime.now());
+        gatewayRateLimitRuleService.saveGatewayRouteLimitRule(routeLimitRule);
         return CommonResult.success("新增限流规则成功");
     }
 
     @ApiOperation(value = "更新限流规则", notes = "更新限流规则")
     @PostMapping("/update")
     //@PreAuthorize("hasAuthority('gateway:routeLimitRule:update')")
-    public CommonResult updateGatewayRateLimitRule(@Valid GatewayRouteLimitRule gatewayBlackList) {
-        gatewayRateLimitRuleService.updateGatewayRouteLimitRule(gatewayBlackList);
+    public CommonResult updateGatewayRateLimitRule(@Valid GatewayRouteLimitRule routeLimitRule) {
+        routeLimitRule.setUpdateTime(LocalDateTime.now());
+        gatewayRateLimitRuleService.updateGatewayRouteLimitRule(routeLimitRule);
         return CommonResult.success("更新限流规则成功");
     }
 

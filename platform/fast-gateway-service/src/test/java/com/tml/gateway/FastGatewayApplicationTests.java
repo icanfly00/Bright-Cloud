@@ -1,10 +1,13 @@
 package com.tml.gateway;
 
 import com.tml.gateway.dto.GatewayBlackListDto;
+import com.tml.gateway.dto.GatewayRouteLimitRuleDto;
 import com.tml.gateway.entity.GatewayBlackList;
 import com.tml.gateway.entity.GatewayDynamicRoute;
+import com.tml.gateway.entity.GatewayRouteLimitRule;
 import com.tml.gateway.service.IGatewayBlackListService;
 import com.tml.gateway.service.IGatewayDynamicRouteService;
+import com.tml.gateway.service.IGatewayRouteLimitRuleService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,6 +29,9 @@ public class FastGatewayApplicationTests {
 
     @Resource
     private IGatewayBlackListService gatewayBlackListService;
+
+    @Resource
+    private IGatewayRouteLimitRuleService gatewayRouteLimitRuleService;
 
     @Test
     public void addGatewayDynamicRouteTest() {
@@ -92,5 +98,53 @@ public class FastGatewayApplicationTests {
                System.out.println(gatewayBlackList.toString());
            });
        }
+    }
+
+    @Test
+    public void addGatewayRouteLimitTest(){
+        GatewayRouteLimitRule routeLimitRule=new GatewayRouteLimitRule();
+        routeLimitRule.setRequestUri("/auth/**");
+        routeLimitRule.setRequestMethod("GET");
+        routeLimitRule.setLimitFrom(LocalDateTime.of(2020,7,30,0,30,00));
+        routeLimitRule.setLimitTo(LocalDateTime.of(2020,7,30,23,59,59));
+        routeLimitRule.setStatus(1);
+        routeLimitRule.setCreateTime(LocalDateTime.now());
+        routeLimitRule.setUpdateTime(LocalDateTime.now());
+        routeLimitRule.setCount(3);
+        routeLimitRule.setIntervalSec(10l);
+        routeLimitRule.setCreateUserId(1);
+        routeLimitRule.setUpdateUserId(1);
+        gatewayRouteLimitRuleService.saveGatewayRouteLimitRule(routeLimitRule);
+
+        GatewayRouteLimitRule routeLimitRule2=new GatewayRouteLimitRule();
+        routeLimitRule2.setRequestUri("/gateway/**");
+        routeLimitRule2.setRequestMethod("GET");
+        routeLimitRule2.setLimitFrom(LocalDateTime.of(2020,7,30,0,30,00));
+        routeLimitRule2.setLimitTo(LocalDateTime.of(2020,7,30,23,59,59));
+        routeLimitRule2.setStatus(1);
+        routeLimitRule2.setCreateTime(LocalDateTime.now());
+        routeLimitRule2.setUpdateTime(LocalDateTime.now());
+        routeLimitRule2.setCount(3);
+        routeLimitRule2.setIntervalSec(10l);
+        routeLimitRule2.setCreateUserId(1);
+        routeLimitRule2.setUpdateUserId(1);
+        gatewayRouteLimitRuleService.saveGatewayRouteLimitRule(routeLimitRule2);
+
+        GatewayRouteLimitRuleDto dto=new GatewayRouteLimitRuleDto();
+        dto.setRequestUri("/auth/**");
+        dto.setRequestMethod("GET");
+        dto.setStatus(1);
+        GatewayRouteLimitRule gatewayRouteLimitRule=gatewayRouteLimitRuleService.findByCondition(dto);
+        System.out.println(gatewayRouteLimitRule.toString());
+    }
+
+    @Test
+    public void findAllGatewayRouteLimitRuleTest(){
+        List<GatewayRouteLimitRule> list=gatewayRouteLimitRuleService.findAllRouteLimitRule();
+        if(list!=null && list.size()>0){
+            list.stream().forEach(gatewayRouteLimitRule -> {
+                System.out.println(gatewayRouteLimitRule.toString());
+            });
+        }
     }
 }

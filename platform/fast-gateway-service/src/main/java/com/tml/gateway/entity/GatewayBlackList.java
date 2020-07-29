@@ -21,8 +21,8 @@ import java.time.LocalDateTime;
 @TableName("gateway_black_list")
 public class GatewayBlackList extends Model<GatewayBlackList> {
 
-    public static final String CLOSE = "0";
-    public static final String OPEN = "1";
+    public static final Integer CLOSE = 0;
+    public static final Integer OPEN = 1;
     public static final String METHOD_ALL = "all";
 
     @TableId(type = IdType.AUTO)

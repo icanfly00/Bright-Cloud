@@ -32,35 +32,35 @@ import java.util.stream.Collectors;
 @Service
 public class GatewayDynamicRouteServiceImpl extends BaseServiceImpl<GatewayDynamicRouteMapper, GatewayDynamicRoute> implements IGatewayDynamicRouteService {
 
-   public static final String HTTP="http";
+    public static final String HTTP = "http";
 
-   @Resource
-   private DynamicRouteServiceImpl dynamicRouteService;
+    @Resource
+    private DynamicRouteServiceImpl dynamicRouteService;
 
     @Override
     public PageVo<GatewayDynamicRoute> pageList(GatewayDynamicRouteDto dynamicRouteDto) {
-        Page<GatewayDynamicRoute> page=new Page<>(dynamicRouteDto.getPage(),dynamicRouteDto.getLimit());
-        QueryWrapper<GatewayDynamicRoute> queryWrapper=new QueryWrapper<>();
+        Page<GatewayDynamicRoute> page = new Page<>(dynamicRouteDto.getPage(), dynamicRouteDto.getLimit());
+        QueryWrapper<GatewayDynamicRoute> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .like(StringUtils.isNoneBlank(dynamicRouteDto.getRouteId()),GatewayDynamicRoute::getRouteId,dynamicRouteDto.getRouteId())
-                .like(StringUtils.isNoneBlank(dynamicRouteDto.getRouteName()),GatewayDynamicRoute::getRouteName,dynamicRouteDto.getRouteName())
-                ;
-        IPage<GatewayDynamicRoute> iPage= this.page(page,queryWrapper);
+                .like(StringUtils.isNoneBlank(dynamicRouteDto.getRouteId()), GatewayDynamicRoute::getRouteId, dynamicRouteDto.getRouteId())
+                .like(StringUtils.isNoneBlank(dynamicRouteDto.getRouteName()), GatewayDynamicRoute::getRouteName, dynamicRouteDto.getRouteName())
+        ;
+        IPage<GatewayDynamicRoute> iPage = this.page(page, queryWrapper);
         return new PageVo<>(iPage);
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean add(GatewayDynamicRoute dynamicRoute) {
-        boolean flag= this.save(dynamicRoute);
-        if(flag){
-            if(dynamicRoute.getEnable()==1){
-                RouteDefinition routeDefinition=getRouteDefinition(dynamicRoute);
-                boolean routeFlag=dynamicRouteService.addRoute(routeDefinition);
-                if(routeFlag){
+        boolean flag = this.save(dynamicRoute);
+        if (flag) {
+            if (dynamicRoute.getEnable() == 1) {
+                RouteDefinition routeDefinition = getRouteDefinition(dynamicRoute);
+                boolean routeFlag = dynamicRouteService.addRoute(routeDefinition);
+                if (routeFlag) {
                     return true;
                 }
-            }else {
+            } else {
                 return true;
             }
         }
@@ -71,17 +71,17 @@ public class GatewayDynamicRouteServiceImpl extends BaseServiceImpl<GatewayDynam
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean update(GatewayDynamicRoute dynamicRoute) {
-        boolean flag= this.updateById(dynamicRoute);
-        if(flag){
-            RouteDefinition routeDefinition=getRouteDefinition(dynamicRoute);
-            if(dynamicRoute.getEnable()==1){
-                boolean routeFlag=dynamicRouteService.updateRoute(routeDefinition);
-                if(routeFlag){
+        boolean flag = this.updateById(dynamicRoute);
+        if (flag) {
+            RouteDefinition routeDefinition = getRouteDefinition(dynamicRoute);
+            if (dynamicRoute.getEnable() == 1) {
+                boolean routeFlag = dynamicRouteService.updateRoute(routeDefinition);
+                if (routeFlag) {
                     return true;
                 }
-            }else {
-                boolean routeFlag=dynamicRouteService.deleteRoute(routeDefinition.getId());
-                if(routeFlag){
+            } else {
+                boolean routeFlag = dynamicRouteService.deleteRoute(routeDefinition.getId());
+                if (routeFlag) {
                     return true;
                 }
             }
@@ -92,10 +92,10 @@ public class GatewayDynamicRouteServiceImpl extends BaseServiceImpl<GatewayDynam
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean delete(Long id) {
-        GatewayDynamicRoute dynamicRoute=this.getById(id);
-        if(dynamicRoute!=null){
-            boolean routeFlag=dynamicRouteService.deleteRoute(dynamicRoute.getRouteId());
-            if(routeFlag){
+        GatewayDynamicRoute dynamicRoute = this.getById(id);
+        if (dynamicRoute != null) {
+            boolean routeFlag = dynamicRouteService.deleteRoute(dynamicRoute.getRouteId());
+            if (routeFlag) {
                 this.removeById(id);
                 return true;
             }
@@ -111,13 +111,13 @@ public class GatewayDynamicRouteServiceImpl extends BaseServiceImpl<GatewayDynam
 
     @Override
     public List<RouteDefinition> getRouteList() {
-        QueryWrapper<GatewayDynamicRoute> queryWrapper=new QueryWrapper<>();
-        queryWrapper.lambda().eq(GatewayDynamicRoute::getEnable,1);
-        List<GatewayDynamicRoute> list=this.list(queryWrapper);
-        List<RouteDefinition> routeDefinitions=Lists.newArrayList();
-        if(!list.isEmpty()){
-            routeDefinitions= list.stream().map(gatewayDynamicRoute ->{
-                RouteDefinition routeDefinition=getRouteDefinition(gatewayDynamicRoute);
+        QueryWrapper<GatewayDynamicRoute> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(GatewayDynamicRoute::getEnable, 1);
+        List<GatewayDynamicRoute> list = this.list(queryWrapper);
+        List<RouteDefinition> routeDefinitions = Lists.newArrayList();
+        if (!list.isEmpty()) {
+            routeDefinitions = list.stream().map(gatewayDynamicRoute -> {
+                RouteDefinition routeDefinition = getRouteDefinition(gatewayDynamicRoute);
                 return routeDefinition;
             }).collect(Collectors.toList());
         }
@@ -127,8 +127,8 @@ public class GatewayDynamicRouteServiceImpl extends BaseServiceImpl<GatewayDynam
 
     @Override
     public void loadRoue() {
-        List<RouteDefinition> list=getRouteList();
-        if(!list.isEmpty()){
+        List<RouteDefinition> list = getRouteList();
+        if (!list.isEmpty()) {
             list.stream().forEach(routeDefinition -> {
                 dynamicRouteService.addRoute(routeDefinition);
             });
@@ -137,31 +137,31 @@ public class GatewayDynamicRouteServiceImpl extends BaseServiceImpl<GatewayDynam
 
     @Override
     public RouteDefinition getRouteDefinition(GatewayDynamicRoute dynamicRoute) {
-        GatewayRouteDefinition gatewayRouteDefinition=new GatewayRouteDefinition();
+        GatewayRouteDefinition gatewayRouteDefinition = new GatewayRouteDefinition();
         gatewayRouteDefinition.setId(dynamicRoute.getRouteId());
         gatewayRouteDefinition.setUri(dynamicRoute.getRouteUri());
         gatewayRouteDefinition.setOrder(dynamicRoute.getRouteOrder());
         gatewayRouteDefinition.setPredicates(dynamicRoute.getPredicateDefinitionList());
         gatewayRouteDefinition.setFilters(dynamicRoute.getFilterDefinitionList());
 
-        RouteDefinition routeDefinition=new RouteDefinition();
+        RouteDefinition routeDefinition = new RouteDefinition();
         routeDefinition.setId(gatewayRouteDefinition.getId());
         routeDefinition.setOrder(gatewayRouteDefinition.getOrder());
         routeDefinition.setUri(getUri(gatewayRouteDefinition.getUri()));
-        if(gatewayRouteDefinition.getPredicates()!=null && gatewayRouteDefinition.getPredicates().size()>0){
-            List<PredicateDefinition> predicates=gatewayRouteDefinition.getPredicates().stream()
-                   .map(gatewayPredicateDefinition -> {
-                       PredicateDefinition predicateDefinition=new PredicateDefinition();
-                       predicateDefinition.setName(gatewayPredicateDefinition.getName());
-                       predicateDefinition.setArgs(gatewayPredicateDefinition.getArgs());
-                       return predicateDefinition;
-                   }).collect(Collectors.toList());
+        if (gatewayRouteDefinition.getPredicates() != null && gatewayRouteDefinition.getPredicates().size() > 0) {
+            List<PredicateDefinition> predicates = gatewayRouteDefinition.getPredicates().stream()
+                    .map(gatewayPredicateDefinition -> {
+                        PredicateDefinition predicateDefinition = new PredicateDefinition();
+                        predicateDefinition.setName(gatewayPredicateDefinition.getName());
+                        predicateDefinition.setArgs(gatewayPredicateDefinition.getArgs());
+                        return predicateDefinition;
+                    }).collect(Collectors.toList());
             routeDefinition.setPredicates(predicates);
         }
-        if(gatewayRouteDefinition.getFilters()!=null && gatewayRouteDefinition.getFilters().size()>0){
-            List<FilterDefinition> filters=gatewayRouteDefinition.getFilters().stream()
+        if (gatewayRouteDefinition.getFilters() != null && gatewayRouteDefinition.getFilters().size() > 0) {
+            List<FilterDefinition> filters = gatewayRouteDefinition.getFilters().stream()
                     .map(gatewayFilterDefinition -> {
-                        FilterDefinition filterDefinition=new FilterDefinition();
+                        FilterDefinition filterDefinition = new FilterDefinition();
                         filterDefinition.setName(gatewayFilterDefinition.getName());
                         filterDefinition.setArgs(gatewayFilterDefinition.getArgs());
                         return filterDefinition;
@@ -171,14 +171,14 @@ public class GatewayDynamicRouteServiceImpl extends BaseServiceImpl<GatewayDynam
         return routeDefinition;
     }
 
-    private URI getUri(String uriStr){
+    private URI getUri(String uriStr) {
         URI uri;
-        if(uriStr.startsWith(HTTP)){
+        if (uriStr.startsWith(HTTP)) {
             //TODO: http地址
-            uri= UriComponentsBuilder.fromHttpUrl(uriStr).build().toUri();
-        }else {
+            uri = UriComponentsBuilder.fromHttpUrl(uriStr).build().toUri();
+        } else {
             //TODO: 注册中心
-            uri=UriComponentsBuilder.fromUriString(uriStr).build().toUri();
+            uri = UriComponentsBuilder.fromUriString(uriStr).build().toUri();
         }
         return uri;
     }

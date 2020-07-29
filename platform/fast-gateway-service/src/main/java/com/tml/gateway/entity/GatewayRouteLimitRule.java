@@ -21,8 +21,8 @@ import java.time.LocalDateTime;
 @TableName("gateway_route_limit_rule")
 public class GatewayRouteLimitRule extends Model<GatewayRouteLimitRule> {
 
-    public static final String CLOSE = "0";
-    public static final String OPEN = "1";
+    public static final Integer CLOSE = 0;
+    public static final Integer OPEN = 1;
     public static final String METHOD_ALL = "all";
 
     @TableId(type = IdType.AUTO)
@@ -38,23 +38,23 @@ public class GatewayRouteLimitRule extends Model<GatewayRouteLimitRule> {
     /**
      * 限制时间起
      */
-    private String limitFrom;
+    private LocalDateTime limitFrom;
     /**
      * 限制时间止
      */
-    private String limitTo;
+    private LocalDateTime limitTo;
     /**
      * 次数
      */
-    private String count;
+    private Integer count;
     /**
      * 时间周期，单位秒
      */
-    private String intervalSec;
+    private Long intervalSec;
     /**
      * 状态，0关闭，1开启
      */
-    private String status;
+    private Integer status;
     /**
      * 规则创建时间
      */

@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 public interface IGatewayRouteEnhanceService {
     /**
      * 按黑名单规则进行限流
+     *
      * @param exchange
      * @return
      */
@@ -20,6 +21,7 @@ public interface IGatewayRouteEnhanceService {
 
     /**
      * 根据黑名单规则进行过滤
+     *
      * @param exchange
      * @return
      */
@@ -27,6 +29,7 @@ public interface IGatewayRouteEnhanceService {
 
     /**
      * 异步存储黑名单拦截日志
+     *
      * @param exchange
      */
     @Async
@@ -34,6 +37,7 @@ public interface IGatewayRouteEnhanceService {
 
     /**
      * 异步存储限流拦截日志
+     *
      * @param exchange
      */
     @Async
@@ -41,11 +45,21 @@ public interface IGatewayRouteEnhanceService {
 
     /**
      * 异步存储网关日志
+     *
      * @param exchange
      */
     @Async
     void saveRouteLog(ServerWebExchange exchange);
 
+    /**
+     * 加载所有的黑名单缓存
+     */
+    void loadAllBlackListCache();
+
+    /**
+     * 加载所有的限流规则缓存
+     */
+    void loadAllRouteLimitRuleCache();
 
 
 }

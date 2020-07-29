@@ -84,22 +84,24 @@ public class GatewayDynamicRoute extends Model<GatewayDynamicRoute> {
 
     /**
      * 获取断言集合
+     *
      * @return
      */
-    public List<GatewayPredicateDefinition> getPredicateDefinitionList(){
-        if(StringUtils.isNoneBlank(this.predicates)){
-            return JSON.parseArray(this.predicates,GatewayPredicateDefinition.class);
+    public List<GatewayPredicateDefinition> getPredicateDefinitionList() {
+        if (StringUtils.isNoneBlank(this.predicates)) {
+            return JSON.parseArray(this.predicates, GatewayPredicateDefinition.class);
         }
         return null;
     }
 
     /**
      * 获取过滤器集合
+     *
      * @return
      */
-    public List<GatewayFilterDefinition> getFilterDefinitionList(){
-        if(StringUtils.isNoneBlank(this.filters)){
-            return JSON.parseArray(this.filters,GatewayFilterDefinition.class);
+    public List<GatewayFilterDefinition> getFilterDefinitionList() {
+        if (StringUtils.isNoneBlank(this.filters)) {
+            return JSON.parseArray(this.filters, GatewayFilterDefinition.class);
         }
         return null;
     }

@@ -1,6 +1,5 @@
 package com.tml.gateway.service.impl;
 
-import org.springframework.cloud.endpoint.event.RefreshEvent;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionWriter;
@@ -26,15 +25,16 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
 
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.publisher=applicationEventPublisher;
+        this.publisher = applicationEventPublisher;
     }
 
     /**
      * 添加路由
+     *
      * @param routeDefinition
      * @return
      */
-    public boolean addRoute(RouteDefinition routeDefinition){
+    public boolean addRoute(RouteDefinition routeDefinition) {
         this.routeDefinitionWriter.save(Mono.just(routeDefinition)).subscribe();
         this.refreshRoute();
         return true;
@@ -42,13 +42,14 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
 
     /**
      * 更新路由
+     *
      * @param routeDefinition
      * @return
      */
-    public boolean updateRoute(RouteDefinition routeDefinition){
+    public boolean updateRoute(RouteDefinition routeDefinition) {
         try {
             this.routeDefinitionWriter.delete(Mono.just(routeDefinition.getId()));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -56,7 +57,7 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
             this.routeDefinitionWriter.save(Mono.just(routeDefinition)).subscribe();
             this.refreshRoute();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -64,15 +65,16 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
 
     /**
      * 删除路由
+     *
      * @param id
      * @return
      */
-    public boolean deleteRoute(String id){
+    public boolean deleteRoute(String id) {
         try {
             this.routeDefinitionWriter.delete(Mono.just(id));
             this.refreshRoute();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -80,13 +82,14 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
 
     /**
      * 刷新路由
+     *
      * @return
      */
-    public boolean refreshRoute(){
+    public boolean refreshRoute() {
         try {
             this.publisher.publishEvent(new RefreshRoutesEvent(this));
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

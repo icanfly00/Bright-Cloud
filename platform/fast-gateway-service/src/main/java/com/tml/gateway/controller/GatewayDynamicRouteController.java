@@ -43,7 +43,7 @@ public class GatewayDynamicRouteController {
         return CommonResult.success(pageVo);
     }
 
-    
+
     @ApiOperation(value = "新增动态路由配置", notes = "新增动态路由配置")
     @PostMapping("/add")
     //@PreAuthorize("hasAuthority('gateway:dynamicRoute:add')")
@@ -59,7 +59,7 @@ public class GatewayDynamicRouteController {
         gatewayDynamicRouteService.update(dynamicRoute);
         return CommonResult.success("更新动态路由配置成功");
     }
-    
+
     @ApiOperation(value = "删除动态路由配置", notes = "删除动态路由配置")
     @ApiImplicitParam(paramType = "query", name = "id", value = "动态路由配置ID", required = true, dataType = "String")
     @PostMapping("/delete")
