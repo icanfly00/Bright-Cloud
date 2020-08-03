@@ -117,11 +117,11 @@ tml:
     oauthPrefix: fast-cloud
     anonUris: #安全路径白名单
       - /actuator/**
-      - /v2/api-docs
-      - /v2/api-docs-ext
+      - /v2/api-docs/**
+      - /v2/api-docs-ext/**
       - /swagger-resources/**
-      - /doc.html
       - /webjars/**
+      - /doc.html
       - /**/*.ico
       - /bootstrap/**
       - /css/**

@@ -42,6 +42,7 @@ public class FastAuthenticationEntryPoint implements ServerAuthenticationEntryPo
             DataBufferFactory dataBufferFactory = response.bufferFactory();
             DataBuffer buffer = dataBufferFactory.wrap(JSONObject.toJSONString(commonResult).getBytes(Charset.defaultCharset()));
             // 保存日志
+            log.info("网关认证异常处理,记录日志");
             gatewayRouteEnhanceService.saveRouteLog(exchange,e);
             return response.writeWith(Mono.just(buffer)).doOnError((error) -> {
                 DataBufferUtils.release(buffer);

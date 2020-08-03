@@ -33,6 +33,7 @@
 
         <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
         <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
+        <spring-security-jwt.version>1.1.1.RELEASE</spring-security-jwt.version>
         <thymeleaf-extras-springsecurity5.version>3.0.4.RELEASE</thymeleaf-extras-springsecurity5.version>
         <spring-boot-admin.version>2.2.4</spring-boot-admin.version>
         <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
@@ -58,12 +59,12 @@
         <springfox.version>2.9.2</springfox.version>
         <swagger.version>1.5.21</swagger.version>
         <mybatis-plus.version>3.3.2</mybatis-plus.version>
-        <dynamic-datasource-spring-boot-starter.version>3.1.1</dynamic-datasource-spring-boot-starter.version>
+        <dynamic-datasource-spring-boot-starter.version>3.2.0</dynamic-datasource-spring-boot-starter.version>
         <p6spy.version>3.8.6</p6spy.version>
         <jsoup.version>1.13.1</jsoup.version>
         <jjwt.version>0.9.0</jjwt.version>
         <easy-captcha.version>1.6.2</easy-captcha.version>
-        <redisson.version>3.12.4</redisson.version>
+        <redisson.version>3.13.2</redisson.version>
         <ip2region.version>1.7.2</ip2region.version>
         <feign-from.version>3.8.0</feign-from.version>
         <elasticsearch.version>7.6.2</elasticsearch.version>
@@ -109,10 +110,6 @@
         <!-- 开发 -->
         <profile>
             <id>dev</id>
-            <activation>
-                <!--默认激活配置-->
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <!--当前环境-->
                 <profileActive>dev</profileActive>
@@ -129,6 +126,10 @@
         <!-- 测试 -->
         <profile>
             <id>test</id>
+            <activation>
+                <!--默认激活配置-->
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <!--当前环境-->
                 <profileActive>test</profileActive>

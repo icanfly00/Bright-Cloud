@@ -43,6 +43,7 @@ public class FastAccessDeniedHandler implements ServerAccessDeniedHandler {
             DataBufferFactory dataBufferFactory = response.bufferFactory();
             DataBuffer buffer = dataBufferFactory.wrap(JSONObject.toJSONString(commonResult).getBytes(Charset.defaultCharset()));
             // 保存日志
+            log.info("网关权限异常处理,记录日志");
             gatewayRouteEnhanceService.saveRouteLog(exchange,e);
             return response.writeWith(Mono.just(buffer)).doOnError((error) -> {
                 DataBufferUtils.release(buffer);

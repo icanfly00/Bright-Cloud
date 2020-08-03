@@ -15,19 +15,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
-import org.springframework.security.oauth2.server.resource.web.server.ServerBearerTokenAuthenticationConverter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.WebFilterExchange;
-import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
-import org.springframework.security.web.server.authentication.ServerAuthenticationEntryPointFailureHandler;
-import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
-import org.springframework.security.web.server.context.SecurityContextServerWebExchange;
 import org.springframework.web.cors.reactive.CorsUtils;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -85,24 +75,8 @@ public class ResourceServerConfiguration {
 
     @Bean
     SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) throws Exception{
-        //token管理器
-        ReactiveAuthenticationManager tokenAuthenticationManager = new RedisAuthenticationManager(new RedisTokenStore(redisConnectionFactory));
-        //认证过滤器
-        AuthenticationWebFilter authenticationWebFilter = new AuthenticationWebFilter(tokenAuthenticationManager);
-        authenticationWebFilter.setServerAuthenticationConverter(new ServerBearerTokenAuthenticationConverter());
-        authenticationWebFilter.setAuthenticationFailureHandler(new ServerAuthenticationEntryPointFailureHandler(fastAuthenticationEntryPoint));
-        authenticationWebFilter.setAuthenticationSuccessHandler(new ServerAuthenticationSuccessHandler() {
-            @Override
-            public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
-                ServerWebExchange exchange = webFilterExchange.getExchange();
-                SecurityContextServerWebExchange securityContextServerWebExchange = new SecurityContextServerWebExchange(exchange, ReactiveSecurityContextHolder.getContext().subscriberContext(
-                        ReactiveSecurityContextHolder.withAuthentication(authentication)
-                ));
-                return webFilterExchange.getChain().filter(securityContextServerWebExchange);
-            }
-        });
 
-        AccessManager accessManager=new AccessManager(apiProperties);
+        PermissionAuthorizationManager accessManager=new PermissionAuthorizationManager(apiProperties);
         http
                 .httpBasic().disable()
                 .csrf().disable()
@@ -118,10 +92,9 @@ public class ResourceServerConfiguration {
                 .addFilterAt(new PreRequestFilter(), SecurityWebFiltersOrder.FIRST)
                 // 跨域过滤器
                 .addFilterAt(corsFilter(), SecurityWebFiltersOrder.CORS)
-                //oauth2认证过滤器
-                .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 // 日志过滤器
-                .addFilterAt(routeLogFilter, SecurityWebFiltersOrder.SECURITY_CONTEXT_SERVER_WEB_EXCHANGE);;
+                .addFilterAt(routeLogFilter, SecurityWebFiltersOrder.SECURITY_CONTEXT_SERVER_WEB_EXCHANGE);
+        http.oauth2ResourceServer().jwt();
         return http.build();
     }
 }

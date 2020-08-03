@@ -183,7 +183,7 @@ public class GatewayRouteEnhanceServiceImpl implements IGatewayRouteEnhanceServi
             routeLog.setRequestTime(requestTime);
             routeLog.setResponseTime(LocalDateTime.now());
 
-            Duration duration = Duration.between(routeLog.getResponseTime(),routeLog.getRequestTime());
+            Duration duration = Duration.between(routeLog.getRequestTime(),routeLog.getResponseTime());
             long days = duration.toDays(); //相差的天数
             long hours = duration.toHours();//相差的小时数
             long minutes = duration.toMinutes();//相差的分钟数

@@ -1,6 +1,8 @@
 package com.tml.gateway.configuration;
 
 import cn.hutool.core.date.DatePattern;
+import com.alibaba.csp.sentinel.adapter.gateway.sc.SentinelGatewayFilter;
+import com.alibaba.csp.sentinel.adapter.gateway.sc.exception.SentinelGatewayBlockExceptionHandler;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -24,12 +26,12 @@ import com.tml.common.jackson.serializer.JacksonIntegerDeserializer;
 import com.tml.common.util.SpringUtil;
 import com.tml.gateway.handler.FastExceptionHandler;
 import com.tml.gateway.service.IGatewayRouteEnhanceService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -55,8 +57,20 @@ import java.util.List;
  */
 @Slf4j
 @Configuration
-@RequiredArgsConstructor
 public class WebFluxConfiguration {
+
+
+    private final List<ViewResolver> viewResolvers;
+    private final ServerCodecConfigurer serverCodecConfigurer;
+
+    private final IGatewayRouteEnhanceService gatewayRouteEnhanceService;
+
+    public WebFluxConfiguration(ObjectProvider<List<ViewResolver>> viewResolversProvider,
+                                ServerCodecConfigurer serverCodecConfigurer,IGatewayRouteEnhanceService gatewayRouteEnhanceService) {
+        this.viewResolvers = viewResolversProvider.getIfAvailable(Collections::emptyList);
+        this.serverCodecConfigurer = serverCodecConfigurer;
+        this.gatewayRouteEnhanceService=gatewayRouteEnhanceService;
+    }
 
     @Bean
     @ConditionalOnMissingBean(SpringUtil.class)
@@ -69,15 +83,26 @@ public class WebFluxConfiguration {
     @Primary
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public ErrorWebExceptionHandler errorWebExceptionHandler(ObjectProvider<List<ViewResolver>> viewResolversProvider,
-                                                             ServerCodecConfigurer serverCodecConfigurer, IGatewayRouteEnhanceService gatewayRouteEnhanceService) {
-
+    public ErrorWebExceptionHandler errorWebExceptionHandler(){
         FastExceptionHandler fastExceptionHandler = new FastExceptionHandler(gatewayRouteEnhanceService);
-        fastExceptionHandler.setViewResolvers(viewResolversProvider.getIfAvailable(Collections::emptyList));
-        fastExceptionHandler.setMessageWriters(serverCodecConfigurer.getWriters());
-        fastExceptionHandler.setMessageReaders(serverCodecConfigurer.getReaders());
+        fastExceptionHandler.setViewResolvers(this.viewResolvers);
+        fastExceptionHandler.setMessageWriters(this.serverCodecConfigurer.getWriters());
+        fastExceptionHandler.setMessageReaders(this.serverCodecConfigurer.getReaders());
         log.info("ErrorWebExceptionHandler [{}]", fastExceptionHandler);
         return fastExceptionHandler;
+    }
+
+    @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public SentinelGatewayBlockExceptionHandler sentinelGatewayBlockExceptionHandler() {
+        // Register the block exception handler for Spring Cloud Gateway.
+        return new SentinelGatewayBlockExceptionHandler(viewResolvers, serverCodecConfigurer);
+    }
+
+    @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public GlobalFilter sentinelGatewayFilter() {
+        return new SentinelGatewayFilter();
     }
 
     /**

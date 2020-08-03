@@ -1,27 +1,29 @@
 package com.tml.gateway.oauth2;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.ConcurrentHashSet;
+import com.tml.common.entity.RestUserDetails;
 import com.tml.gateway.configuration.APIProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
- * @Description 权限管理器
+ * @Description com.tml.gateway.oauth2
  * @Author TuMingLong
- * @Date 2020/8/1
+ * @Date 16:07
  */
 @Slf4j
-public class AccessManager implements ReactiveAuthorizationManager<AuthorizationContext> {
+public class PermissionAuthorizationManager implements ReactiveAuthorizationManager<AuthorizationContext> {
 
     private APIProperties apiProperties;
 
@@ -31,7 +33,7 @@ public class AccessManager implements ReactiveAuthorizationManager<Authorization
 
     private Set<String> ignoreAuthority = new ConcurrentHashSet<>();
 
-    public AccessManager(APIProperties apiProperties) {
+    public PermissionAuthorizationManager(APIProperties apiProperties) {
         this.apiProperties = apiProperties;
         //TODO: 默认放行
         if(apiProperties!=null){
@@ -51,27 +53,6 @@ public class AccessManager implements ReactiveAuthorizationManager<Authorization
     }
 
     /**
-     * 实现权限验证判断
-     * @param mono
-     * @param authorizationContext
-     * @return
-     */
-    @Override
-    public Mono<AuthorizationDecision> check(Mono<Authentication> mono, AuthorizationContext authorizationContext) {
-        ServerWebExchange exchange = authorizationContext.getExchange();
-        //TODO:请求资源
-        String requestPath = exchange.getRequest().getURI().getPath();
-        //TODO:是否直接放行
-        if (permitAll(requestPath)) {
-            return Mono.just(new AuthorizationDecision(true));
-        }
-
-        return mono.map(auth -> {
-            return new AuthorizationDecision(checkAuthorities(exchange, auth, requestPath));
-        }).defaultIfEmpty(new AuthorizationDecision(false));
-    }
-
-    /**
      * 始终放行资源校验
      * @param requestPath 请求路径
      * @return
@@ -82,23 +63,34 @@ public class AccessManager implements ReactiveAuthorizationManager<Authorization
                 .filter(r -> antPathMatcher.match(r, requestPath)).findFirst().isPresent();
     }
 
+
     /**
-     * 权限校验
-     * @param exchange
-     * @param auth
-     * @param requestPath
-     * @return
+     * 实现权限验证判断
      */
-    private boolean checkAuthorities(ServerWebExchange exchange, Authentication auth, String requestPath) {
-        if(auth instanceof OAuth2Authentication){
-            OAuth2Authentication auth2Authentication = (OAuth2Authentication) auth;
-            String clientId = auth2Authentication.getOAuth2Request().getClientId();
-            log.info("clientId is {}",clientId);
+    @Override
+    public Mono<AuthorizationDecision> check(Mono<Authentication> authenticationMono, AuthorizationContext authorizationContext) {
+        ServerWebExchange exchange = authorizationContext.getExchange();
+        //TODO:请求资源
+        String requestPath = exchange.getRequest().getURI().getPath();
+        //TODO:是否直接放行
+        if (permitAll(requestPath)) {
+            return Mono.just(new AuthorizationDecision(true));
         }
-        Object principal = auth.getPrincipal();
-        if(principal!=null){
-           return true;
+        return authenticationMono
+                .map(auth -> new AuthorizationDecision(checkAuthorities(exchange, auth, requestPath)))
+                .defaultIfEmpty(new AuthorizationDecision(false));
+
+    }
+
+    //权限校验
+    private boolean checkAuthorities(ServerWebExchange exchange, Authentication authentication, String requestPath) {
+        log.info("访问的URL是：{}用户信息:{}", requestPath, authentication.getPrincipal());
+        if (authentication.getPrincipal() instanceof RestUserDetails) {
+            return (RestUserDetails) authentication.getPrincipal()!=null;
+        } else if (authentication.getPrincipal() instanceof Map) {
+            return BeanUtil.mapToBeanIgnoreCase((Map) authentication.getPrincipal(), RestUserDetails.class, false)!=null;
+        }else {
+            return false;
         }
-        return false;
     }
 }

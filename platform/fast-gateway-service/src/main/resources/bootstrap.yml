@@ -54,6 +54,11 @@ spring:
             dataId: ${spring.application.name}
             data-type: json
             rule-type: degrade
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8001
 
 info:
   name: ${project.artifactId}
