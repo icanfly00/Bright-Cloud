@@ -58,7 +58,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8001
+          issuer-uri: http://localhost:8001
 
 info:
   name: ${project.artifactId}
