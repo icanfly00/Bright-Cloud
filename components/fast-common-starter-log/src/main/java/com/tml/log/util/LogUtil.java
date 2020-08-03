@@ -1,6 +1,6 @@
-package com.tml.common.log.util;
+package com.tml.log.util;
 
-import com.tml.common.log.annotation.AutoLog;
+import com.tml.log.annotation.AutoLog;
 import org.aspectj.lang.JoinPoint;
 
 import java.io.PrintWriter;

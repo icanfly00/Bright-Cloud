@@ -1,4 +1,4 @@
-package com.tml.common.log.annotation;
+package com.tml.log.annotation;
 
 import java.lang.annotation.*;
 

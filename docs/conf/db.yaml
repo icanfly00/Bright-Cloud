@@ -7,7 +7,8 @@ spring:
     dynamic:
       druid:
         filters: stat,wall
-      p6spy: true # 默认false,建议线上关闭。
+      # 默认false,建议线上关闭。
+      p6spy: true
       primary: master
       datasource:
         master:
@@ -20,7 +21,7 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*/*Mapper.xml
-  type-aliases-package: com.tml.*.entity,com.tml.common.log
+  type-aliases-package: com.tml.*.entity
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: true

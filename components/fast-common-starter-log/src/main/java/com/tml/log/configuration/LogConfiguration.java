@@ -1,9 +1,9 @@
-package com.tml.common.log.configuration;
+package com.tml.log.configuration;
 
-import com.tml.common.log.aspect.AutoLogAspect;
-import com.tml.common.log.event.SysLogListener;
-import com.tml.common.log.service.ISysLogService;
-import com.tml.common.log.service.impl.SysLogServiceImpl;
+import com.tml.log.aspect.AutoLogAspect;
+import com.tml.log.event.SysLogListener;
+import com.tml.log.service.ISysLogService;
+import com.tml.log.service.impl.SysLogServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

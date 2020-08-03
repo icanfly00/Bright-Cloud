@@ -2,7 +2,7 @@
 基于Spring Cloud Hoxton.SR6、Spring Cloud OAuth2 &amp; Spring Cloud Alibaba &amp; Element 微服务权限系统，开箱即用。
 ### fast-cloud 微服务权限系统
 ![https://img.shields.io/badge/license-Apache%202.0-blue.svg?longCache=true&style=flat-square](https://img.shields.io/badge/license-Apache%202.0-blue.svg?longCache=true&style=flat-square)
-![https://img.shields.io/badge/springcloud-Hoxton.RELEASE-yellow.svg?style=flat-square](https://img.shields.io/badge/springcloud-Hoxton.RELEASE-yellow.svg?style=flat-square)
+![https://img.shields.io/badge/springcloud-Hoxton.SR6-yellow.svg?style=flat-square](https://img.shields.io/badge/springcloud-Hoxton.SR6-yellow.svg?style=flat-square)
 ![https://img.shields.io/badge/SpringCloudAlibaba-2.2.1.RELEASE-blueviolet.svg?style=flat-square](https://img.shields.io/badge/SpringCloudAlibaba-2.2.1.RELEASE-blueviolet.svg?style=flat-square)
 ![https://img.shields.io/badge/springboot-2.3.1.RELEASE-brightgreen.svg?style=flat-square](https://img.shields.io/badge/springboot-2.3.1.RELEASE-brightgreen.svg?style=flat-square)
 ![https://img.shields.io/badge/vue-2.6.10-orange.svg?style=flat-square](https://img.shields.io/badge/vue-2.6.10-orange.svg?style=flat-square)
@@ -19,7 +19,8 @@ fast-cloud是一款使用Spring Cloud Hoxton.SR6、Spring Cloud OAuth2 & Spring 
 6 | 微服务Docker化，使用Docker Compose一键部署。
 7 | 认证授权，数据权限，前后端参数校验，Starter开箱即用等
 8 | 系统API接口文档
-9 | OAuth2 4种模式+刷新令牌模式，提供5种获取系统令牌方式                                                            
+9 | OAuth2 4种模式+刷新令牌模式，提供5种获取系统令牌方式  
+10| SaaS多租户模式                                                          
 
 ### 文档与教程
 

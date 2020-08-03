@@ -37,7 +37,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
             gatewayRouteEnhanceService.saveRateLimitLog(exchange);
             return routeLimitResult;
         }
-        gatewayRouteEnhanceService.saveRouteLog(exchange);
+        gatewayRouteEnhanceService.saveRouteLog(exchange,null);
 
         return chain.filter(exchange);
     }

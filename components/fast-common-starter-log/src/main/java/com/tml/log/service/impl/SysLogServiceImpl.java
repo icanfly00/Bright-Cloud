@@ -1,8 +1,8 @@
-package com.tml.common.log.service.impl;
+package com.tml.log.service.impl;
 
-import com.tml.common.log.entity.SysLog;
-import com.tml.common.log.mapper.SysLogMapper;
-import com.tml.common.log.service.ISysLogService;
+import com.tml.log.entity.SysLog;
+import com.tml.log.mapper.SysLogMapper;
+import com.tml.log.service.ISysLogService;
 import com.tml.common.web.dto.CommonDto;
 import com.tml.common.web.service.impl.BaseServiceImpl;
 import com.tml.common.web.vo.PageVo;

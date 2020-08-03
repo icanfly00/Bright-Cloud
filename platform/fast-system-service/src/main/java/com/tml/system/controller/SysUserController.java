@@ -3,7 +3,7 @@ package com.tml.system.controller;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.useragent.UserAgentUtil;
 import com.tml.common.api.CommonResult;
-import com.tml.common.log.annotation.AutoLog;
+import com.tml.log.annotation.AutoLog;
 import com.tml.common.util.SecurityUtil;
 import com.tml.common.util.AddressUtil;
 import com.tml.system.entity.SysUser;

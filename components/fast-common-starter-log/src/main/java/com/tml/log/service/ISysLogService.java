@@ -1,6 +1,6 @@
-package com.tml.common.log.service;
+package com.tml.log.service;
 
-import com.tml.common.log.entity.SysLog;
+import com.tml.log.entity.SysLog;
 import com.tml.common.web.service.IBaseService;
 
 /**

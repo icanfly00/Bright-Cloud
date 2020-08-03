@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.tml.common.constant.CacheConstant;
 import com.tml.common.constant.QueueConstant;
 import com.tml.common.redis.service.RedisService;
-import com.tml.common.util.BeanConvertUtil;
 import com.tml.common.util.JacksonUtil;
 import com.tml.system.entity.SysApi;
 import com.tml.system.service.ISysApiService;
@@ -17,8 +16,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.time.Duration;
-import java.util.Map;
 
 /**
  * @Description 接收接口消息

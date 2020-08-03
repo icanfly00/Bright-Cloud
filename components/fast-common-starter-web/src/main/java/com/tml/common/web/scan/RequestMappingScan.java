@@ -1,10 +1,10 @@
 package com.tml.common.web.scan;
 
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.crypto.SecureUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tml.common.constant.QueueConstant;
-import com.tml.common.util.EncryptUtil;
 import com.tml.common.util.JacksonUtil;
 import com.tml.common.util.ReflectionUtil;
 import io.swagger.annotations.ApiOperation;
@@ -125,7 +125,7 @@ public class RequestMappingScan implements ApplicationListener<ApplicationReadyE
             String methodName = method.getMethod().getName();
             String fullName = className + "." + methodName;
             // md5码
-            String md5 = EncryptUtil.md5Hex(serviceId + urls);
+            String md5 = SecureUtil.md5(serviceId + urls);
             String name = "";
             String desc = "";
             // 是否需要安全认证 默认:1-是 0-否

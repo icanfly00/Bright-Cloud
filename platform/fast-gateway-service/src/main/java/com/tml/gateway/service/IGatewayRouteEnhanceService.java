@@ -49,7 +49,7 @@ public interface IGatewayRouteEnhanceService {
      * @param exchange
      */
     @Async
-    void saveRouteLog(ServerWebExchange exchange);
+    void saveRouteLog(ServerWebExchange exchange,Exception e);
 
     /**
      * 加载所有的黑名单缓存

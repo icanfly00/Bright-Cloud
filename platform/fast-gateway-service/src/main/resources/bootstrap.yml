@@ -61,5 +61,30 @@ info:
   description: ${project.description}
 
 tml:
-  doc:
-    enable: true
+  gateway:
+    check-sign: false
+    doc-enable: true
+    permit-all:
+      - /
+      - /error
+      - /actuator/**
+      - /**/*.ico
+      - /**/bootstrap/**
+      - /**/css/**
+      - /**/js/**
+      - /**/images/**
+      - /**/upload/**
+      - /**/druid/**
+      - /**/login
+      - /**/welcome
+      - /**/oauth/**
+      - /**/sys/user/findSecurityUserByUsername
+      - /**/sys/user/findSecurityUserByPhone
+      - /**/sys/user/findPermsByUserId
+      - /**/sys/user/findRoleIdByUserId
+      - /**/sys/user/findDataPermsByUserId
+    ignore-sign:
+      - /*/login/**
+      - /*/logout/**
+
+

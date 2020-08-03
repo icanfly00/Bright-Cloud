@@ -1,6 +1,6 @@
-package com.tml.common.log.mapper;
+package com.tml.log.mapper;
 
-import com.tml.common.log.entity.SysLog;
+import com.tml.log.entity.SysLog;
 import com.tml.common.web.mapper.SuperMapper;
 
 /**

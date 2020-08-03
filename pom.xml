@@ -33,7 +33,6 @@
 
         <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
         <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
-        <spring-security-jwt.version>1.1.0.RELEASE</spring-security-jwt.version>
         <thymeleaf-extras-springsecurity5.version>3.0.4.RELEASE</thymeleaf-extras-springsecurity5.version>
         <spring-boot-admin.version>2.2.4</spring-boot-admin.version>
         <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
@@ -42,11 +41,11 @@
 
         <apache.commons-lang3.version>3.9</apache.commons-lang3.version>
         <apache.commons-io.version>2.6</apache.commons-io.version>
-        <apache.commons-beanutils.version>1.9.4</apache.commons-beanutils.version>
         <apache.commons-codec.version>1.13</apache.commons-codec.version>
-        <apache.commons-collections4.version>4.4</apache.commons-collections4.version>
         <apache.commons-fileupload.version>1.4</apache.commons-fileupload.version>
+        <apache.commons-collections4.version>4.4</apache.commons-collections4.version>
         <apache.commons-text.version>1.8</apache.commons-text.version>
+        <dozer.version>6.5.0</dozer.version>
         <httpclient.version>4.5.10</httpclient.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <com.google.zxing.version>3.4.0</com.google.zxing.version>
@@ -110,13 +109,17 @@
         <!-- 开发 -->
         <profile>
             <id>dev</id>
+            <activation>
+                <!--默认激活配置-->
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <!--当前环境-->
                 <profileActive>dev</profileActive>
                 <!--Nacos配置中心地址-->
                 <config.server-addr>127.0.0.1:8848</config.server-addr>
                 <!--Nacos配置中心命名空间,用于支持多环境.这里必须使用ID，不能使用名称,默认为空-->
-                <config.namespace>b288b468-bbeb-4dc9-af0a-d691ebeaff26</config.namespace>
+                <config.namespace>fd653787-bf8a-4c2f-a717-276f983168ce</config.namespace>
                 <!--Nacos配置中心分组,用于支持多环境.默认为DEFAULT_GROUP-->
                 <config.group>DEFAULT_GROUP</config.group>
                 <!--Nacos服务发现地址-->
@@ -126,10 +129,6 @@
         <!-- 测试 -->
         <profile>
             <id>test</id>
-            <activation>
-                <!--默认激活配置-->
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <!--当前环境-->
                 <profileActive>test</profileActive>

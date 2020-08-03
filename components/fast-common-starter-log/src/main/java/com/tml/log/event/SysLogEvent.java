@@ -1,6 +1,6 @@
-package com.tml.common.log.event;
+package com.tml.log.event;
 
-import com.tml.common.log.entity.SysLog;
+import com.tml.log.entity.SysLog;
 import org.springframework.context.ApplicationEvent;
 
 /**

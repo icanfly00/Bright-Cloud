@@ -1,7 +1,7 @@
-package com.tml.common.log.event;
+package com.tml.log.event;
 
-import com.tml.common.log.entity.SysLog;
-import com.tml.common.log.service.ISysLogService;
+import com.tml.log.entity.SysLog;
+import com.tml.log.service.ISysLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;

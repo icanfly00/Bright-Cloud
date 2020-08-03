@@ -1,9 +1,9 @@
 package com.tml.common.util;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSON;
 import com.tml.common.api.CommonResult;
 import com.tml.common.entity.RestUserDetails;
-import com.tml.common.util.BeanConvertUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -60,7 +60,7 @@ public class SecurityUtil {
             if (authentication.getPrincipal() instanceof RestUserDetails) {
                 return (RestUserDetails) authentication.getPrincipal();
             } else if (authentication.getPrincipal() instanceof Map) {
-                return BeanConvertUtil.mapToObject((Map) authentication.getPrincipal(), RestUserDetails.class);
+                return BeanUtil.mapToBeanIgnoreCase((Map) authentication.getPrincipal(), RestUserDetails.class, false);
             } else {
                 RestUserDetails restUserDetails = new RestUserDetails();
                 restUserDetails.setClientId(clientToken.getClientId());

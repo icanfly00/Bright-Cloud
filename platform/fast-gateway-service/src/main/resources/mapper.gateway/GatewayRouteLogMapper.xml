@@ -6,9 +6,18 @@
         <result column="ip" property="ip" jdbcType="VARCHAR"/>
         <result column="request_uri" property="requestUri" jdbcType="VARCHAR"/>
         <result column="target_uri" property="targetUri" jdbcType="VARCHAR"/>
-        <result column="request_method" property="requestMethod" jdbcType="INTEGER"/>
-        <result column="target_server" property="targetServer" jdbcType="INTEGER"/>
-        <result column="location" property="location" jdbcType="TINYINT"/>
-        <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+        <result column="request_method" property="requestMethod" jdbcType="VARCHAR"/>
+        <result column="target_server" property="targetServer" jdbcType="VARCHAR"/>
+        <result column="location" property="location" jdbcType="VARCHAR"/>
+        <result column="http_status" property="httpStatus" jdbcType="INT"/>
+        <result column="request_time" property="requestTime" jdbcType="DATETIME"/>
+        <result column="response_time" property="responseTime" jdbcType="DATETIME"/>
+        <result column="consuming_time" property="consumingTime" jdbcType="BIGINT"/>
+        <result column="params" property="params" jdbcType="VARCHAR"/>
+        <result column="headers" property="headers" jdbcType="VARCHAR"/>
+        <result column="user_agent" property="userAgent" jdbcType="VARCHAR"/>
+        <result column="authentication" property="authentication" jdbcType="VARCHAR"/>
+        <result column="error" property="error" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="DATETIME"/>
     </resultMap>
 </mapper>

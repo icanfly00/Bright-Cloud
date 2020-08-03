@@ -48,6 +48,42 @@ public class GatewayRouteLog extends Model<GatewayRouteLog> {
      */
     private String location;
     /**
+     * 响应状态
+     */
+    private int httpStatus;
+    /**
+     * 请求时间
+     */
+    private LocalDateTime requestTime;
+    /**
+     * 响应时间
+     */
+    private LocalDateTime responseTime;
+    /**
+     * 消耗时间
+     */
+    private Long consumingTime;
+    /**
+     * 请求数据
+     */
+    private String params;
+    /**
+     * 请求头
+     */
+    private String headers;
+    /**
+     * userAgent
+     */
+    private String userAgent;
+    /**
+     * 认证用户信息
+     */
+    private String authentication;
+    /**
+     * 错误信息
+     */
+    private String error;
+    /**
      * 请求时间点
      */
     private LocalDateTime createTime;

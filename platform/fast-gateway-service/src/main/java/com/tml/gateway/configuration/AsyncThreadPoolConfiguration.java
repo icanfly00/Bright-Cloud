@@ -14,8 +14,8 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @Author TuMingLong
  * @Date 2020/4/3 21:16
  */
-//@Configuration
-//@EnableAsync
+@Configuration
+@EnableAsync
 public class AsyncThreadPoolConfiguration {
 
     @Resource

@@ -18,22 +18,6 @@
     <description>安全组件</description>
     
     <dependencies>
-        <!-- Spring Cloud Security OAuth2.0 begin -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
-            <version>${thymeleaf-extras-springsecurity5.version}</version>
-        </dependency>
-        <!-- Spring Cloud Security OAuth2.0 end -->
-
         <dependency>
             <groupId>com.tml</groupId>
             <artifactId>fast-common-core</artifactId>

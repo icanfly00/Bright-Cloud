@@ -4,7 +4,6 @@ import com.tml.common.security.handler.RestAccessDeniedHandler;
 import com.tml.common.security.handler.RestAuthenticationEntryPoint;
 import com.tml.common.security.properties.RestSecurityProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;

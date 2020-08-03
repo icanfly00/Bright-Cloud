@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 @Configuration
 @EnableTransactionManagement
-@MapperScan(value = {"com.tml.*.mapper", "com.tml.common.log.mapper"})
+@MapperScan(value = {"com.tml.*.mapper"})
 public class MybatisPlusConfiguration {
 
     @Resource

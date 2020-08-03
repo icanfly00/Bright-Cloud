@@ -1,8 +1,11 @@
 package com.tml.gateway.service.impl;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.Maps;
 import com.tml.common.api.CommonResult;
+import com.tml.common.entity.RestUserDetails;
 import com.tml.common.util.AddressUtil;
+import com.tml.common.util.JacksonUtil;
 import com.tml.gateway.dto.GatewayBlackListDto;
 import com.tml.gateway.entity.*;
 import com.tml.gateway.service.*;
@@ -12,19 +15,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -141,11 +149,12 @@ public class GatewayRouteEnhanceServiceImpl implements IGatewayRouteEnhanceServi
     }
 
     @Override
-    public void saveRouteLog(ServerWebExchange exchange) {
+    public void saveRouteLog(ServerWebExchange exchange,Exception e) {
         URI originUri = getGatewayOriginalRequestUri(exchange);
         URI uri = getGatewayRequestUri(exchange);
         Route route = getGatewayRoute(exchange);
         ServerHttpRequest request = exchange.getRequest();
+        ServerHttpResponse response = exchange.getResponse();
         String ipAddress = GatewayUtil.getServerHttpRequestIpAddress(request);
         if (uri != null && route != null) {
             GatewayRouteLog routeLog = new GatewayRouteLog();
@@ -156,6 +165,44 @@ public class GatewayRouteEnhanceServiceImpl implements IGatewayRouteEnhanceServi
             routeLog.setTargetUri(uri.getPath());
             routeLog.setLocation(AddressUtil.getCityInfo(ipAddress));
             routeLog.setCreateTime(LocalDateTime.now());
+            int httpStatus = response.getStatusCode().value();
+            Map<String, String> headers = request.getHeaders().toSingleValueMap();
+            Map data = Maps.newHashMap();
+            GatewayContext gatewayContext = exchange.getAttribute(GatewayContext.CACHE_GATEWAY_CONTEXT);
+            if(gatewayContext!=null){
+                data = gatewayContext.getAllRequestData().toSingleValueMap();
+            }
+
+            String userAgent = headers.get(HttpHeaders.USER_AGENT);
+            LocalDateTime requestTime = exchange.getAttribute("requestTime");
+
+            routeLog.setHttpStatus(httpStatus);
+            routeLog.setHeaders(JacksonUtil.toJson(headers));
+            routeLog.setParams(JacksonUtil.toJson(data));
+            routeLog.setUserAgent(userAgent);
+            routeLog.setRequestTime(requestTime);
+            routeLog.setResponseTime(LocalDateTime.now());
+
+            Duration duration = Duration.between(routeLog.getResponseTime(),routeLog.getRequestTime());
+            long days = duration.toDays(); //相差的天数
+            long hours = duration.toHours();//相差的小时数
+            long minutes = duration.toMinutes();//相差的分钟数
+            long millis = duration.toMillis();//相差毫秒数
+            long nanos = duration.toNanos();//相差的纳秒数
+            routeLog.setConsumingTime(millis);
+
+            Mono<Authentication>  authenticationMono = exchange.getPrincipal();
+            Mono<RestUserDetails> authentication = authenticationMono
+                    .map(Authentication::getPrincipal)
+                    .cast(RestUserDetails.class);
+            authentication.subscribe(user ->
+                    routeLog.setAuthentication(JacksonUtil.toJson(user))
+            );
+
+            if(e!=null){
+                routeLog.setError(e.getMessage());
+            }
+
             gatewayRouteLogService.save(routeLog);
         }
 

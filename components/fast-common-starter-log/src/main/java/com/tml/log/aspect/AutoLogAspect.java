@@ -1,13 +1,13 @@
-package com.tml.common.log.aspect;
+package com.tml.log.aspect;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.useragent.UserAgentUtil;
 import com.tml.common.api.CommonResult;
-import com.tml.common.log.entity.SysLog;
-import com.tml.common.log.event.SysLogEvent;
-import com.tml.common.log.util.LogUtil;
+import com.tml.log.entity.SysLog;
+import com.tml.log.event.SysLogEvent;
+import com.tml.log.util.LogUtil;
 import com.tml.common.entity.RestUserDetails;
 import com.tml.common.util.SecurityUtil;
 import com.tml.common.util.AddressUtil;
@@ -49,7 +49,7 @@ public class AutoLogAspect {
     /***
      * 定义controller切入点拦截规则，拦截ControllerEndpoint注解的方法
      */
-    @Pointcut("@annotation(com.tml.common.log.annotation.AutoLog)")
+    @Pointcut("@annotation(com.tml.log.annotation.AutoLog)")
     public void sysLogAspect() {
 
     }

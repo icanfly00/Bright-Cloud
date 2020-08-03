@@ -1,8 +1,8 @@
 package com.tml.common.security.converter;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.tml.common.entity.RestUserDetails;
 import com.tml.common.security.constant.SecurityConstant;
-import com.tml.common.util.BeanConvertUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,7 +32,7 @@ public class RestUserAuthenticationConverter extends DefaultUserAuthenticationCo
      */
     private Object converter(Map<String, ?> map) {
         RestUserDetails auth=new RestUserDetails();
-        auth=BeanConvertUtil.convertBean(map.get(USERNAME),RestUserDetails.class);
+        auth= BeanUtil.toBean(map.get(USERNAME),RestUserDetails.class);
         if(map.containsKey(AccessTokenConverter.CLIENT_ID)){
             auth.setClientId(map.get(AccessTokenConverter.CLIENT_ID).toString());
         }

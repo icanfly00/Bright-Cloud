@@ -23,16 +23,16 @@ import com.tml.common.jackson.serializer.JacksonDateSerializer;
 import com.tml.common.jackson.serializer.JacksonIntegerDeserializer;
 import com.tml.common.util.SpringUtil;
 import com.tml.gateway.handler.FastExceptionHandler;
+import com.tml.gateway.service.IGatewayRouteEnhanceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
-import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.codec.ServerCodecConfigurer;
@@ -44,6 +44,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -57,26 +58,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebFluxConfiguration {
 
-    private final ApplicationContext applicationContext;
-    private final ResourceProperties resourceProperties;
-    private final List<ViewResolver> viewResolvers;
-    private final ServerCodecConfigurer serverCodecConfigurer;
-
-    @Bean
-    @Order(Ordered.HIGHEST_PRECEDENCE)
-    public ErrorWebExceptionHandler errorWebExceptionHandler(ErrorAttributes errorAttributes) {
-
-        FastExceptionHandler exceptionHandler = new FastExceptionHandler(
-                errorAttributes,
-                this.resourceProperties,
-                this.applicationContext);
-        exceptionHandler.setViewResolvers(this.viewResolvers);
-        exceptionHandler.setMessageWriters(this.serverCodecConfigurer.getWriters());
-        exceptionHandler.setMessageReaders(this.serverCodecConfigurer.getReaders());
-        return exceptionHandler;
-    }
-
-
     @Bean
     @ConditionalOnMissingBean(SpringUtil.class)
     public SpringUtil springUtil() {
@@ -85,6 +66,19 @@ public class WebFluxConfiguration {
         return springUtil;
     }
 
+    @Primary
+    @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public ErrorWebExceptionHandler errorWebExceptionHandler(ObjectProvider<List<ViewResolver>> viewResolversProvider,
+                                                             ServerCodecConfigurer serverCodecConfigurer, IGatewayRouteEnhanceService gatewayRouteEnhanceService) {
+
+        FastExceptionHandler fastExceptionHandler = new FastExceptionHandler(gatewayRouteEnhanceService);
+        fastExceptionHandler.setViewResolvers(viewResolversProvider.getIfAvailable(Collections::emptyList));
+        fastExceptionHandler.setMessageWriters(serverCodecConfigurer.getWriters());
+        fastExceptionHandler.setMessageReaders(serverCodecConfigurer.getReaders());
+        log.info("ErrorWebExceptionHandler [{}]", fastExceptionHandler);
+        return fastExceptionHandler;
+    }
 
     /**
      * 转换器配置

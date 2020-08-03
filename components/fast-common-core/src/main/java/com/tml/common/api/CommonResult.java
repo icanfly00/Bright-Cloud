@@ -1,5 +1,9 @@
 package com.tml.common.api;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,14 +16,46 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel(value = "响应结果")
 public class CommonResult<T> {
+    /**
+     * 响应编码
+     */
+    @ApiModelProperty(value = "响应编码")
     private Integer code;
+    /**
+     *
+     */
+    @ApiModelProperty(value = "提示消息")
     private String message;
+    /**
+     * 响应数据
+     */
+    @ApiModelProperty(value = "响应数据")
     private T data;
+    /**
+     * 请求路径
+     */
+    @ApiModelProperty(value = "请求路径")
+    private String path;
+    /**
+     * http状态码
+     */
+    @JSONField(serialize = false, deserialize = false)
+    @JsonIgnore
+    @ApiModelProperty(value = "http状态码")
+    private int httpStatus;
+
 
     public CommonResult(Integer code, String message) {
         this.code = code;
         this.message = message;
+    }
+
+    public CommonResult(Integer code, String message, T data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
     }
 
     /**
@@ -77,6 +113,19 @@ public class CommonResult<T> {
      */
     public static <T> CommonResult<T> failed(String message) {
         return new CommonResult<T>(ResultCode.FAILED.getCode(), message, null);
+    }
+
+    /**
+     * 失败返回结果
+     * @param code
+     * @param message
+     * @param path
+     * @param httpStatus
+     * @param <T>
+     * @return
+     */
+    public static <T> CommonResult<T> failed(int code,String message,String path,int httpStatus) {
+        return new CommonResult<T>(code, message, null,path,httpStatus);
     }
 
 

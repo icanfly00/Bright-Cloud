@@ -51,6 +51,13 @@
             <artifactId>fast-common-starter-swagger2</artifactId>
             <version>${fast-common-starter-swagger2.version}</version>
         </dependency>
+        <!-- thymeleaf-extras-springsecurity5 begin -->
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+            <version>${thymeleaf-extras-springsecurity5.version}</version>
+        </dependency>
+        <!-- thymeleaf-extras-springsecurity5 end -->
     </dependencies>
 
     <build>

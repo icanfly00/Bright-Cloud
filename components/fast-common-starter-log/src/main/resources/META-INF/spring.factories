@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.tml.common.log.configuration.LogConfiguration
+  com.tml.log.configuration.LogConfiguration
 
 
