@@ -82,7 +82,6 @@ public class WebFluxConfiguration {
 
     @Primary
     @Bean
-    @Order(Ordered.HIGHEST_PRECEDENCE)
     public ErrorWebExceptionHandler errorWebExceptionHandler(){
         FastExceptionHandler fastExceptionHandler = new FastExceptionHandler(gatewayRouteEnhanceService);
         fastExceptionHandler.setViewResolvers(this.viewResolvers);

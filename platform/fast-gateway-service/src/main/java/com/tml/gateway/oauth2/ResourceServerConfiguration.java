@@ -15,6 +15,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -31,6 +32,7 @@ import reactor.core.publisher.Mono;
  */
 @Configuration
 @RequiredArgsConstructor
+@EnableWebFluxSecurity
 public class ResourceServerConfiguration {
 
     private static final String MAX_AGE = "18000L";
@@ -93,8 +95,8 @@ public class ResourceServerConfiguration {
                 // 跨域过滤器
                 .addFilterAt(corsFilter(), SecurityWebFiltersOrder.CORS)
                 // 日志过滤器
-                .addFilterAt(routeLogFilter, SecurityWebFiltersOrder.SECURITY_CONTEXT_SERVER_WEB_EXCHANGE);
-        http.oauth2ResourceServer().jwt();
+                .addFilterAt(routeLogFilter, SecurityWebFiltersOrder.SECURITY_CONTEXT_SERVER_WEB_EXCHANGE)
+                .oauth2Client();
         return http.build();
     }
 }

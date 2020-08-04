@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import java.util.Arrays;
@@ -30,7 +31,7 @@ import java.util.Arrays;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("gateway/dynamicRoute")
+@RequestMapping("/gateway/dynamicRoute")
 public class GatewayDynamicRouteController {
 
     private final IGatewayDynamicRouteService gatewayDynamicRouteService;
@@ -38,9 +39,9 @@ public class GatewayDynamicRouteController {
     @ApiOperation(value = "动态路由配置分页列表", notes = "动态路由配置分页列表")
     @GetMapping("/list")
     //@PreAuthorize("hasAuthority('gateway:dynamicRoute:list')")
-    public CommonResult<PageVo<GatewayDynamicRoute>> pageList(GatewayDynamicRouteDto dynamicRouteDto) {
+    public Mono<CommonResult<PageVo<GatewayDynamicRoute>>> pageList(GatewayDynamicRouteDto dynamicRouteDto) {
         PageVo<GatewayDynamicRoute> pageVo = gatewayDynamicRouteService.pageList(dynamicRouteDto);
-        return CommonResult.success(pageVo);
+        return Mono.just(CommonResult.success(pageVo));
     }
 
 
@@ -49,6 +50,7 @@ public class GatewayDynamicRouteController {
     //@PreAuthorize("hasAuthority('gateway:dynamicRoute:add')")
     public CommonResult addGatewayDynamicRoute(@Valid GatewayDynamicRoute dynamicRoute) {
         gatewayDynamicRouteService.add(dynamicRoute);
+        gatewayDynamicRouteService.refresh();
         return CommonResult.success("新增动态路由配置成功");
     }
 
@@ -57,6 +59,7 @@ public class GatewayDynamicRouteController {
     //@PreAuthorize("hasAuthority('gateway:dynamicRoute:update')")
     public CommonResult updateGatewayDynamicRoute(@Valid GatewayDynamicRoute dynamicRoute) {
         gatewayDynamicRouteService.update(dynamicRoute);
+        gatewayDynamicRouteService.refresh();
         return CommonResult.success("更新动态路由配置成功");
     }
 
@@ -66,6 +69,7 @@ public class GatewayDynamicRouteController {
     //@PreAuthorize("hasAuthority('gateway:dynamicRoute:delete')")
     public CommonResult deleteGatewayDynamicRoute(Long id) {
         gatewayDynamicRouteService.delete(id);
+        gatewayDynamicRouteService.refresh();
         return CommonResult.success("删除动态路由配置成功");
     }
 }

@@ -6,10 +6,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  * @Description 自定义GlobalFilter
@@ -37,9 +43,25 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
             gatewayRouteEnhanceService.saveRateLimitLog(exchange);
             return routeLimitResult;
         }
-        gatewayRouteEnhanceService.saveRouteLog(exchange,null);
+        //gatewayRouteEnhanceService.saveRouteLog(exchange,null);
 
-        return chain.filter(exchange);
+        return ReactiveSecurityContextHolder.getContext()
+                .filter(Objects::nonNull)
+                .map(securityContext -> securityContext.getAuthentication())
+                .filter(authentication -> authentication instanceof OAuth2AuthenticationToken)
+                .map(authentication -> (OAuth2AuthenticationToken) authentication)
+                .map(oAuth2Authentication -> oAuth2Authentication.getPrincipal())
+                .map(
+                        bearerToken -> {
+                            ServerHttpRequest.Builder builder = exchange.getRequest().mutate();
+                            builder.header(HttpHeaders.AUTHORIZATION, "Bearer " + bearerToken);
+                            ServerHttpRequest request = builder.build();
+                            return exchange.mutate().request(request).build();
+                        })
+                .defaultIfEmpty(exchange)
+                .flatMap(chain::filter);
+
+        //return chain.filter(exchange);
     }
 
     @Override

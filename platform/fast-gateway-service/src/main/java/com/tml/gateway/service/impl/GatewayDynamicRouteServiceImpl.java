@@ -22,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.annotation.Resource;
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -132,6 +133,7 @@ public class GatewayDynamicRouteServiceImpl extends BaseServiceImpl<GatewayDynam
             list.stream().forEach(routeDefinition -> {
                 dynamicRouteService.addRoute(routeDefinition);
             });
+            dynamicRouteService.refreshRoute();
         }
     }
 

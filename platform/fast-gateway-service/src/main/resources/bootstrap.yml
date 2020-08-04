@@ -56,9 +56,18 @@ spring:
             rule-type: degrade
   security:
     oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8001
+      client:
+        registration:
+          custom:
+            client-id: client_1
+            client-secret: 123456
+            scopes: all
+            authorization-grant-type: client_credentials
+        provider:
+          custom:
+            authorization-uri: http://localhost:8001/oauth/authorize
+            token-uri: http://localhost:8001/oauth/token
+            user-name-attribute: user_name
 
 info:
   name: ${project.artifactId}

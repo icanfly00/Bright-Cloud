@@ -36,7 +36,6 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
      */
     public boolean addRoute(RouteDefinition routeDefinition) {
         this.routeDefinitionWriter.save(Mono.just(routeDefinition)).subscribe();
-        this.refreshRoute();
         return true;
     }
 
@@ -55,7 +54,6 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
         }
         try {
             this.routeDefinitionWriter.save(Mono.just(routeDefinition)).subscribe();
-            this.refreshRoute();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,7 +70,6 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
     public boolean deleteRoute(String id) {
         try {
             this.routeDefinitionWriter.delete(Mono.just(id));
-            this.refreshRoute();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
