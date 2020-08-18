@@ -1,5 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.tml.common.security.configuration.RestSecurityAutoConfiguration,\
-  com.tml.common.security.properties.RestSecurityProperties
-
-
