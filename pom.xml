@@ -52,7 +52,7 @@
         <dynamic-datasource.version>3.2.0</dynamic-datasource.version>
         <p6spy.version>3.9.1</p6spy.version>
         <easy-captcha.version>1.6.2</easy-captcha.version>
-        <justauth.version>1.2.1</justauth.version>
+        <justauth.version>1.1.0</justauth.version>
         <jjwt.version>0.9.1</jjwt.version>
         <jsoup.version>1.13.1</jsoup.version>
         <logstash-logback-encoder.version>6.4</logstash-logback-encoder.version>

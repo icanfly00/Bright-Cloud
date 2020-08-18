@@ -1,5 +1,6 @@
 package com.tml.api.system.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -14,9 +15,9 @@ import lombok.Data;
 @TableName("t_sys_user_data_permission")
 public class SysUserDataPermission {
 
-    @TableId("USER_ID")
+    @TableField("USER_ID")
     private Long userId;
-    @TableId("DEPT_ID")
+    @TableField("DEPT_ID")
     private Long deptId;
 
 }

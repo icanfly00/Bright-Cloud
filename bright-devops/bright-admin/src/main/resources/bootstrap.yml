@@ -1,5 +1,5 @@
 server:
-  port: 8401
+  port: 8006
   http2:
     enabled: true
   tomcat:

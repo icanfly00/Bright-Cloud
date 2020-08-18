@@ -1,5 +1,6 @@
 package com.tml.api.system.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -18,10 +19,10 @@ public class SysUserRole implements Serializable {
 
     private static final long serialVersionUID = -3166012934498268403L;
 
-    @TableId(value = "USER_ID")
+    @TableField(value = "USER_ID")
     private Long userId;
 
-    @TableId(value = "ROLE_ID")
+    @TableField(value = "ROLE_ID")
     private Long roleId;
 
 }

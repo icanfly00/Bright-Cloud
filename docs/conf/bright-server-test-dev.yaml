@@ -12,7 +12,7 @@ spring:
   boot:
     admin:
       client:
-        url: http://127.0.0.1:8401
+        url: http://127.0.0.1:8006
         username: admin
         password: 123456
         instance:
@@ -107,7 +107,7 @@ security:
   oauth2:
     resource:
       id: ${spring.application.name}
-      user-info-uri: http://127.0.0.1:8301/auth/user
+      user-info-uri: http://127.0.0.1:8002/auth/user
 
 management:
   endpoints:

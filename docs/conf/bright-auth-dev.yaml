@@ -14,7 +14,7 @@ spring:
   boot:
     admin:
       client:
-        url: http://127.0.0.1:8401
+        url: http://127.0.0.1:8006
         username: admin
         password: 123456
         instance:
@@ -158,7 +158,7 @@ justauth:
     timeout: 1h
 
 bright:
-  frontUrl: 'http://localhost:9527'
+  frontUrl: 'http://localhost:8100'
   doc:
     enable: true
     title: ${info.name}文档

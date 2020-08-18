@@ -18,15 +18,15 @@ import javax.validation.constraints.NotBlank;
 @TableName("t_sys_user_connection")
 public class SysUserConnection {
 
-    @TableId(value = "USER_NAME")
+    @TableField(value = "USER_NAME")
     @NotBlank(message = "{required}")
     private String userName;
 
-    @TableId(value = "PROVIDER_NAME")
+    @TableField(value = "PROVIDER_NAME")
     @NotBlank(message = "{required}")
     private String providerName;
 
-    @TableId(value = "PROVIDER_USER_ID")
+    @TableField(value = "PROVIDER_USER_ID")
     @NotBlank(message = "{required}")
     private String providerUserId;
 
