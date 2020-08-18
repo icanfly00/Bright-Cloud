@@ -1,0 +1,9 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.tml.common.starter.web.configure.BrightWebMvcAutoConfigure,\
+com.tml.common.starter.web.configure.BrightCorsConfigure,\
+com.tml.common.starter.web.runner.BootstrapRunner,\
+com.tml.common.starter.web.task.ScheduledThreadPoolConfiguration,\
+com.tml.common.starter.web.task.AsyncThreadPoolConfiguration,\
+com.tml.common.starter.web.feign.OkHttpConfigure,\
+com.tml.common.starter.web.feign.FeignAutoConfigure

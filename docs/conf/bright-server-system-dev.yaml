@@ -1,0 +1,120 @@
+spring:
+  aop:
+    proxy-target-class: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  thymeleaf:
+    cache: false
+    encoding: utf-8
+    prefix: classpath:/templates/
+    suffix: .html
+  freemarker:
+    check-template-location: false
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:8401
+        username: admin
+        password: 123456
+        instance:
+          prefer-ip: true
+
+  datasource:
+    dynamic:
+      p6spy: true
+      hikari:
+        connection-timeout: 30000
+        max-lifetime: 1800000
+        max-pool-size: 15
+        min-idle: 5
+        connection-test-query: select 1
+        pool-name: BrightHikariCP
+      primary: master
+      datasource:
+        master:
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://127.0.0.1:3306/bright_cloud?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    lettuce:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+      timeout: 5000
+
+mybatis-plus:
+  type-aliases-package: com.tml.api.system.entity
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+  global-config:
+    db-config:
+      id-type: assign_id
+      table-underline: true
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      logic-delete-field: delFlag
+
+security:
+  oauth2:
+    resource:
+      id: ${spring.application.name}
+      user-info-uri: http://127.0.0.1:8301/auth/user
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+bright:
+  doc:
+    enable: true
+    title: ${info.name}文档
+    base-package: com.tml.server.system.controller
+    description: ${info.description}
+    name: JacksonTu
+    email: 674717739@qq.com
+    url: https://github.com/JacksonTu
+    version: ${info.version}
+  cloud:
+    security:
+      enable: true
+      only-fetch-by-gateway: false
+      anon-uris:
+        - /favicon.ico
+        - /actuator/**
+        - /v2/api-docs
+        - /v2/api-docs-ext
+        - /user/findByName/**
+        - /user/findUserPermissions/**
+        - /user/findUserDataPermissions/**
+        - /user/registerUser/**
+        - /user/findUserConnectionByCondition/**
+        - /user/findUserConnectionByUsername/**
+        - /user/saveUserConnection
+        - /user/deleteUserConnectionByCondition
+        - /gateway/listGatewayBlockList/**
+        - /gateway/getGatewayRouteLimitRule/**
+        - /gateway/saveGatewayBlockListLog
+        - /gateway/saveGatewayRouteLimitRuleLog
+        - /gateway/saveGatewayRouteLog
+        - /gateway/getCurrentRequestCount/**
+        - /gateway/setCurrentRequestCount/**
+        - /gateway/incrCurrentRequestCount/**

@@ -1,0 +1,108 @@
+package com.tml.server.system.service;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.tml.api.system.entity.SysUser;
+import com.tml.common.core.entity.QueryRequest;
+import com.tml.common.core.exception.BrightException;
+
+
+/**
+ * @description 用户业务层
+ * @author JacksonTu
+ * @since 2020-08-10 20:30
+ * @version 1.0
+ */
+public interface ISysUserService extends IService<SysUser> {
+
+    /**
+     * 通过用户名查找用户
+     *
+     * @param username 用户名
+     * @return 用户
+     */
+    SysUser findByName(String username);
+
+    /**
+     * 查找用户详细信息
+     *
+     * @param request request
+     * @param user    用户对象，用于传递查询条件
+     * @return IPage
+     */
+    IPage<SysUser> findUserDetailList(SysUser user, QueryRequest request);
+
+    /**
+     * 通过用户名查找用户详细信息
+     *
+     * @param username 用户名
+     * @return 用户信息
+     */
+    SysUser findUserDetail(String username);
+
+    /**
+     * 更新用户登录时间
+     *
+     * @param username username
+     */
+    void updateLoginTime(String username);
+
+    /**
+     * 新增用户
+     *
+     * @param user user
+     */
+    void createUser(SysUser user);
+
+    /**
+     * 修改用户
+     *
+     * @param user user
+     */
+    void updateUser(SysUser user);
+
+    /**
+     * 删除用户
+     *
+     * @param userIds 用户 id数组
+     */
+    void deleteUsers(String[] userIds);
+
+    /**
+     * 更新个人信息
+     *
+     * @param user 个人信息
+     * @throws BrightException 异常
+     */
+    void updateProfile(SysUser user) throws BrightException;
+
+    /**
+     * 更新用户头像
+     *
+     * @param avatar 用户头像
+     */
+    void updateAvatar(String avatar);
+
+    /**
+     * 更新用户密码
+     *
+     * @param password 新密码
+     */
+    void updatePassword(String password);
+
+    /**
+     * 重置密码
+     *
+     * @param usernames 用户集合
+     */
+    void resetPassword(String[] usernames);
+
+    /**
+     * 获取登录用户
+     *
+     * @param username 用户名
+     * @return 用户
+     */
+    SysUser findSecurityUserByName(String username);
+
+}

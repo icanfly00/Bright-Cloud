@@ -1,0 +1,181 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:8401
+        username: admin
+        password: 123456
+        instance:
+          prefer-ip: true
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+      routes:
+        - id: bright-auth-Social
+          uri: lb://bright-auth
+          predicates:
+            - Path=/auth/social/**
+          filters:
+            - name: Hystrix
+              args:
+                name: socialfallback
+                fallbackUri: forward:/fallback/bright-auth
+        - id: bright-auth
+          uri: lb://bright-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - name: Hystrix
+              args:
+                name: authfallback
+                fallbackUri: forward:/fallback/bright-auth
+        - id: bright-server-system
+          uri: lb://bright-server-system
+          predicates:
+            - Path=/system/**
+          filters:
+            - name: Hystrix
+              args:
+                name: systemfallback
+                fallbackUri: forward:/fallback/bright-server-system
+        - id: bright-server-generator
+          uri: lb://bright-server-generator
+          predicates:
+            - Path=/generator/**
+          filters:
+            - name: Hystrix
+              args:
+                name: generatorfallback
+                fallbackUri: forward:/fallback/bright-server-generator
+        - id: bright-server-job
+          uri: lb://bright-server-job
+          predicates:
+            - Path=/job/**
+          filters:
+            - name: Hystrix
+              args:
+                name: jobfallback
+                fallbackUri: forward:/fallback/bright-server-job
+        - id: bright-server-test
+          uri: lb://bright-server-test
+          predicates:
+            - Path=/test/**
+          filters:
+            - name: Hystrix
+              args:
+                name: testfallback
+                fallbackUri: forward:/fallback/bright-server-test
+      loadbalancer:
+        use404: true
+      default-filters:
+        - StripPrefix=1
+        - BrightDocGatewayHeaderFilter
+    # autoconfigure:
+    #   exclude: org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration,org.springframework.boot.autoconfigure.data.mongo.MongoReactiveRepositoriesAutoConfiguration,org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+
+  # 网关增强配置
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: febs_cloud_route
+
+  redis:
+    database: 3
+    host: 127.0.0.1
+    port: 6379
+    lettuce:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+    timeout: 5000
+
+# 网关增强配置
+bright:
+  gateway:
+    enhance: true
+    jwt:
+      secret: 123456
+      expiration: 36000
+  doc:
+    gateway:
+      enable: true
+      resources: "bright-server-system,bright-server-test,bright-auth,bright-server-generator,bright-server-job"
+
+# feign配置
+feign:
+  # 在feign中开启hystrix功能，默认情况下feign不开启hystrix功能
+  hystrix:
+    enabled: true
+  # 在feign中开启sentinel功能，默认情况下feign不开启hystrix功能
+  sentinel:
+    enable: false
+  ## 配置httpclient线程池
+  httpclient:
+    enabled: true
+  okhttp:
+    enabled: false
+  # feign 开启Gzip压缩
+  compression:
+    request:
+      enabled: true
+      min-request-size: 2048
+      mime-types: text/xml,application/xml,application/json
+    response:
+      enabled: true
+
+#设置feign客户端超时时间（OpenFeign默认支持ribbon）
+ribbon:
+  eager-load:
+    enabled: true
+  #对当前实例的重试次数
+  MaxAutoRetries: 1
+  #切换实例的重试次数
+  MaxAutoRetriesNextServer: 2
+  #请求处理的超时时间
+  ReadTimeout: 60000
+  #请求连接的超时时间
+  ConnectTimeout: 60000
+  #对所有操作请求都进行重试
+  OkToRetryOnAllOperations: true
+
+# 配置hystrix的参数
+hystrix:
+  threadpool:
+    # default: 默认参数，作用的所有的hystrix的客户端,如果需要对某个具体的接口，可以写接口+方法名称
+    default:
+      coreSize: 500
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000 #缺省为1000
+      fallback:
+        # 是否开启回退方法
+        enabled: true
+      socialfallback:
+        execution:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 60000
+
+management:
+  endpoint:
+    health:
+      show-details: ALWAYS
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+

@@ -1,0 +1,56 @@
+server:
+  port: 8101
+  # 开启优雅停机，默认immediate是立即关机。
+  shutdown: graceful
+  http2:
+    enabled: true
+  tomcat:
+    threads:
+      max: 1000
+      min-spare: 100
+    accept-count: 2000
+    connection-timeout: 30000
+    uri-encoding: utf-8
+spring:
+  application:
+    name: ${project.artifactId}
+  profiles:
+    active: ${profileActive}
+  # 设置缓冲期，最大等待时间
+  lifecycle:
+    timeout-per-shutdown-phase: 5s
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  cloud:
+    nacos:
+      config:
+        server-addr: ${discovery.server-addr}
+        namespace: ${config.namespace}
+        group: ${config.group}
+        file-extension: yaml
+      discovery:
+        server-addr: ${discovery.server-addr}
+        namespace: ${config.namespace}
+        group: ${config.group}
+
+info:
+  name: ${spring.application.name}
+  description: ${project.description}
+  version: ${project.version}
+
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          actuate:
+            endpoint:
+              EndpointId: error
+    com:
+      alibaba:
+        cloud:
+          nacos:
+            client:
+              NacosPropertySourceBuilder: error

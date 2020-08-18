@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>bright-common</artifactId>
+        <groupId>com.tml</groupId>
+        <version>1.0.0.RELEASE</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>bright-common-starter-datasource</artifactId>
+    <packaging>jar</packaging>
+    <name>Bright-Common-Starter-DataSource</name>
+    <description>通用数据库模块</description>
+
+
+    <properties>
+        <bright-cloud.version>1.0.0.RELEASE</bright-cloud.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.tml</groupId>
+            <artifactId>bright-common-core</artifactId>
+            <version>${bright-cloud.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+            <version>${dynamic-datasource.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>${p6spy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+</project>

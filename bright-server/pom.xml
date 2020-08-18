@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.tml</groupId>
+        <artifactId>bright-cloud</artifactId>
+        <version>1.0.0.RELEASE</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>bright-server</artifactId>
+    <version>1.0.0.RELEASE</version>
+    <packaging>pom</packaging>
+    <name>Bright-Server</name>
+    <description>Bright-Server服务提供模块</description>
+
+    <modules>
+        <module>bright-server-system</module>
+        <module>bright-server-test</module>
+        <module>bright-server-generator</module>
+        <module>bright-server-job</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-logback-encoder.version}</version>
+        </dependency>
+    </dependencies>
+</project>

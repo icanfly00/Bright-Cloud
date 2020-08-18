@@ -1,0 +1,36 @@
+server:
+  port: 8401
+  http2:
+    enabled: true
+  tomcat:
+    threads:
+      max: 1000
+      min-spare: 100
+    accept-count: 2000
+    connection-timeout: 30000
+    uri-encoding: utf-8
+spring:
+  application:
+    name: ${project.artifactId}
+  profiles:
+    active: ${profileActive}
+  cloud:
+    nacos:
+      config:
+        server-addr: ${discovery.server-addr}
+        namespace: ${config.namespace}
+        group: ${config.group}
+        file-extension: yaml
+      discovery:
+        server-addr: ${discovery.server-addr}
+        namespace: ${config.namespace}
+        group: ${config.group}
+
+logging:
+  level:
+    com:
+      alibaba:
+        cloud:
+          nacos:
+            client:
+              NacosPropertySourceBuilder: error

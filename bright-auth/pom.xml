@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.tml</groupId>
+        <artifactId>bright-cloud</artifactId>
+        <version>1.0.0.RELEASE</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>bright-auth</artifactId>
+    <name>Bright-Auth</name>
+    <description>bright-cloud认证服务器</description>
+
+    <properties>
+        <bright-cloud.version>1.0.0.RELEASE</bright-cloud.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.tml</groupId>
+            <artifactId>bright-common-starter-redis</artifactId>
+            <version>${bright-cloud.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tml</groupId>
+            <artifactId>bright-common-starter-datasource</artifactId>
+            <version>${bright-cloud.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tml</groupId>
+            <artifactId>bright-common-starter-security</artifactId>
+            <version>${bright-cloud.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tml</groupId>
+            <artifactId>bright-common-starter-doc</artifactId>
+            <version>${bright-cloud.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tml</groupId>
+            <artifactId>bright-common-starter-web</artifactId>
+            <version>${bright-cloud.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tml</groupId>
+            <artifactId>bright-api-system</artifactId>
+            <version>${bright-cloud.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.whvcse</groupId>
+            <artifactId>easy-captcha</artifactId>
+            <version>${easy-captcha.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.xkcoding</groupId>
+            <artifactId>justauth-spring-boot-starter</artifactId>
+            <version>${justauth.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-logback-encoder.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
