@@ -21,7 +21,7 @@ import java.util.Date;
  * @version 1.0
  */
 @Data
-@TableName("t_sys_job")
+@TableName("t_schedule_job")
 @Excel("定时任务信息表")
 public class Job implements Serializable {
 
@@ -32,36 +32,101 @@ public class Job implements Serializable {
     private static final long serialVersionUID = 400066840871805700L;
     @TableId(value = "JOB_ID", type = IdType.AUTO)
     private Long jobId;
-    @TableField("bean_name")
+    /**
+     * 任务类型 0-本地方法，1-远程服务
+     */
+    @TableField("JOB_TYPE")
     @NotBlank(message = "{required}")
+    @ExcelField(value = "任务类型")
+    private String jobType;
+    /**
+     * Bean名称
+     */
+    @TableField("BEAN_NAME")
     @Size(max = 50, message = "{noMoreThan}")
     @ExcelField(value = "Bean名称")
     private String beanName;
-    @TableField("method_name")
-    @NotBlank(message = "{required}")
+    /**
+     * 方法名称
+     */
+    @TableField("METHOD_NAME")
     @Size(max = 50, message = "{noMoreThan}")
     @ExcelField(value = "方法名称")
     private String methodName;
-    @TableField("params")
+    /**
+     * 服务名
+     */
+    @TableField("SERVICE_ID")
+    @ExcelField(value = "服务名")
+    private String serviceId;
+    /**
+     * 请求路径
+     */
+    @TableField("PATH")
+    @ExcelField(value = "请求路径")
+    private String path;
+    /**
+     * 请求类型
+     */
+    @TableField("REQUEST_METHOD")
+    @ExcelField(value = "请求类型")
+    private String requestMethod;
+    /**
+     * 响应类型
+     */
+    @TableField("CONTENT_TYPE")
+    @ExcelField(value = "响应类型")
+    private String contentType;
+    /**
+     * 方法参数
+     */
+    @TableField("PARAMS")
     @Size(max = 50, message = "{noMoreThan}")
     @ExcelField(value = "方法参数")
     private String params;
-    @TableField("cron_expression")
+    /**
+     * 告警邮箱
+     */
+    @TableField("ALARM_MAIL")
+    @ExcelField(value = "告警邮箱")
+    private String alarmMail;
+    /**
+     * Cron表达式
+     */
+    @TableField("CRON_EXPRESSION")
     @NotBlank(message = "{required}")
     @ExcelField(value = "Cron表达式")
     private String cronExpression;
-    @TableField("status")
+    /**
+     * 状态
+     */
+    @TableField("STATUS")
     @ExcelField(value = "状态", writeConverterExp = "0=正常,1=暂停")
     private String status;
-    @TableField("remark")
+    /**
+     * 备注
+     */
+    @TableField("REMARK")
     @Size(max = 100, message = "{noMoreThan}")
     @ExcelField(value = "备注")
     private String remark;
-    @TableField("create_time")
+    /**
+     * 创建时间
+     */
+    @TableField("CREATE_TIME")
     @ExcelField(value = "创建时间", writeConverter = TimeConverter.class)
     private Date createTime;
-    private transient String createTimeFrom;
-    private transient String createTimeTo;
+    /**
+     * 方法名称
+     */
+    @TableField(exist = false)
+    private  String createTimeFrom;
+    /**
+     * 方法名称
+     */
+    @TableField(exist = false)
+    private  String createTimeTo;
+
     public enum ScheduleStatus {
         /**
          * 正常

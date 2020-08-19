@@ -19,7 +19,7 @@ public interface IJobService extends IService<Job> {
      * @param jobId 任务id
      * @return 定时任务
      */
-    Job findJob(Long jobId);
+    Job getJob(Long jobId);
 
     /**
      * 获取定时任务分页数据
@@ -28,7 +28,7 @@ public interface IJobService extends IService<Job> {
      * @param job     job
      * @return 定时任务分页数据
      */
-    IPage<Job> findJobs(QueryRequest request, Job job);
+    IPage<Job> pageJob(QueryRequest request, Job job);
 
     /**
      * 创建定时任务

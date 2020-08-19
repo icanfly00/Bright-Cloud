@@ -1,5 +1,6 @@
 package com.tml.gateway.common.runner;
 
+import com.google.common.collect.Lists;
 import com.tml.api.system.dto.RouteDefinitionDTO;
 import com.tml.common.core.entity.constant.CacheConstant;
 import com.tml.common.core.utils.BrightUtil;
@@ -8,7 +9,6 @@ import com.tml.common.starter.redis.service.RedisService;
 import com.tml.gateway.enhance.service.impl.GatewayDynamicRouteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

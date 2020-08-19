@@ -1,11 +1,9 @@
 package com.tml.server.job.service.impl;
 
 import com.tml.common.core.entity.QueryRequest;
-import com.tml.common.core.entity.constant.BrightConstant;
 import com.tml.common.core.entity.constant.StringConstant;
-import com.tml.common.core.utils.SortUtil;
 import com.tml.server.job.entity.Job;
-import com.tml.server.job.helper.ScheduleUtils;
+import com.tml.server.job.utils.ScheduleUtils;
 import com.tml.server.job.mapper.JobMapper;
 import com.tml.server.job.service.IJobService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -58,37 +56,28 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements IJobS
     }
 
     @Override
-    public Job findJob(Long jobId) {
+    public Job getJob(Long jobId) {
         return this.getById(jobId);
     }
 
     @Override
-    public IPage<Job> findJobs(QueryRequest request, Job job) {
-        LambdaQueryWrapper<Job> queryWrapper = new LambdaQueryWrapper<>();
-
-        if (StringUtils.isNotBlank(job.getBeanName())) {
-            queryWrapper.eq(Job::getBeanName, job.getBeanName());
-        }
-        if (StringUtils.isNotBlank(job.getMethodName())) {
-            queryWrapper.eq(Job::getMethodName, job.getMethodName());
-        }
-        if (StringUtils.isNotBlank(job.getParams())) {
-            queryWrapper.like(Job::getParams, job.getParams());
-        }
-        if (StringUtils.isNotBlank(job.getRemark())) {
-            queryWrapper.like(Job::getRemark, job.getRemark());
-        }
-        if (StringUtils.isNotBlank(job.getStatus())) {
-            queryWrapper.eq(Job::getStatus, job.getStatus());
-        }
-
-        if (StringUtils.isNotBlank(job.getCreateTimeFrom()) && StringUtils.isNotBlank(job.getCreateTimeTo())) {
-            queryWrapper
-                    .ge(Job::getCreateTime, job.getCreateTimeFrom())
-                    .le(Job::getCreateTime, job.getCreateTimeTo());
-        }
+    public IPage<Job> pageJob(QueryRequest request, Job job) {
         Page<Job> page = new Page<>(request.getPageNum(), request.getPageSize());
-        SortUtil.handlePageSort(request, page, "createTime", BrightConstant.ORDER_DESC, true);
+
+        LambdaQueryWrapper<Job> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper
+                .eq(StringUtils.isNotBlank(job.getBeanName()),Job::getBeanName, job.getBeanName())
+                .eq(StringUtils.isNotBlank(job.getMethodName()),Job::getMethodName, job.getMethodName())
+                .eq(StringUtils.isNotBlank(job.getServiceId()),Job::getServiceId, job.getServiceId())
+                .eq(StringUtils.isNotBlank(job.getPath()),Job::getPath, job.getPath())
+                .eq(StringUtils.isNotBlank(job.getParams()),Job::getParams, job.getParams())
+                .eq(StringUtils.isNotBlank(job.getRemark()),Job::getRemark, job.getRemark())
+                .eq(StringUtils.isNotBlank(job.getJobType()),Job::getJobType, job.getJobType())
+                .eq(StringUtils.isNotBlank(job.getStatus()),Job::getStatus, job.getStatus())
+                .ge(StringUtils.isNotBlank(job.getCreateTimeFrom()),Job::getCreateTime, job.getCreateTimeFrom())
+                .le(StringUtils.isNotBlank(job.getCreateTimeTo()),Job::getCreateTime, job.getCreateTimeTo())
+        .orderByDesc(Job::getCreateTime);
+
         return this.page(page, queryWrapper);
     }
 
@@ -129,7 +118,7 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements IJobS
     @Transactional(rollbackFor = Exception.class)
     public void run(String jobIds) {
         String[] list = jobIds.split(StringConstant.COMMA);
-        Arrays.stream(list).forEach(jobId -> ScheduleUtils.run(scheduler, this.findJob(Long.valueOf(jobId))));
+        Arrays.stream(list).forEach(jobId -> ScheduleUtils.run(scheduler, this.getJob(Long.valueOf(jobId))));
     }
 
     @Override

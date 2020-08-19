@@ -26,8 +26,6 @@ import java.util.List;
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${className}> implements I${className}Service {
 
-    private final ${className}Mapper ${className?uncap_first}Mapper;
-
     @Override
     public IPage<${className}> page${className}(QueryRequest request, ${className} ${className?uncap_first}) {
         LambdaQueryWrapper<${className}> queryWrapper = new LambdaQueryWrapper<>();

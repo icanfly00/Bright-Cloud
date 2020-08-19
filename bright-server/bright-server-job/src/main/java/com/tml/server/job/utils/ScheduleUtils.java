@@ -1,4 +1,4 @@
-package com.tml.server.job.helper;
+package com.tml.server.job.utils;
 
 import com.tml.server.job.entity.Job;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,7 @@ public class ScheduleUtils {
     /**
      * 创建定时任务
      */
-    public static void createScheduleJob(Scheduler scheduler, com.tml.server.job.entity.Job scheduleJob) {
+    public static void createScheduleJob(Scheduler scheduler, Job scheduleJob) {
         try {
             // 构建job信息
             JobDetail jobDetail = JobBuilder.newJob(ScheduleJob.class)
@@ -58,10 +58,10 @@ public class ScheduleUtils {
                     .withIdentity(getTriggerKey(scheduleJob.getJobId()))
                     .withSchedule(scheduleBuilder).build();
             // 放入参数，运行时的方法可以获取
-            jobDetail.getJobDataMap().put(com.tml.server.job.entity.Job.JOB_PARAM_KEY, scheduleJob);
+            jobDetail.getJobDataMap().put(Job.JOB_PARAM_KEY, scheduleJob);
             scheduler.scheduleJob(jobDetail, trigger);
             // 暂停任务
-            if (scheduleJob.getStatus().equals(com.tml.server.job.entity.Job.ScheduleStatus.PAUSE.getValue())) {
+            if (scheduleJob.getStatus().equals(Job.ScheduleStatus.PAUSE.getValue())) {
                 pauseJob(scheduler, scheduleJob.getJobId());
             }
         } catch (SchedulerException e) {
@@ -72,7 +72,7 @@ public class ScheduleUtils {
     /**
      * 更新定时任务
      */
-    public static void updateScheduleJob(Scheduler scheduler, com.tml.server.job.entity.Job scheduleJob) {
+    public static void updateScheduleJob(Scheduler scheduler, Job scheduleJob) {
         try {
             TriggerKey triggerKey = getTriggerKey(scheduleJob.getJobId());
 
@@ -91,11 +91,11 @@ public class ScheduleUtils {
                         .withSchedule(scheduleBuilder)
                         .build();
                 // 参数
-                trigger.getJobDataMap().put(com.tml.server.job.entity.Job.JOB_PARAM_KEY, scheduleJob);
+                trigger.getJobDataMap().put(Job.JOB_PARAM_KEY, scheduleJob);
             }
             scheduler.rescheduleJob(triggerKey, trigger);
             // 暂停任务
-            if (scheduleJob.getStatus().equals(com.tml.server.job.entity.Job.ScheduleStatus.PAUSE.getValue())) {
+            if (scheduleJob.getStatus().equals(Job.ScheduleStatus.PAUSE.getValue())) {
                 pauseJob(scheduler, scheduleJob.getJobId());
             }
 
@@ -107,7 +107,7 @@ public class ScheduleUtils {
     /**
      * 立即执行任务
      */
-    public static void run(Scheduler scheduler, com.tml.server.job.entity.Job scheduleJob) {
+    public static void run(Scheduler scheduler, Job scheduleJob) {
         try {
             // 参数
             JobDataMap dataMap = new JobDataMap();

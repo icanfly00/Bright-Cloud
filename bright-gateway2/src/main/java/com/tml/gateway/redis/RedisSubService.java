@@ -1,11 +1,11 @@
 package com.tml.gateway.redis;
 
+import com.google.common.collect.Lists;
 import com.tml.api.system.dto.RouteDefinitionDTO;
 import com.tml.common.core.utils.JacksonUtil;
 import com.tml.common.starter.redis.entity.RedisSimpleMessage;
 import com.tml.gateway.enhance.service.impl.GatewayDynamicRouteService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;

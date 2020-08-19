@@ -22,14 +22,14 @@ public interface IJobLogService extends IService<JobLog> {
      * @param jobLog  jobLog
      * @return 定时任务日志分页数据
      */
-    IPage<JobLog> findJobLogs(QueryRequest request, JobLog jobLog);
+    IPage<JobLog> pageJobLog(QueryRequest request, JobLog jobLog);
 
     /**
      * 保存定时任务日志
      *
      * @param log 定时任务日志
      */
-    @Async
+    @Async(BrightConstant.ASYNC_POOL)
     void saveJobLog(JobLog log);
 
     /**

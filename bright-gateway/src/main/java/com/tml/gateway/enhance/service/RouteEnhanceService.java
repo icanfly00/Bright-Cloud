@@ -33,7 +33,7 @@ public interface RouteEnhanceService {
      *
      * @param exchange ServerWebExchange
      */
-    @Async
+    @Async(BrightConstant.ASYNC_POOL)
     void saveRequestLogs(ServerWebExchange exchange);
 
     /**
@@ -41,7 +41,7 @@ public interface RouteEnhanceService {
      *
      * @param exchange ServerWebExchange
      */
-    @Async
+    @Async(BrightConstant.ASYNC_POOL)
     void saveBlockLogs(ServerWebExchange exchange);
 
     /**
@@ -49,6 +49,6 @@ public interface RouteEnhanceService {
      *
      * @param exchange ServerWebExchange
      */
-    @Async
+    @Async(BrightConstant.ASYNC_POOL)
     void saveRateLimitLogs(ServerWebExchange exchange);
 }

@@ -35,9 +35,9 @@ public class JobController {
     private final IJobService jobService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('job:view')")
-    public CommonResult jobList(QueryRequest request, Job job) {
-        Map<String, Object> dataTable = BrightUtil.getDataTable(this.jobService.findJobs(request, job));
+    @PreAuthorize("hasAuthority('job:list')")
+    public CommonResult pageJob(QueryRequest request, Job job) {
+        Map<String, Object> dataTable = BrightUtil.getDataTable(this.jobService.pageJob(request, job));
         return new CommonResult().data(dataTable);
     }
 
@@ -90,7 +90,7 @@ public class JobController {
     @PostMapping("excel")
     @PreAuthorize("hasAuthority('job:export')")
     public void export(QueryRequest request, Job job, HttpServletResponse response) {
-        List<Job> jobs = this.jobService.findJobs(request, job).getRecords();
+        List<Job> jobs = this.jobService.pageJob(request, job).getRecords();
         ExcelKit.$Export(Job.class, response).downXlsx(jobs, false);
     }
 }

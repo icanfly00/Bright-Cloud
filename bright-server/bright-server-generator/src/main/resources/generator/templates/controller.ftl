@@ -32,14 +32,14 @@ public class ${className}Controller {
 
     @GetMapping
     @PreAuthorize("hasAuthority('${className?uncap_first}:list')")
-    public CommonResult getAll${className}s(${className} ${className?uncap_first}) {
+    public CommonResult list${className}(${className} ${className?uncap_first}) {
         return new CommonResult().data(${className?uncap_first}Service.page${className}(${className?uncap_first}));
     }
 
     @GetMapping("list")
     @PreAuthorize("hasAuthority('${className?uncap_first}:list')")
-    public CommonResult ${className?uncap_first}List(QueryRequest request, ${className} ${className?uncap_first}) {
-        Map<String, Object> dataTable = BrightUtil.getDataTable(this.${className?uncap_first}Service.list${className}(request, ${className?uncap_first}));
+    public CommonResult page${className?uncap_first}(QueryRequest request, ${className} ${className?uncap_first}) {
+        Map<String, Object> dataTable = BrightUtil.getDataTable(this.${className?uncap_first}Service.page${className}(request, ${className?uncap_first}));
         return new CommonResult().data(dataTable);
     }
 

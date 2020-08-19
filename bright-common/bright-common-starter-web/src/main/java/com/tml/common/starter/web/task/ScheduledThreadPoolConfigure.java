@@ -1,13 +1,9 @@
 package com.tml.common.starter.web.task;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.scheduling.config.ScheduledTaskRegistrar;
-
 import javax.annotation.Resource;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -17,7 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @Date 2020/4/1 23:45
  */
 @EnableScheduling
-public class ScheduledThreadPoolConfiguration implements SchedulingConfigurer {
+public class ScheduledThreadPoolConfigure {
     @Resource
     private Environment env;
 
@@ -25,16 +21,10 @@ public class ScheduledThreadPoolConfiguration implements SchedulingConfigurer {
      * 对于CPU密集型任务，最大线程数是CPU线程数+1。对于IO密集型任务，尽量多配点，可以是CPU线程数*2，或者CPU线程数/(1-阻塞系数)。
      * maxPoolSize=new Double(Math.floor(Runtime.getRuntime().availableProcessors()/(1-0.9))).intValue()
      *
-     * @param taskRegistrar
+     * @param
      */
-
-    @Override
-    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-        taskRegistrar.setTaskScheduler(taskScheduler());
-    }
-
-    @Bean(destroyMethod = "shutdown")
-    public ThreadPoolTaskScheduler taskScheduler() {
+    @Bean
+    public ThreadPoolTaskScheduler ThreadPoolTaskScheduler() {
         ThreadPoolTaskScheduler executor = new ThreadPoolTaskScheduler();
         // 设置默认线程名称
         executor.setThreadNamePrefix(env.getProperty("spring.application.name") + "-task");

@@ -34,9 +34,9 @@ public class JobLogController {
     private final IJobLogService jobLogService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('job:log:view')")
-    public CommonResult jobLogList(QueryRequest request, JobLog log) {
-        Map<String, Object> dataTable = BrightUtil.getDataTable(this.jobLogService.findJobLogs(request, log));
+    @PreAuthorize("hasAuthority('job:log:list')")
+    public CommonResult pageJobList(QueryRequest request, JobLog log) {
+        Map<String, Object> dataTable = BrightUtil.getDataTable(this.jobLogService.pageJobLog(request, log));
         return new CommonResult().data(dataTable);
     }
 
@@ -47,10 +47,10 @@ public class JobLogController {
         this.jobLogService.deleteJobLogs(ids);
     }
 
-    @GetMapping("excel")
+    @PostMapping("excel")
     @PreAuthorize("hasAuthority('job:log:export')")
     public void export(QueryRequest request, JobLog jobLog, HttpServletResponse response) {
-        List<JobLog> jobLogs = this.jobLogService.findJobLogs(request, jobLog).getRecords();
+        List<JobLog> jobLogs = this.jobLogService.pageJobLog(request, jobLog).getRecords();
         ExcelKit.$Export(JobLog.class, response).downXlsx(jobLogs, false);
     }
 }

@@ -1,8 +1,6 @@
 package com.tml.server.job.service.impl;
 
 import com.tml.common.core.entity.QueryRequest;
-import com.tml.common.core.entity.constant.BrightConstant;
-import com.tml.common.core.utils.SortUtil;
 import com.tml.server.job.entity.JobLog;
 import com.tml.server.job.mapper.JobLogMapper;
 import com.tml.server.job.service.IJobLogService;
@@ -28,20 +26,20 @@ import java.util.List;
 public class JobLogServiceImpl extends ServiceImpl<JobLogMapper, JobLog> implements IJobLogService {
 
     @Override
-    public IPage<JobLog> findJobLogs(QueryRequest request, JobLog jobLog) {
-        LambdaQueryWrapper<JobLog> queryWrapper = new LambdaQueryWrapper<>();
-
-        if (StringUtils.isNotBlank(jobLog.getBeanName())) {
-            queryWrapper.eq(JobLog::getBeanName, jobLog.getBeanName());
-        }
-        if (StringUtils.isNotBlank(jobLog.getMethodName())) {
-            queryWrapper.eq(JobLog::getMethodName, jobLog.getMethodName());
-        }
-        if (StringUtils.isNotBlank(jobLog.getStatus())) {
-            queryWrapper.eq(JobLog::getStatus, jobLog.getStatus());
-        }
+    public IPage<JobLog> pageJobLog(QueryRequest request, JobLog jobLog) {
         Page<JobLog> page = new Page<>(request.getPageNum(), request.getPageSize());
-        SortUtil.handlePageSort(request, page, "createTime", BrightConstant.ORDER_DESC, true);
+        LambdaQueryWrapper<JobLog> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper
+                .eq(StringUtils.isNotBlank(jobLog.getBeanName()),JobLog::getBeanName, jobLog.getBeanName())
+                .eq(StringUtils.isNotBlank(jobLog.getMethodName()),JobLog::getMethodName, jobLog.getMethodName())
+                .eq(StringUtils.isNotBlank(jobLog.getServiceId()),JobLog::getServiceId, jobLog.getServiceId())
+                .eq(StringUtils.isNotBlank(jobLog.getPath()),JobLog::getPath, jobLog.getPath())
+                .eq(StringUtils.isNotBlank(jobLog.getParams()),JobLog::getParams, jobLog.getParams())
+                .eq(StringUtils.isNotBlank(jobLog.getJobType()),JobLog::getJobType, jobLog.getJobType())
+                .eq(StringUtils.isNotBlank(jobLog.getStatus()),JobLog::getStatus, jobLog.getStatus())
+                .ge(StringUtils.isNotBlank(jobLog.getCreateTimeFrom()),JobLog::getCreateTime, jobLog.getCreateTimeFrom())
+                .le(StringUtils.isNotBlank(jobLog.getCreateTimeTo()),JobLog::getCreateTime, jobLog.getCreateTimeTo())
+                .orderByDesc(JobLog::getCreateTime);
         return this.page(page, queryWrapper);
     }
 

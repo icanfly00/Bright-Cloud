@@ -35,6 +35,36 @@ spring:
         namespace: ${config.namespace}
         group: ${config.group}
 
+  quartz:
+    scheduler-name: ${spring.application.name}
+    auto-startup: true
+    startup-delay: 1s
+    # 启动时更新己存在的 Job
+    overwrite-existing-jobs: true
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceId: AUTO
+            instanceName: ${spring.application.name}-cluster
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX #持久化配置
+            isClustered: true #打开群集功能
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            useProperties: false
+            tablePrefix: QRTZ_  #数据库表前缀
+            #集群中任务调度实例失效的检查时间间隔，单位为毫秒
+            clusterCheckinInterval: 5000
+            maxMisfiresToHandleAtATime: 1
+            misfireThreshold: 60000
+          threadPool: #连接池
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 20
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
 info:
   name: ${spring.application.name}
   description: ${project.description}

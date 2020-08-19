@@ -1,5 +1,6 @@
 package com.tml.gateway.enhance.service;
 
+import com.tml.common.core.entity.constant.BrightConstant;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -33,7 +34,7 @@ public interface RouteEnhanceService {
      *
      * @param exchange ServerWebExchange
      */
-    @Async
+    @Async(BrightConstant.ASYNC_POOL)
     void saveRouteLog(ServerWebExchange exchange);
 
     /**
@@ -41,7 +42,7 @@ public interface RouteEnhanceService {
      *
      * @param exchange ServerWebExchange
      */
-    @Async
+    @Async(BrightConstant.ASYNC_POOL)
     void saveBlockLog(ServerWebExchange exchange);
 
     /**
@@ -49,6 +50,6 @@ public interface RouteEnhanceService {
      *
      * @param exchange ServerWebExchange
      */
-    @Async
+    @Async(BrightConstant.ASYNC_POOL)
     void saveRateLimitLog(ServerWebExchange exchange);
 }

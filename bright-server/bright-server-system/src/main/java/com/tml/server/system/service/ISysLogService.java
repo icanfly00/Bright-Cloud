@@ -5,6 +5,7 @@ import com.tml.api.system.entity.SysLog;
 import com.tml.common.core.entity.QueryRequest;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tml.common.core.entity.constant.BrightConstant;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.scheduling.annotation.Async;
 
@@ -44,6 +45,6 @@ public interface ISysLogService extends IService<SysLog> {
      * @param username  操作用户
      * @param start     开始时间
      */
-    @Async
+    @Async(BrightConstant.ASYNC_POOL)
     void saveLog(ProceedingJoinPoint point, Method method, String ip, String operation, String username, long start);
 }
