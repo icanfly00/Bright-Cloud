@@ -65,6 +65,7 @@ public class SysDeptController {
 
     @PostMapping("excel")
     @PreAuthorize("hasAuthority('role:export')")
+    @ControllerEndpoint(operation = "导出部门数据", exceptionMessage = "导出部门数据")
     public void export(QueryRequest request, SysDept dept, HttpServletResponse response) {
         List<SysDept> list = this.deptService.findDepts(dept, request);
         ExcelKit.$Export(SysDept.class, response).downXlsx(list, false);

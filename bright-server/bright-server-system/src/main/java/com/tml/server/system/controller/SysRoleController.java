@@ -77,6 +77,7 @@ public class SysRoleController {
 
     @PostMapping("excel")
     @PreAuthorize("hasAuthority('role:export')")
+    @ControllerEndpoint(operation = "导出角色数据", exceptionMessage = "导出角色数据")
     public void export(QueryRequest request, SysRole role, HttpServletResponse response) {
         List<SysRole> list = this.roleService.pageRole(role, request).getRecords();
         ExcelKit.$Export(SysRole.class, response).downXlsx(list, false);

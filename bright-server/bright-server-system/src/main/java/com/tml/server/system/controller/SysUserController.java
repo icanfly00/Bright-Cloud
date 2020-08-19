@@ -154,6 +154,7 @@ public class SysUserController {
 
     @PostMapping("excel")
     @PreAuthorize("hasAuthority('user:export')")
+    @ControllerEndpoint(operation = "导出用户数据", exceptionMessage = "导出用户数据")
     public void export(QueryRequest request, SysUser user, HttpServletResponse response) {
         List<SysUser> list = this.userService.pageUserDetail(user, request).getRecords();
         ExcelKit.$Export(SysUser.class, response).downXlsx(list, false);

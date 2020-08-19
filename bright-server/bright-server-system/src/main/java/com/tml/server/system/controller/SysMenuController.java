@@ -86,6 +86,7 @@ public class SysMenuController {
 
     @PostMapping("excel")
     @PreAuthorize("hasAuthority('menu:export')")
+    @ControllerEndpoint(operation = "导出菜单数据", exceptionMessage = "导出菜单数据")
     public void export(SysMenu menu, HttpServletResponse response) {
         List<SysMenu> list = this.menuService.findMenuList(menu);
         ExcelKit.$Export(SysMenu.class, response).downXlsx(list, false);
