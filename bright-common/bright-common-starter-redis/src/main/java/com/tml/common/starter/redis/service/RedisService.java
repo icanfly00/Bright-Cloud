@@ -157,10 +157,11 @@ public class RedisService {
 
     /**
      * hashGet
+     *
      * @param key 键 不能为 null
      * @return
      */
-    public List<?> hget(String key){
+    public List<?> hget(String key) {
         return redisTemplate.opsForHash().values(key);
     }
 

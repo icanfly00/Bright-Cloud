@@ -33,53 +33,53 @@ public class RemoteGatewayController implements IRemoteGatewayService {
 
     @Override
     public ResultBody<List<GatewayBlockList>> listGatewayBlockList() {
-        List<GatewayBlockList> list=blockListService.listGatewayBlockList();
+        List<GatewayBlockList> list = blockListService.listGatewayBlockList();
         return ResultBody.ok(list);
     }
 
     @Override
     public ResultBody<GatewayRouteLimitRule> getGatewayRouteLimitRule(String uri, String method) {
-        GatewayRouteLimitRule gatewayRouteLimitRule=routeLimitRuleService.getGatewayRouteLimitRule(uri,method);
+        GatewayRouteLimitRule gatewayRouteLimitRule = routeLimitRuleService.getGatewayRouteLimitRule(uri, method);
         return ResultBody.ok(gatewayRouteLimitRule);
     }
 
     @Override
     public ResultBody saveGatewayBlockListLog(GatewayBlockListLog gatewayBlockListLog) {
-        gatewayBlockListLog.setCreateTime(DateUtil.parse(gatewayBlockListLog.getCreateTimeFrom(),DatePattern.NORM_DATETIME_PATTERN));
+        gatewayBlockListLog.setCreateTime(DateUtil.parse(gatewayBlockListLog.getCreateTimeFrom(), DatePattern.NORM_DATETIME_PATTERN));
         blockListLogService.saveGatewayBlockListLog(gatewayBlockListLog);
         return ResultBody.ok("");
     }
 
     @Override
     public ResultBody saveGatewayRouteLimitRuleLog(GatewayRouteLimitRuleLog gatewayRouteLimitRuleLog) {
-        gatewayRouteLimitRuleLog.setCreateTime(DateUtil.parse(gatewayRouteLimitRuleLog.getCreateTimeFrom(),DatePattern.NORM_DATETIME_PATTERN));
+        gatewayRouteLimitRuleLog.setCreateTime(DateUtil.parse(gatewayRouteLimitRuleLog.getCreateTimeFrom(), DatePattern.NORM_DATETIME_PATTERN));
         routeLimitRuleLogService.saveGatewayRouteLimitRuleLog(gatewayRouteLimitRuleLog);
         return ResultBody.ok("");
     }
 
     @Override
     public ResultBody saveGatewayRouteLog(GatewayRouteLog gatewayRouteLog) {
-        gatewayRouteLog.setCreateTime(DateUtil.parse(gatewayRouteLog.getCreateTimeFrom(),DatePattern.NORM_DATETIME_PATTERN));
+        gatewayRouteLog.setCreateTime(DateUtil.parse(gatewayRouteLog.getCreateTimeFrom(), DatePattern.NORM_DATETIME_PATTERN));
         routeLogService.saveGatewayRouteLog(gatewayRouteLog);
         return ResultBody.ok("");
     }
 
     @Override
     public ResultBody<Integer> getCurrentRequestCount(String uri, String ip) {
-       int count= routeLimitRuleService.getCurrentRequestCount(uri,ip);
+        int count = routeLimitRuleService.getCurrentRequestCount(uri, ip);
         return ResultBody.ok(count);
     }
 
     @Override
     public ResultBody setCurrentRequestCount(String uri, String ip, Long time) {
-        routeLimitRuleService.setCurrentRequestCount(uri,ip,time);
+        routeLimitRuleService.setCurrentRequestCount(uri, ip, time);
         return ResultBody.ok("");
 
     }
 
     @Override
     public ResultBody incrCurrentRequestCount(String uri, String ip) {
-        routeLimitRuleService.incrCurrentRequestCount(uri,ip);
+        routeLimitRuleService.incrCurrentRequestCount(uri, ip);
         return ResultBody.ok("");
 
     }

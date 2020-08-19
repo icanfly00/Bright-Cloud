@@ -54,7 +54,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public IPage<SysUser> findUserDetailList(SysUser user, QueryRequest request) {
+    public IPage<SysUser> pageUserDetail(SysUser user, QueryRequest request) {
         Page<SysUser> page = new Page<>(request.getPageNum(), request.getPageSize());
         SortUtil.handlePageSort(request, page, "userId", BrightConstant.ORDER_ASC, false);
         return this.baseMapper.findUserDetailPage(page, user);

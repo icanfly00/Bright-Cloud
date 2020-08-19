@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Bean;
 
 
 /**
- * @description Feign OAuth2 request interceptor
  * @author TuMingLong
+ * @description Feign OAuth2 request interceptor
  * @sence 2020/5/9 15:14
  */
 @Slf4j

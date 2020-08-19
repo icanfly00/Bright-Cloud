@@ -1,8 +1,8 @@
 package com.tml.server.generator.controller;
 
 import com.tml.common.core.entity.CommonResult;
-import com.tml.server.generator.entity.GeneratorConfig;
 import com.tml.common.core.exception.BrightException;
+import com.tml.server.generator.entity.GeneratorConfig;
 import com.tml.server.generator.service.IGeneratorConfigService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Slf4j
 @RestController

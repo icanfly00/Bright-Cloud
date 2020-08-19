@@ -32,10 +32,10 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
 
     @Override
     public Flux<RouteDefinition> getRouteDefinitions() {
-        List<RouteDefinition> routeDefinitions= Lists.newArrayList();
+        List<RouteDefinition> routeDefinitions = Lists.newArrayList();
         redisTemplate.opsForHash().values(CacheConstant.GATEWAY_DYNAMIC_ROUTE_CACHE)
                 .stream()
-                .forEach(routeDefinition ->routeDefinitions.add(JacksonUtil.toObject(routeDefinition.toString(),RouteDefinition.class)));
+                .forEach(routeDefinition -> routeDefinitions.add(JacksonUtil.toObject(routeDefinition.toString(), RouteDefinition.class)));
 
         return Flux.fromIterable(routeDefinitions);
     }

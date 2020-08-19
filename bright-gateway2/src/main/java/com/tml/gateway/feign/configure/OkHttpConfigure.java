@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @description OkHttp配置
  * @author TuMingLong
+ * @description OkHttp配置
  * @sence 2020/3/8 15:36
  */
 @Slf4j

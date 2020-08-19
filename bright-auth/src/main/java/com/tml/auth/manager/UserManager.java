@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,11 +34,11 @@ public class UserManager {
      */
     public SysUser findByName(String username) {
         SysUser user = null;
-        ResultBody<SysUser> resultBody=remoteUserFeignService.findByName(username);
-        if (resultBody.getCode()==200 && resultBody.getData() != null) {
-            user=resultBody.getData();
-            ResultBody<List<SysUserDataPermission>> listResultBody=remoteUserFeignService.findUserDataPermissions(user.getUserId());
-            if(resultBody.getCode()==200 && resultBody.getData() != null){
+        ResultBody<SysUser> resultBody = remoteUserFeignService.findByName(username);
+        if (resultBody.getCode() == 200 && resultBody.getData() != null) {
+            user = resultBody.getData();
+            ResultBody<List<SysUserDataPermission>> listResultBody = remoteUserFeignService.findUserDataPermissions(user.getUserId());
+            if (resultBody.getCode() == 200 && resultBody.getData() != null) {
                 List<SysUserDataPermission> permissions = listResultBody.getData();
                 String deptIds = permissions.stream().map(p -> String.valueOf(p.getDeptId())).collect(Collectors.joining(StringConstant.COMMA));
                 user.setDeptIds(deptIds);
@@ -54,7 +55,7 @@ public class UserManager {
      */
     public String findUserPermissions(String username) {
         ResultBody<String> resultBody = remoteUserFeignService.findUserPermissions(username);
-        if(resultBody.getCode()==200 && StringUtils.isNoneBlank(resultBody.getData())){
+        if (resultBody.getCode() == 200 && StringUtils.isNoneBlank(resultBody.getData())) {
             return resultBody.getData();
         }
         return null;
@@ -70,8 +71,8 @@ public class UserManager {
      */
     @Transactional(rollbackFor = Exception.class)
     public SysUser registerUser(String username, String password) {
-        ResultBody<SysUser> resultBody=remoteUserFeignService.registerUser(username,password);
-        if(resultBody.getCode()==200){
+        ResultBody<SysUser> resultBody = remoteUserFeignService.registerUser(username, password);
+        if (resultBody.getCode() == 200) {
             return resultBody.getData();
         }
         return null;

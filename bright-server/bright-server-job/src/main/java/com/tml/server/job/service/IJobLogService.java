@@ -1,17 +1,17 @@
 package com.tml.server.job.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.tml.common.core.entity.QueryRequest;
 import com.tml.common.core.entity.constant.BrightConstant;
 import com.tml.server.job.entity.JobLog;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.scheduling.annotation.Async;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 public interface IJobLogService extends IService<JobLog> {
 

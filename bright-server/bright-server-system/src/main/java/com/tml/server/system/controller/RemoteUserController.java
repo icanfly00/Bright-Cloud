@@ -36,19 +36,19 @@ public class RemoteUserController implements IRemoteUserService {
 
     @Override
     public ResultBody<SysUser> findByName(String username) {
-        SysUser user=userService.findSecurityUserByName(username);
-        return  ResultBody.ok(user);
+        SysUser user = userService.findSecurityUserByName(username);
+        return ResultBody.ok(user);
     }
 
     @Override
     public ResultBody<String> findUserPermissions(String username) {
-        String userPermissions=menuService.findUserPermissions(username);
+        String userPermissions = menuService.findUserPermissions(username);
         return ResultBody.ok(userPermissions);
     }
 
     @Override
     public ResultBody<List<SysUserDataPermission>> findUserDataPermissions(Long userId) {
-        List<SysUserDataPermission> list=userDataPermissionService.findUserDataPermissions(userId);
+        List<SysUserDataPermission> list = userDataPermissionService.findUserDataPermissions(userId);
         return ResultBody.ok(list);
     }
 
@@ -74,13 +74,13 @@ public class RemoteUserController implements IRemoteUserService {
 
     @Override
     public ResultBody<SysUserConnection> findUserConnectionByCondition(String providerName, String providerUserId) {
-        SysUserConnection userConnection=userConnectionService.selectByCondition(providerName,providerUserId);
+        SysUserConnection userConnection = userConnectionService.selectByCondition(providerName, providerUserId);
         return ResultBody.ok(userConnection);
     }
 
     @Override
     public ResultBody<List<SysUserConnection>> findUserConnectionByUsername(String username) {
-        List<SysUserConnection> list=userConnectionService.selectByCondition(username);
+        List<SysUserConnection> list = userConnectionService.selectByCondition(username);
         return ResultBody.ok(list);
     }
 
@@ -92,7 +92,7 @@ public class RemoteUserController implements IRemoteUserService {
 
     @Override
     public ResultBody deleteUserConnectionByCondition(String username, String providerName) {
-        userConnectionService.deleteByCondition(username,providerName);
+        userConnectionService.deleteByCondition(username, providerName);
         return ResultBody.ok("");
     }
 }

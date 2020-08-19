@@ -24,7 +24,7 @@ public class AsyncThreadPoolConfigure {
      * 对于CPU密集型任务，最大线程数是CPU线程数+1。对于IO密集型任务，尽量多配点，可以是CPU线程数*2，或者CPU线程数/(1-阻塞系数)。
      * maxPoolSize=new Double(Math.floor(Runtime.getRuntime().availableProcessors()/(1-0.9))).intValue()
      */
-    @Bean(name= BrightConstant.ASYNC_POOL)
+    @Bean(name = BrightConstant.ASYNC_POOL)
     public ThreadPoolTaskExecutor asyncThreadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // 设置核心线程数
@@ -36,7 +36,7 @@ public class AsyncThreadPoolConfigure {
         // 设置线程活跃时间（秒）
         executor.setKeepAliveSeconds(60);
         // 设置默认线程名称
-        executor.setThreadNamePrefix(env.getProperty("spring.application.name")+"-Async-Thread");
+        executor.setThreadNamePrefix(env.getProperty("spring.application.name") + "-Async-Thread");
         // 设置拒绝策略
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         // 等待所有任务结束后再关闭线程池

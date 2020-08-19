@@ -1,8 +1,6 @@
 package com.tml.api.system.dto;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
@@ -10,8 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * @description 断言模型
  * @author TuMingLong
+ * @description 断言模型
  * @sence 2020/7/15 14:59
  */
 @Data

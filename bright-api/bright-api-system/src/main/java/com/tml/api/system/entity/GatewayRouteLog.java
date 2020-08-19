@@ -1,19 +1,20 @@
 package com.tml.api.system.entity;
 
 
-import java.util.Date;
-import lombok.Data;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+import java.util.Date;
 
 /**
-* 网关日志 Entity
-*
-* @author JacksonTu
-* @date 2020-08-13 09:47:06
-*/
+ * 网关日志 Entity
+ *
+ * @author JacksonTu
+ * @date 2020-08-13 09:47:06
+ */
 @Data
 @TableName("t_gateway_route_log")
 public class GatewayRouteLog {

@@ -5,7 +5,6 @@ import com.tml.common.starter.security.handler.BrightAuthExceptionEntryPoint;
 import com.tml.common.starter.security.properties.BrightCloudSecurityProperties;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,10 +16,10 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import java.util.List;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @EnableResourceServer
 @EnableAutoConfiguration(exclude = UserDetailsServiceAutoConfiguration.class)

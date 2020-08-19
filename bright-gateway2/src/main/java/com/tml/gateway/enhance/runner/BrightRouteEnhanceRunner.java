@@ -8,10 +8,10 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @RequiredArgsConstructor
 public class BrightRouteEnhanceRunner implements ApplicationRunner {

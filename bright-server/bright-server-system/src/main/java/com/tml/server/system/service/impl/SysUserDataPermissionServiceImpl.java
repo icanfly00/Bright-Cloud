@@ -1,11 +1,11 @@
 package com.tml.server.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tml.api.system.entity.SysUserDataPermission;
 import com.tml.common.core.entity.constant.StringConstant;
 import com.tml.server.system.mapper.SysUserDataPermissionMapper;
 import com.tml.server.system.service.ISysUserDataPermissionService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @description 用户与数据权限业务层实现
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description 用户与数据权限业务层实现
+ * @since 2020-08-10 20:30
  */
 @Service("userDataPermissionService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

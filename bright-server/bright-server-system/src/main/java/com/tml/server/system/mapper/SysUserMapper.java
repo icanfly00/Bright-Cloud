@@ -10,10 +10,10 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * @description 用户信息Mapper接口
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description 用户信息Mapper接口
+ * @since 2020-08-10 20:30
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 

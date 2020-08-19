@@ -1,8 +1,6 @@
 package com.tml.api.system.dto;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;

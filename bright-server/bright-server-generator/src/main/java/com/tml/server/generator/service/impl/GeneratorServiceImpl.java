@@ -1,24 +1,24 @@
 package com.tml.server.generator.service.impl;
 
-import com.tml.common.core.entity.QueryRequest;
-import com.tml.common.core.entity.constant.BrightConstant;
-import com.tml.server.generator.entity.Column;
-import com.tml.server.generator.entity.Table;
-import com.tml.common.core.utils.SortUtil;
-import com.tml.server.generator.mapper.GeneratorMapper;
-import com.tml.server.generator.service.IGeneratorService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tml.common.core.entity.QueryRequest;
+import com.tml.common.core.entity.constant.BrightConstant;
+import com.tml.common.core.utils.SortUtil;
+import com.tml.server.generator.entity.Column;
+import com.tml.server.generator.entity.Table;
+import com.tml.server.generator.mapper.GeneratorMapper;
+import com.tml.server.generator.service.IGeneratorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
- * @description 
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Service
 @RequiredArgsConstructor

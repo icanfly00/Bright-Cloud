@@ -1,21 +1,21 @@
 package com.tml.api.system.entity;
 
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
+
 /**
-* 黑名单 Entity
-*
-* @author JacksonTu
-* @date 2020-08-13 09:46:55
-*/
+ * 黑名单 Entity
+ *
+ * @author JacksonTu
+ * @date 2020-08-13 09:46:55
+ */
 @Data
 @TableName("t_gateway_block_list")
 public class GatewayBlockList {

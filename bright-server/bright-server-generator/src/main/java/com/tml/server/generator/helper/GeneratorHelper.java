@@ -1,14 +1,14 @@
 package com.tml.server.generator.helper;
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.io.Files;
 import com.tml.common.core.annotation.Helper;
 import com.tml.common.core.entity.constant.BrightConstant;
 import com.tml.common.core.entity.constant.GeneratorConstant;
-import com.tml.server.generator.entity.Column;
-import com.tml.server.generator.entity.GeneratorConfig;
 import com.tml.common.core.utils.BrightUtil;
+import com.tml.server.generator.entity.Column;
 import com.tml.server.generator.entity.FieldType;
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.io.Files;
+import com.tml.server.generator.entity.GeneratorConfig;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;

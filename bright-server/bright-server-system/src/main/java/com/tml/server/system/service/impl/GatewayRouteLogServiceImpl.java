@@ -33,11 +33,11 @@ public class GatewayRouteLogServiceImpl extends ServiceImpl<GatewayRouteLogMappe
     public IPage<GatewayRouteLog> pageGatewayRouteLog(QueryRequest request, GatewayRouteLog gatewayRouteLog) {
         LambdaQueryWrapper<GatewayRouteLog> queryWrapper = new LambdaQueryWrapper<>();
         // TODO 设置查询条件
-        queryWrapper.eq(StringUtils.isNoneBlank(gatewayRouteLog.getIp()),GatewayRouteLog::getIp,gatewayRouteLog.getIp())
-                .eq(StringUtils.isNoneBlank(gatewayRouteLog.getTargetServer()),GatewayRouteLog::getTargetServer,gatewayRouteLog.getTargetServer())
-                .eq(StringUtils.isNoneBlank(gatewayRouteLog.getRequestMethod()),GatewayRouteLog::getRequestMethod,gatewayRouteLog.getRequestMethod())
-                .gt(StringUtils.isNoneBlank(gatewayRouteLog.getCreateTimeFrom()),GatewayRouteLog::getCreateTime,gatewayRouteLog.getCreateTimeFrom())
-                .lt(StringUtils.isNoneBlank(gatewayRouteLog.getCreateTimeTo()),GatewayRouteLog::getCreateTime,gatewayRouteLog.getCreateTimeTo())
+        queryWrapper.eq(StringUtils.isNoneBlank(gatewayRouteLog.getIp()), GatewayRouteLog::getIp, gatewayRouteLog.getIp())
+                .eq(StringUtils.isNoneBlank(gatewayRouteLog.getTargetServer()), GatewayRouteLog::getTargetServer, gatewayRouteLog.getTargetServer())
+                .eq(StringUtils.isNoneBlank(gatewayRouteLog.getRequestMethod()), GatewayRouteLog::getRequestMethod, gatewayRouteLog.getRequestMethod())
+                .gt(StringUtils.isNoneBlank(gatewayRouteLog.getCreateTimeFrom()), GatewayRouteLog::getCreateTime, gatewayRouteLog.getCreateTimeFrom())
+                .lt(StringUtils.isNoneBlank(gatewayRouteLog.getCreateTimeTo()), GatewayRouteLog::getCreateTime, gatewayRouteLog.getCreateTimeTo())
                 .orderByDesc(GatewayRouteLog::getCreateTime);
         Page<GatewayRouteLog> page = new Page<>(request.getPageNum(), request.getPageSize());
         return this.page(page, queryWrapper);
@@ -47,11 +47,11 @@ public class GatewayRouteLogServiceImpl extends ServiceImpl<GatewayRouteLogMappe
     public List<GatewayRouteLog> listGatewayRouteLog(GatewayRouteLog gatewayRouteLog) {
         LambdaQueryWrapper<GatewayRouteLog> queryWrapper = new LambdaQueryWrapper<>();
         // TODO 设置查询条件
-        queryWrapper.eq(StringUtils.isNoneBlank(gatewayRouteLog.getIp()),GatewayRouteLog::getIp,gatewayRouteLog.getIp())
-                .eq(StringUtils.isNoneBlank(gatewayRouteLog.getTargetServer()),GatewayRouteLog::getTargetServer,gatewayRouteLog.getTargetServer())
-                .eq(StringUtils.isNoneBlank(gatewayRouteLog.getRequestMethod()),GatewayRouteLog::getRequestMethod,gatewayRouteLog.getRequestMethod())
-                .gt(StringUtils.isNoneBlank(gatewayRouteLog.getCreateTimeFrom()),GatewayRouteLog::getCreateTime,gatewayRouteLog.getCreateTimeFrom())
-                .lt(StringUtils.isNoneBlank(gatewayRouteLog.getCreateTimeTo()),GatewayRouteLog::getCreateTime,gatewayRouteLog.getCreateTimeTo())
+        queryWrapper.eq(StringUtils.isNoneBlank(gatewayRouteLog.getIp()), GatewayRouteLog::getIp, gatewayRouteLog.getIp())
+                .eq(StringUtils.isNoneBlank(gatewayRouteLog.getTargetServer()), GatewayRouteLog::getTargetServer, gatewayRouteLog.getTargetServer())
+                .eq(StringUtils.isNoneBlank(gatewayRouteLog.getRequestMethod()), GatewayRouteLog::getRequestMethod, gatewayRouteLog.getRequestMethod())
+                .gt(StringUtils.isNoneBlank(gatewayRouteLog.getCreateTimeFrom()), GatewayRouteLog::getCreateTime, gatewayRouteLog.getCreateTimeFrom())
+                .lt(StringUtils.isNoneBlank(gatewayRouteLog.getCreateTimeTo()), GatewayRouteLog::getCreateTime, gatewayRouteLog.getCreateTimeTo())
                 .orderByDesc(GatewayRouteLog::getCreateTime);
         return this.baseMapper.selectList(queryWrapper);
     }

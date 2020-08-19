@@ -1,16 +1,16 @@
 package com.tml.server.test.service;
 
-import com.tml.common.core.entity.QueryRequest;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tml.common.core.entity.QueryRequest;
 import com.tml.server.test.entity.DataPermissionTest;
 
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 public interface IDataPermissionTestService extends IService<DataPermissionTest> {
     /**

@@ -1,22 +1,21 @@
 package com.tml.api.system.entity;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
+
 /**
-* 限流规则 Entity
-*
-* @author JacksonTu
-* @date 2020-08-13 09:47:22
-*/
+ * 限流规则 Entity
+ *
+ * @author JacksonTu
+ * @date 2020-08-13 09:47:22
+ */
 @Data
 @TableName("t_gateway_route_limit_rule")
 public class GatewayRouteLimitRule {

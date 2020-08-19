@@ -16,10 +16,10 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Aspect
 @Slf4j

@@ -24,10 +24,10 @@ public class ResultBody<T> implements Serializable {
     /**
      * 相应编码
      */
-    private int code=0;
+    private int code = 0;
     /**
      * 提示信息
-      */
+     */
     private String message;
     /**
      * 响应数据
@@ -40,7 +40,7 @@ public class ResultBody<T> implements Serializable {
     /**
      * 响应时间
      */
-    private long timestamp=System.currentTimeMillis();
+    private long timestamp = System.currentTimeMillis();
     /**
      * http状态码
      */

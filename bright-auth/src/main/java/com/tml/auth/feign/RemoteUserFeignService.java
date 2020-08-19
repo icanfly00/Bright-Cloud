@@ -12,6 +12,6 @@ import org.springframework.cloud.openfeign.FeignClient;
  * @description 用户服务
  * @since 2020/8/10 22:25
  */
-@FeignClient(value = BrightServerConstant.BRIGHT_SERVER_SYSTEM, contextId = "RemoteUserServiceClient",fallbackFactory = RemoteUserFeignServiceFallback.class)
+@FeignClient(value = BrightServerConstant.BRIGHT_SERVER_SYSTEM, contextId = "RemoteUserServiceClient", fallbackFactory = RemoteUserFeignServiceFallback.class)
 public interface RemoteUserFeignService extends IRemoteUserService {
 }

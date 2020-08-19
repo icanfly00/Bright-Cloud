@@ -1,10 +1,10 @@
 package com.tml.server.system.service;
 
 
-import com.tml.api.system.entity.SysLog;
-import com.tml.common.core.entity.QueryRequest;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tml.api.system.entity.SysLog;
+import com.tml.common.core.entity.QueryRequest;
 import com.tml.common.core.entity.constant.BrightConstant;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.scheduling.annotation.Async;
@@ -12,10 +12,10 @@ import org.springframework.scheduling.annotation.Async;
 import java.lang.reflect.Method;
 
 /**
- * @description 日志业务层
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description 日志业务层
+ * @since 2020-08-10 20:30
  */
 public interface ISysLogService extends IService<SysLog> {
 
@@ -26,7 +26,7 @@ public interface ISysLogService extends IService<SysLog> {
      * @param request QueryRequest
      * @return IPage<SystemLog>
      */
-    IPage<SysLog> findLogs(SysLog log, QueryRequest request);
+    IPage<SysLog> pageLog(SysLog log, QueryRequest request);
 
     /**
      * 删除操作日志

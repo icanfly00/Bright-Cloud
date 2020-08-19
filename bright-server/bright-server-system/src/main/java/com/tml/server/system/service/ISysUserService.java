@@ -8,10 +8,10 @@ import com.tml.common.core.exception.BrightException;
 
 
 /**
- * @description 用户业务层
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description 用户业务层
+ * @since 2020-08-10 20:30
  */
 public interface ISysUserService extends IService<SysUser> {
 
@@ -30,7 +30,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param user    用户对象，用于传递查询条件
      * @return IPage
      */
-    IPage<SysUser> findUserDetailList(SysUser user, QueryRequest request);
+    IPage<SysUser> pageUserDetail(SysUser user, QueryRequest request);
 
     /**
      * 通过用户名查找用户详细信息

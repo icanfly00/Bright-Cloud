@@ -1,10 +1,10 @@
 package com.tml.common.starter.datasource.interceptor;
 
+import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
+import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
 import com.tml.common.core.entity.CurrentUser;
 import com.tml.common.core.utils.BrightUtil;
 import com.tml.common.starter.datasource.annotation.DataPermission;
-import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
-import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.parser.CCJSqlParserManager;
@@ -26,10 +26,10 @@ import java.sql.Connection;
 import java.util.Properties;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Slf4j
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})

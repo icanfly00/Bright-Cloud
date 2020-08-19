@@ -1,14 +1,15 @@
 package com.tml.server.system.mapper;
 
-import com.tml.api.system.entity.SysMenu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tml.api.system.entity.SysMenu;
+
 import java.util.List;
 
 /**
- * @description 菜单Mapper接口
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description 菜单Mapper接口
+ * @since 2020-08-10 20:30
  */
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
 

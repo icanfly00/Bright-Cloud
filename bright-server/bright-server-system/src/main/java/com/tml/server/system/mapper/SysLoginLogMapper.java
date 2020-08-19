@@ -1,17 +1,17 @@
 package com.tml.server.system.mapper;
 
-import com.tml.api.system.entity.SysLoginLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tml.api.system.entity.SysLoginLog;
 import com.tml.api.system.entity.SysUser;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * @description 登录日志Mapper接口
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description 登录日志Mapper接口
+ * @since 2020-08-10 20:30
  */
 public interface SysLoginLogMapper extends BaseMapper<SysLoginLog> {
 

@@ -42,7 +42,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     private final ISysUserRoleService userRoleService;
 
     @Override
-    public IPage<SysRole> findRoles(SysRole role, QueryRequest request) {
+    public IPage<SysRole> pageRole(SysRole role, QueryRequest request) {
         Page<SysRole> page = new Page<>(request.getPageNum(), request.getPageSize());
         SortUtil.handlePageSort(request, page, "createTime", BrightConstant.ORDER_DESC, false);
         return this.baseMapper.findRolePage(page, role);

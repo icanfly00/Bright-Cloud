@@ -1,8 +1,8 @@
 package com.tml.auth.configure;
 
+import com.tml.auth.handler.BrightWebResponseExceptionTranslator;
 import com.tml.auth.properties.BrightAuthProperties;
 import com.tml.auth.service.impl.RedisClientDetailsService;
-import com.tml.auth.handler.BrightWebResponseExceptionTranslator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

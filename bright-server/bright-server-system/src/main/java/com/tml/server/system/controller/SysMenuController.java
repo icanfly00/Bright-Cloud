@@ -6,6 +6,7 @@ import com.tml.common.core.entity.constant.StringConstant;
 import com.tml.common.core.entity.router.VueRouter;
 import com.tml.server.system.annotation.ControllerEndpoint;
 import com.tml.server.system.service.ISysMenuService;
+import com.wuwenze.poi.ExcelKit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
@@ -20,10 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description 
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Slf4j
 @Validated
@@ -79,6 +81,14 @@ public class SysMenuController {
     @ControllerEndpoint(operation = "修改菜单/按钮", exceptionMessage = "修改菜单/按钮失败")
     public void updateMenu(@Valid SysMenu menu) {
         this.menuService.updateMenu(menu);
+    }
+
+
+    @PostMapping("excel")
+    @PreAuthorize("hasAuthority('menu:export')")
+    public void export(SysMenu menu, HttpServletResponse response) {
+        List<SysMenu> list = this.menuService.findMenuList(menu);
+        ExcelKit.$Export(SysMenu.class, response).downXlsx(list, false);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.tml.server.system.mapper;
 
-import com.tml.api.system.entity.GatewayBlockList;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tml.api.system.entity.GatewayBlockList;
 
 /**
  * 黑名单 Mapper

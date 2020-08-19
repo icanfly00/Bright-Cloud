@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @RestController
 public class BrightDocGatewayHandler {

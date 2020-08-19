@@ -5,7 +5,10 @@ import com.tml.api.system.entity.SysUserConnection;
 import com.tml.api.system.entity.SysUserDataPermission;
 import com.tml.common.core.entity.ResultBody;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ import java.util.List;
 public interface IRemoteUserService {
     /**
      * 获取用户
+     *
      * @param username
      * @return
      */
@@ -25,6 +29,7 @@ public interface IRemoteUserService {
 
     /**
      * 获取用户权限集
+     *
      * @param username
      * @return
      */
@@ -33,6 +38,7 @@ public interface IRemoteUserService {
 
     /**
      * 获取用户数据权限集
+     *
      * @param userId
      * @return
      */
@@ -41,13 +47,13 @@ public interface IRemoteUserService {
 
     /**
      * 注册用户
+     *
      * @param username
      * @param password
      * @return
      */
     @GetMapping("/user/registerUser")
-    ResultBody<SysUser> registerUser(@RequestParam(value = "username") String username, @RequestParam(value = "password")String password);
-
+    ResultBody<SysUser> registerUser(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password);
 
 
     /**
@@ -58,7 +64,7 @@ public interface IRemoteUserService {
      * @return 关联关系
      */
     @GetMapping("/user/findUserConnectionByCondition")
-    ResultBody<SysUserConnection> findUserConnectionByCondition(@RequestParam(value = "providerName")String providerName, @RequestParam(value = "providerUserId")String providerUserId);
+    ResultBody<SysUserConnection> findUserConnectionByCondition(@RequestParam(value = "providerName") String providerName, @RequestParam(value = "providerUserId") String providerUserId);
 
     /**
      * 根据条件查询关联关系
@@ -67,14 +73,14 @@ public interface IRemoteUserService {
      * @return 关联关系
      */
     @GetMapping("/user/findUserConnectionByUsername")
-    ResultBody<List<SysUserConnection>> findUserConnectionByUsername(@RequestParam(value = "username")String username);
+    ResultBody<List<SysUserConnection>> findUserConnectionByUsername(@RequestParam(value = "username") String username);
 
     /**
      * 新增
      *
      * @param sysUserConnection userConnection
      */
-    @PostMapping(value = "/user/createUserConnection",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/user/createUserConnection", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     ResultBody saveUserConnection(SysUserConnection sysUserConnection);
 
     /**
@@ -84,5 +90,5 @@ public interface IRemoteUserService {
      * @param providerName providerName 平台名称
      */
     @GetMapping("/user/deleteUserConnectionByCondition")
-    ResultBody deleteUserConnectionByCondition(@RequestParam(value = "username")String username, @RequestParam(value = "providerName")String providerName);
+    ResultBody deleteUserConnectionByCondition(@RequestParam(value = "username") String username, @RequestParam(value = "providerName") String providerName);
 }

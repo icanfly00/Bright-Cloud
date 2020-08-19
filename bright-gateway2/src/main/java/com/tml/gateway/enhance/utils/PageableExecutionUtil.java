@@ -11,15 +11,15 @@ import org.springframework.data.mongodb.core.query.Query;
 import reactor.core.publisher.Flux;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 public class PageableExecutionUtil {
 
     public static <T> Flux<T> getPages(Query query, QueryRequest request, Class<T> clazz,
-                                             ReactiveMongoTemplate template) {
+                                       ReactiveMongoTemplate template) {
         Sort sort = Sort.by("id").descending();
         if (StringUtils.isNotBlank(request.getField()) && StringUtils.isNotBlank(request.getOrder())) {
             sort = BrightConstant.ORDER_ASC.equals(request.getOrder()) ?

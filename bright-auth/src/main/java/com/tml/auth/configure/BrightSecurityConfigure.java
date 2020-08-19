@@ -1,8 +1,8 @@
 package com.tml.auth.configure;
 
+import com.tml.auth.filter.ValidateCodeFilter;
 import com.tml.auth.handler.BrightWebLoginFailureHandler;
 import com.tml.auth.handler.BrightWebLoginSuccessHandler;
-import com.tml.auth.filter.ValidateCodeFilter;
 import com.tml.common.core.entity.constant.EndpointConstant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

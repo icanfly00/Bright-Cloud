@@ -1,10 +1,10 @@
 package com.tml.server.job.entity;
 
-import com.tml.common.core.converter.TimeConverter;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.tml.common.core.converter.TimeConverter;
 import com.wuwenze.poi.annotation.Excel;
 import com.wuwenze.poi.annotation.ExcelField;
 import lombok.Data;
@@ -15,10 +15,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @description 
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Data
 @TableName("t_schedule_job")
@@ -37,7 +37,7 @@ public class Job implements Serializable {
      */
     @TableField("JOB_TYPE")
     @NotBlank(message = "{required}")
-    @ExcelField(value = "任务类型")
+    @ExcelField(value = "任务类型",writeConverterExp = "0=本地方法，1=远程服务")
     private String jobType;
     /**
      * Bean名称
@@ -120,12 +120,12 @@ public class Job implements Serializable {
      * 方法名称
      */
     @TableField(exist = false)
-    private  String createTimeFrom;
+    private String createTimeFrom;
     /**
      * 方法名称
      */
     @TableField(exist = false)
-    private  String createTimeTo;
+    private String createTimeTo;
 
     public enum ScheduleStatus {
         /**

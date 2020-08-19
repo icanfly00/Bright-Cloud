@@ -1,10 +1,10 @@
 package com.tml.server.system.service;
 
-import com.tml.api.system.entity.GatewayRouteLimitRule;
-
-import com.tml.common.core.entity.QueryRequest;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tml.api.system.entity.GatewayRouteLimitRule;
+import com.tml.common.core.entity.QueryRequest;
+
 import java.util.List;
 
 /**
@@ -17,7 +17,7 @@ public interface IGatewayRouteLimitRuleService extends IService<GatewayRouteLimi
     /**
      * 查询（分页）
      *
-     * @param request QueryRequest
+     * @param request               QueryRequest
      * @param gatewayRouteLimitRule gatewayRouteLimitRule
      * @return IPage<GatewayRouteLimitRule>
      */
@@ -33,11 +33,12 @@ public interface IGatewayRouteLimitRuleService extends IService<GatewayRouteLimi
 
     /**
      * 检查
-     * @param requestUri 请求URI
+     *
+     * @param requestUri    请求URI
      * @param requestMethod 请求方法
      * @return
      */
-    boolean checkUriAndMethod(String requestUri,String requestMethod);
+    boolean checkUriAndMethod(String requestUri, String requestMethod);
 
     /**
      * 新增
@@ -62,6 +63,7 @@ public interface IGatewayRouteLimitRuleService extends IService<GatewayRouteLimi
 
     /**
      * 根据路径和方法获取
+     *
      * @param uri
      * @param method
      * @return

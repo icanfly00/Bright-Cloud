@@ -1,15 +1,15 @@
 package com.tml.server.job.service;
 
-import com.tml.common.core.entity.QueryRequest;
-import com.tml.server.job.entity.Job;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tml.common.core.entity.QueryRequest;
+import com.tml.server.job.entity.Job;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 public interface IJobService extends IService<Job> {
 

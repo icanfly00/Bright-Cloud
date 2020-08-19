@@ -55,14 +55,14 @@ public class BootstrapRunner implements ApplicationRunner {
             set.stream().forEach(o -> {
                 System.out.println("缓存的动态路由：" + o.toString());
                 RouteDefinitionDTO definitionDTO = JacksonUtil.toObject(o.toString(), RouteDefinitionDTO.class);
-                RouteDefinition routeDefinition=getRouteDefinition(definitionDTO);
+                RouteDefinition routeDefinition = getRouteDefinition(definitionDTO);
                 dynamicRouteService.addRoute(routeDefinition);
             });
             dynamicRouteService.refreshRoute();
         }
     }
 
-    private RouteDefinition getRouteDefinition(RouteDefinitionDTO definitionDTO){
+    private RouteDefinition getRouteDefinition(RouteDefinitionDTO definitionDTO) {
         List<PredicateDefinition> predicates = Lists.newArrayList();
         definitionDTO.getPredicates().stream().forEach(dto -> {
                     PredicateDefinition predicateDefinition = new PredicateDefinition();

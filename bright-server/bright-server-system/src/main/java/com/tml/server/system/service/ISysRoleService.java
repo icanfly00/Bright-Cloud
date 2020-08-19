@@ -1,17 +1,17 @@
 package com.tml.server.system.service;
 
-import com.tml.api.system.entity.SysRole;
-import com.tml.common.core.entity.QueryRequest;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tml.api.system.entity.SysRole;
+import com.tml.common.core.entity.QueryRequest;
 
 import java.util.List;
 
 /**
- * @description 角色信息业务层
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description 角色信息业务层
+ * @since 2020-08-10 20:30
  */
 public interface ISysRoleService extends IService<SysRole> {
 
@@ -22,7 +22,7 @@ public interface ISysRoleService extends IService<SysRole> {
      * @param request request
      * @return 角色分页数据
      */
-    IPage<SysRole> findRoles(SysRole role, QueryRequest request);
+    IPage<SysRole> pageRole(SysRole role, QueryRequest request);
 
     /**
      * 获取用户角色

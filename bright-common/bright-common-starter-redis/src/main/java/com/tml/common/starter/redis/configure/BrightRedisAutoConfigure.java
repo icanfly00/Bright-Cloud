@@ -1,11 +1,11 @@
 package com.tml.common.starter.redis.configure;
 
-import com.tml.common.starter.redis.properties.BrightRedisProperties;
-import com.tml.common.starter.redis.service.RedisPubService;
-import com.tml.common.starter.redis.service.RedisService;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tml.common.starter.redis.properties.BrightRedisProperties;
+import com.tml.common.starter.redis.service.RedisPubService;
+import com.tml.common.starter.redis.service.RedisService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -59,7 +59,7 @@ public class BrightRedisAutoConfigure extends CachingConfigurerSupport {
         return template;
     }
 
-    public   Jackson2JsonRedisSerializer jackson2JsonRedisSerializer(){
+    public Jackson2JsonRedisSerializer jackson2JsonRedisSerializer() {
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
@@ -96,7 +96,7 @@ public class BrightRedisAutoConfigure extends CachingConfigurerSupport {
                 defaultCacheConfig()
                         .disableCachingNullValues()
                         .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer()))
-                .entryTtl(Duration.ofDays(1));
+                        .entryTtl(Duration.ofDays(1));
         return RedisCacheManager.builder(factory).cacheDefaults(cacheConfiguration).build();
     }
 }

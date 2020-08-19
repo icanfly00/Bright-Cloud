@@ -3,16 +3,17 @@ package com.tml.gateway.enhance.service.impl;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.tml.api.system.entity.*;
 import com.tml.common.core.entity.CommonResult;
 import com.tml.common.core.entity.ResultBody;
 import com.tml.common.core.utils.BrightUtil;
-import com.tml.gateway.enhance.entity.*;
-import com.tml.gateway.enhance.service.*;
+import com.tml.gateway.enhance.entity.BlackList;
+import com.tml.gateway.enhance.entity.RateLimitRule;
+import com.tml.gateway.enhance.service.RouteEnhanceService;
 import com.tml.gateway.enhance.utils.AddressUtil;
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.base.Stopwatch;
 import com.tml.gateway.feign.RemoteGatewayFeignService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,15 +31,17 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Slf4j
 @Service
@@ -62,10 +65,10 @@ public class RouteEnhanceServiceImpl implements RouteEnhanceService {
                 String requestMethod = request.getMethodValue();
                 AtomicBoolean forbid = new AtomicBoolean(false);
 
-                ResultBody<List<GatewayBlockList>> resultBody=remoteGatewayFeignService.listGatewayBlockList();
-                List<GatewayBlockList> blockLists= Lists.newArrayList();
-                if(resultBody.getCode()==200 && resultBody.getData().size()>0){
-                    blockLists=resultBody.getData();
+                ResultBody<List<GatewayBlockList>> resultBody = remoteGatewayFeignService.listGatewayBlockList();
+                List<GatewayBlockList> blockLists = Lists.newArrayList();
+                if (resultBody.getCode() == 200 && resultBody.getData().size() > 0) {
+                    blockLists = resultBody.getData();
                 }
 
                 checkBlockList(forbid, blockLists, originUri, requestMethod);
@@ -79,7 +82,7 @@ public class RouteEnhanceServiceImpl implements RouteEnhanceService {
                 log.info("BlockList verification info: Request IP not obtained, no blockList check - {}", stopwatch.stop());
             }
         } catch (Exception e) {
-            log.warn("BlockList verification failed : {} - {}", stopwatch.stop(),e.getMessage());
+            log.warn("BlockList verification failed : {} - {}", stopwatch.stop(), e.getMessage());
         }
         return null;
     }
@@ -96,14 +99,14 @@ public class RouteEnhanceServiceImpl implements RouteEnhanceService {
                 String requestMethod = request.getMethodValue();
                 AtomicBoolean limit = new AtomicBoolean(false);
 
-                GatewayRouteLimitRule routeLimitRule=null;
+                GatewayRouteLimitRule routeLimitRule = null;
 
-                ResultBody<GatewayRouteLimitRule> resultBody=remoteGatewayFeignService.getGatewayRouteLimitRule(originUri.getPath(),METHOD_ALL);
+                ResultBody<GatewayRouteLimitRule> resultBody = remoteGatewayFeignService.getGatewayRouteLimitRule(originUri.getPath(), METHOD_ALL);
 
-                if (resultBody.getCode()==200 && resultBody.getData() == null) {
-                    ResultBody<GatewayRouteLimitRule> resultBody2=remoteGatewayFeignService.getGatewayRouteLimitRule(originUri.getPath(),requestMethod);
-                    if(resultBody2.getCode()==200){
-                        routeLimitRule=resultBody2.getData();
+                if (resultBody.getCode() == 200 && resultBody.getData() == null) {
+                    ResultBody<GatewayRouteLimitRule> resultBody2 = remoteGatewayFeignService.getGatewayRouteLimitRule(originUri.getPath(), requestMethod);
+                    if (resultBody2.getCode() == 200) {
+                        routeLimitRule = resultBody2.getData();
                     }
                 }
                 if (routeLimitRule != null) {
@@ -117,7 +120,7 @@ public class RouteEnhanceServiceImpl implements RouteEnhanceService {
                 log.info("Rate limit verification info: Request IP not obtained, no rate limit filter - {}", stopwatch.stop());
             }
         } catch (Exception e) {
-            log.warn("Rate limit verification failure : {} - {}", stopwatch.stop(),e.getMessage());
+            log.warn("Rate limit verification failure : {} - {}", stopwatch.stop(), e.getMessage());
         }
         return null;
     }
@@ -130,18 +133,18 @@ public class RouteEnhanceServiceImpl implements RouteEnhanceService {
             URI url = getGatewayRequestUrl(exchange);
             Route route = getGatewayRoute(exchange);
             ServerHttpRequest request = exchange.getRequest();
-            ServerHttpResponse response=exchange.getResponse();
+            ServerHttpResponse response = exchange.getResponse();
             String ipAddress = BrightUtil.getServerHttpRequestIpAddress(request);
             int httpStatus = response.getStatusCode().value();
             Map<String, String> headers = request.getHeaders().toSingleValueMap();
             System.out.println("-------请求头------");
             headers.entrySet().stream().forEach((entry) -> {
-                System.out.println(entry.getKey()+":"+entry.getValue());
+                System.out.println(entry.getKey() + ":" + entry.getValue());
             });
             String userAgent = headers.get("user-agent");
-            String authorization=headers.get("authorization");
+            String authorization = headers.get("authorization");
             if (url != null && route != null) {
-                GatewayRouteLog routeLog=new GatewayRouteLog();
+                GatewayRouteLog routeLog = new GatewayRouteLog();
                 routeLog.setIp(ipAddress);
                 routeLog.setRequestUri(originUri.getPath());
                 routeLog.setRequestMethod(request.getMethodValue());
@@ -152,7 +155,7 @@ public class RouteEnhanceServiceImpl implements RouteEnhanceService {
                 routeLog.setHttpStatus(httpStatus);
                 routeLog.setUserAgent(userAgent);
                 routeLog.setAuthentication(authorization);
-                routeLog.setCreateTimeFrom(DateUtil.format(LocalDateTime.now(),DatePattern.NORM_DATETIME_PATTERN));
+                routeLog.setCreateTimeFrom(DateUtil.format(LocalDateTime.now(), DatePattern.NORM_DATETIME_PATTERN));
                 remoteGatewayFeignService.saveGatewayRouteLog(routeLog);
             }
         }
@@ -164,11 +167,11 @@ public class RouteEnhanceServiceImpl implements RouteEnhanceService {
         ServerHttpRequest request = exchange.getRequest();
         String requestIp = BrightUtil.getServerHttpRequestIpAddress(request);
         if (originUri != null) {
-            GatewayBlockListLog blockListLog =new GatewayBlockListLog();
+            GatewayBlockListLog blockListLog = new GatewayBlockListLog();
             blockListLog.setIp(requestIp);
             blockListLog.setRequestMethod(request.getMethodValue());
             blockListLog.setRequestUri(originUri.getPath());
-            blockListLog.setCreateTimeFrom(DateUtil.format(LocalDateTime.now(),DatePattern.NORM_DATETIME_PATTERN));
+            blockListLog.setCreateTimeFrom(DateUtil.format(LocalDateTime.now(), DatePattern.NORM_DATETIME_PATTERN));
             remoteGatewayFeignService.saveGatewayBlockListLog(blockListLog);
             log.info("----- Store blockList logs -----");
         }
@@ -184,7 +187,7 @@ public class RouteEnhanceServiceImpl implements RouteEnhanceService {
             routeLimitRuleLog.setIp(requestIp);
             routeLimitRuleLog.setRequestMethod(request.getMethodValue());
             routeLimitRuleLog.setRequestUri(originUri.getPath());
-            routeLimitRuleLog.setCreateTimeFrom(DateUtil.format(LocalDateTime.now(),DatePattern.NORM_DATETIME_PATTERN));
+            routeLimitRuleLog.setCreateTimeFrom(DateUtil.format(LocalDateTime.now(), DatePattern.NORM_DATETIME_PATTERN));
             remoteGatewayFeignService.saveGatewayRouteLimitRuleLog(routeLimitRuleLog);
             log.info("----- Store rate limit logs -----");
         }
@@ -194,7 +197,7 @@ public class RouteEnhanceServiceImpl implements RouteEnhanceService {
         for (GatewayBlockList blockList : blockLists) {
             if (pathMatcher.match(blockList.getRequestUri(), uri.getPath()) && BlackList.OPEN.equals(blockList.getStatus())) {
                 if (BlackList.METHOD_ALL.equalsIgnoreCase(blockList.getRequestMethod())
-                        || StringUtils.equalsIgnoreCase(requestMethod,blockList.getRequestMethod())) {
+                        || StringUtils.equalsIgnoreCase(requestMethod, blockList.getRequestMethod())) {
                     if (blockList.getLimitFrom() != null && blockList.getLimitTo() != null) {
                         LocalDateTime now = LocalDateTime.now();
                         if (now.isAfter(blockList.getLimitFrom()) && now.isBefore(blockList.getLimitTo())) {
@@ -212,7 +215,7 @@ public class RouteEnhanceServiceImpl implements RouteEnhanceService {
     }
 
     private Mono<Void> checkRateLimit(AtomicBoolean limit, GatewayRouteLimitRule rule, URI uri,
-                                        String requestIp, String requestMethod, ServerHttpResponse response) {
+                                      String requestIp, String requestMethod, ServerHttpResponse response) {
         boolean isRateLimitRuleHit = RateLimitRule.OPEN.equals(rule.getStatus())
                 && (RateLimitRule.METHOD_ALL.equalsIgnoreCase(rule.getRequestMethod())
                 || StringUtils.equalsIgnoreCase(requestMethod, rule.getRequestMethod()));
@@ -228,13 +231,13 @@ public class RouteEnhanceServiceImpl implements RouteEnhanceService {
         }
         if (limit.get()) {
             String requestUri = uri.getPath();
-            int count=0;
-            ResultBody<Integer> resultBody= remoteGatewayFeignService.getCurrentRequestCount(requestUri, requestIp);
-            if(resultBody.getCode()==200){
-                count=resultBody.getData();
+            int count = 0;
+            ResultBody<Integer> resultBody = remoteGatewayFeignService.getCurrentRequestCount(requestUri, requestIp);
+            if (resultBody.getCode() == 200) {
+                count = resultBody.getData();
             }
             if (count == 0) {
-                remoteGatewayFeignService.setCurrentRequestCount(requestUri,requestIp,rule.getIntervalSec());
+                remoteGatewayFeignService.setCurrentRequestCount(requestUri, requestIp, rule.getIntervalSec());
             } else if (count >= rule.getCount()) {
                 return BrightUtil.makeWebFluxResponse(response, MediaType.APPLICATION_JSON_VALUE,
                         HttpStatus.TOO_MANY_REQUESTS, new CommonResult().message("访问频率超限，请稍后再试"));

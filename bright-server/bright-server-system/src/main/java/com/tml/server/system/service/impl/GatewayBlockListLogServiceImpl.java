@@ -33,11 +33,11 @@ public class GatewayBlockListLogServiceImpl extends ServiceImpl<GatewayBlockList
     public IPage<GatewayBlockListLog> pageGatewayBlockListLog(QueryRequest request, GatewayBlockListLog gatewayBlockListLog) {
         LambdaQueryWrapper<GatewayBlockListLog> queryWrapper = new LambdaQueryWrapper<>();
         // TODO 设置查询条件
-        queryWrapper.eq(StringUtils.isNoneBlank(gatewayBlockListLog.getIp()),GatewayBlockListLog::getIp,gatewayBlockListLog.getIp())
-                .eq(StringUtils.isNoneBlank(gatewayBlockListLog.getRequestUri()),GatewayBlockListLog::getRequestUri,gatewayBlockListLog.getRequestUri())
-                .eq(StringUtils.isNoneBlank(gatewayBlockListLog.getRequestMethod()),GatewayBlockListLog::getRequestMethod,gatewayBlockListLog.getRequestMethod())
-                .gt(StringUtils.isNoneBlank(gatewayBlockListLog.getCreateTimeFrom()),GatewayBlockListLog::getCreateTime,gatewayBlockListLog.getCreateTime())
-                .lt(StringUtils.isNoneBlank(gatewayBlockListLog.getCreateTimeTo()),GatewayBlockListLog::getCreateTime,gatewayBlockListLog.getCreateTimeTo())
+        queryWrapper.eq(StringUtils.isNoneBlank(gatewayBlockListLog.getIp()), GatewayBlockListLog::getIp, gatewayBlockListLog.getIp())
+                .eq(StringUtils.isNoneBlank(gatewayBlockListLog.getRequestUri()), GatewayBlockListLog::getRequestUri, gatewayBlockListLog.getRequestUri())
+                .eq(StringUtils.isNoneBlank(gatewayBlockListLog.getRequestMethod()), GatewayBlockListLog::getRequestMethod, gatewayBlockListLog.getRequestMethod())
+                .gt(StringUtils.isNoneBlank(gatewayBlockListLog.getCreateTimeFrom()), GatewayBlockListLog::getCreateTime, gatewayBlockListLog.getCreateTime())
+                .lt(StringUtils.isNoneBlank(gatewayBlockListLog.getCreateTimeTo()), GatewayBlockListLog::getCreateTime, gatewayBlockListLog.getCreateTimeTo())
                 .orderByDesc(GatewayBlockListLog::getCreateTime);
         Page<GatewayBlockListLog> page = new Page<>(request.getPageNum(), request.getPageSize());
         return this.page(page, queryWrapper);
@@ -47,11 +47,11 @@ public class GatewayBlockListLogServiceImpl extends ServiceImpl<GatewayBlockList
     public List<GatewayBlockListLog> listGatewayBlockListLog(GatewayBlockListLog gatewayBlockListLog) {
         LambdaQueryWrapper<GatewayBlockListLog> queryWrapper = new LambdaQueryWrapper<>();
         // TODO 设置查询条件
-        queryWrapper.eq(StringUtils.isNoneBlank(gatewayBlockListLog.getIp()),GatewayBlockListLog::getIp,gatewayBlockListLog.getIp())
-                .eq(StringUtils.isNoneBlank(gatewayBlockListLog.getRequestUri()),GatewayBlockListLog::getRequestUri,gatewayBlockListLog.getRequestUri())
-                .eq(StringUtils.isNoneBlank(gatewayBlockListLog.getRequestMethod()),GatewayBlockListLog::getRequestMethod,gatewayBlockListLog.getRequestMethod())
-                .gt(StringUtils.isNoneBlank(gatewayBlockListLog.getCreateTimeFrom()),GatewayBlockListLog::getCreateTime,gatewayBlockListLog.getCreateTime())
-                .lt(StringUtils.isNoneBlank(gatewayBlockListLog.getCreateTimeTo()),GatewayBlockListLog::getCreateTime,gatewayBlockListLog.getCreateTimeTo())
+        queryWrapper.eq(StringUtils.isNoneBlank(gatewayBlockListLog.getIp()), GatewayBlockListLog::getIp, gatewayBlockListLog.getIp())
+                .eq(StringUtils.isNoneBlank(gatewayBlockListLog.getRequestUri()), GatewayBlockListLog::getRequestUri, gatewayBlockListLog.getRequestUri())
+                .eq(StringUtils.isNoneBlank(gatewayBlockListLog.getRequestMethod()), GatewayBlockListLog::getRequestMethod, gatewayBlockListLog.getRequestMethod())
+                .gt(StringUtils.isNoneBlank(gatewayBlockListLog.getCreateTimeFrom()), GatewayBlockListLog::getCreateTime, gatewayBlockListLog.getCreateTime())
+                .lt(StringUtils.isNoneBlank(gatewayBlockListLog.getCreateTimeTo()), GatewayBlockListLog::getCreateTime, gatewayBlockListLog.getCreateTimeTo())
                 .orderByDesc(GatewayBlockListLog::getCreateTime);
         return this.baseMapper.selectList(queryWrapper);
     }

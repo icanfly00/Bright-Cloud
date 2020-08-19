@@ -1,21 +1,21 @@
 package com.tml.server.generator.entity;
 
 
-import com.tml.common.core.utils.DateUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.tml.common.core.utils.DateUtil;
 import lombok.Data;
 
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Data
 @TableName("t_generator_config")

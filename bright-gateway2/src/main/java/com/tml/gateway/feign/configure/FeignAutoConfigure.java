@@ -40,11 +40,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
- * @description Feign OAuth2 request interceptor
  * @author TuMingLong
+ * @description Feign OAuth2 request interceptor
  * @sence 2020/5/9 15:14
  */
 @Slf4j
@@ -86,9 +85,9 @@ public class FeignAutoConfigure {
     }
 
     public class GateWayMappingJackson2HttpMessageConverter extends MappingJackson2HttpMessageConverter {
-        GateWayMappingJackson2HttpMessageConverter(){
+        GateWayMappingJackson2HttpMessageConverter() {
             List<MediaType> mediaTypes = Lists.newArrayList();
-            mediaTypes.add(MediaType.valueOf(MediaType.TEXT_HTML_VALUE  + ";charset=UTF-8"));
+            mediaTypes.add(MediaType.valueOf(MediaType.TEXT_HTML_VALUE + ";charset=UTF-8"));
             setSupportedMediaTypes(mediaTypes);
 
             ObjectMapper objectMapper = new ObjectMapper();

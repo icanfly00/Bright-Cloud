@@ -6,21 +6,24 @@ import com.tml.common.core.entity.QueryRequest;
 import com.tml.common.core.entity.constant.StringConstant;
 import com.tml.server.system.annotation.ControllerEndpoint;
 import com.tml.server.system.service.ISysDeptService;
+import com.wuwenze.poi.ExcelKit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 import java.util.Map;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Slf4j
 @Validated
@@ -57,5 +60,13 @@ public class SysDeptController {
     @ControllerEndpoint(operation = "修改部门", exceptionMessage = "修改部门失败")
     public void updateDept(@Valid SysDept dept) {
         this.deptService.updateDept(dept);
+    }
+
+
+    @PostMapping("excel")
+    @PreAuthorize("hasAuthority('role:export')")
+    public void export(QueryRequest request, SysDept dept, HttpServletResponse response) {
+        List<SysDept> list = this.deptService.findDepts(dept, request);
+        ExcelKit.$Export(SysDept.class, response).downXlsx(list, false);
     }
 }

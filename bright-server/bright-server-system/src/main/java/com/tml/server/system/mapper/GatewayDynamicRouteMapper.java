@@ -1,7 +1,7 @@
 package com.tml.server.system.mapper;
 
-import com.tml.api.system.entity.GatewayDynamicRoute;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tml.api.system.entity.GatewayDynamicRoute;
 
 /**
  * 动态路由配置表 Mapper

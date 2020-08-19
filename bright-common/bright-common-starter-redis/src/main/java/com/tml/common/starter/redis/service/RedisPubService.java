@@ -20,12 +20,13 @@ public class RedisPubService {
 
     /**
      * 推送消息
+     *
      * @param topicName 主题
      * @param publisher 发布者
-     * @param content 内容
-     * @param status 状态
+     * @param content   内容
+     * @param status    状态
      */
-    public void publish(String topicName,String publisher, String content,int status) {
+    public void publish(String topicName, String publisher, String content, int status) {
         RedisSimpleMessage pushMsg = new RedisSimpleMessage();
         pushMsg.setPublisher(publisher);
         pushMsg.setContent(content);

@@ -1,7 +1,7 @@
 package com.tml.auth.controller;
 
-import com.tml.auth.entity.BindUser;
 import com.tml.api.system.entity.SysUserConnection;
+import com.tml.auth.entity.BindUser;
 import com.tml.auth.service.SocialLoginService;
 import com.tml.common.core.entity.CommonResult;
 import com.tml.common.core.entity.constant.StringConstant;
@@ -27,10 +27,10 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * @description 
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Slf4j
 @Controller

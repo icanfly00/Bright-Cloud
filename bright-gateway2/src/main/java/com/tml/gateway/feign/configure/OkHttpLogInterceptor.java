@@ -7,8 +7,8 @@ import okhttp3.Response;
 import java.io.IOException;
 
 /**
- * @description OkHttp日志拦截器
  * @author TuMingLong
+ * @description OkHttp日志拦截器
  * @sence 2020/3/8 15:40
  */
 @Slf4j

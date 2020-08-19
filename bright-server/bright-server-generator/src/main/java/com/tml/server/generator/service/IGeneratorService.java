@@ -1,17 +1,17 @@
 package com.tml.server.generator.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tml.common.core.entity.QueryRequest;
 import com.tml.server.generator.entity.Column;
 import com.tml.server.generator.entity.Table;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.util.List;
 
 /**
- * @description 
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 public interface IGeneratorService {
 

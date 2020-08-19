@@ -7,9 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tml.api.system.entity.SysLoginLog;
 import com.tml.api.system.entity.SysUser;
 import com.tml.common.core.entity.QueryRequest;
-import com.tml.common.core.entity.constant.BrightConstant;
 import com.tml.common.core.utils.BrightUtil;
-import com.tml.common.core.utils.SortUtil;
 import com.tml.server.system.mapper.SysLoginLogMapper;
 import com.tml.server.system.service.ISysLoginLogService;
 import com.tml.server.system.utils.AddressUtil;
@@ -32,7 +30,8 @@ import java.util.Map;
 public class SysLoginLogServiceImpl extends ServiceImpl<SysLoginLogMapper, SysLoginLog> implements ISysLoginLogService {
 
     @Override
-    public IPage<SysLoginLog> findLoginLogs(SysLoginLog loginLog, QueryRequest request) {
+    public IPage<SysLoginLog> pageLoginLog(SysLoginLog loginLog, QueryRequest request) {
+        Page<SysLoginLog> page = new Page<>(request.getPageNum(), request.getPageSize());
         QueryWrapper<SysLoginLog> queryWrapper = new QueryWrapper<>();
 
         if (StringUtils.isNotBlank(loginLog.getUsername())) {
@@ -43,10 +42,7 @@ public class SysLoginLogServiceImpl extends ServiceImpl<SysLoginLogMapper, SysLo
                     .ge(SysLoginLog::getLoginTime, loginLog.getLoginTimeFrom())
                     .le(SysLoginLog::getLoginTime, loginLog.getLoginTimeTo());
         }
-
-        Page<SysLoginLog> page = new Page<>(request.getPageNum(), request.getPageSize());
-        SortUtil.handlePageSort(request, page, "loginTime", BrightConstant.ORDER_DESC, true);
-
+        queryWrapper.lambda().orderByDesc(SysLoginLog::getLoginTime);
         return this.page(page, queryWrapper);
     }
 
@@ -95,7 +91,7 @@ public class SysLoginLogServiceImpl extends ServiceImpl<SysLoginLogMapper, SysLo
         // 近7日记录
         request.setPageSize(7);
 
-        IPage<SysLoginLog> loginLogs = this.findLoginLogs(loginLog, request);
+        IPage<SysLoginLog> loginLogs = this.pageLoginLog(loginLog, request);
         return loginLogs.getRecords();
     }
 }

@@ -11,6 +11,7 @@ import com.tml.server.system.annotation.ControllerEndpoint;
 import com.tml.server.system.service.ISysLoginLogService;
 import com.tml.server.system.service.ISysUserDataPermissionService;
 import com.tml.server.system.service.ISysUserService;
+import com.wuwenze.poi.ExcelKit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
@@ -26,10 +28,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description 
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Slf4j
 @Validated
@@ -77,9 +79,9 @@ public class SysUserController {
 
 
     @GetMapping
-    @PreAuthorize("hasAuthority('user:view')")
-    public CommonResult userList(QueryRequest queryRequest, SysUser user) {
-        Map<String, Object> dataTable = BrightUtil.getDataTable(userService.findUserDetailList(user, queryRequest));
+    @PreAuthorize("hasAuthority('user:list')")
+    public CommonResult pageUserDetail(QueryRequest queryRequest, SysUser user) {
+        Map<String, Object> dataTable = BrightUtil.getDataTable(userService.pageUserDetail(user, queryRequest));
         return new CommonResult().data(dataTable);
     }
 
@@ -148,5 +150,12 @@ public class SysUserController {
     public void resetPassword(@NotBlank(message = "{required}") String usernames) {
         String[] usernameArr = usernames.split(StringConstant.COMMA);
         this.userService.resetPassword(usernameArr);
+    }
+
+    @PostMapping("excel")
+    @PreAuthorize("hasAuthority('user:export')")
+    public void export(QueryRequest request, SysUser user, HttpServletResponse response) {
+        List<SysUser> list = this.userService.pageUserDetail(user, request).getRecords();
+        ExcelKit.$Export(SysUser.class, response).downXlsx(list, false);
     }
 }

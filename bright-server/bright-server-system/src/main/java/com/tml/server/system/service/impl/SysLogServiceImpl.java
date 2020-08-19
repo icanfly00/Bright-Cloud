@@ -8,8 +8,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tml.api.system.entity.SysLog;
 import com.tml.common.core.entity.QueryRequest;
-import com.tml.common.core.entity.constant.BrightConstant;
-import com.tml.common.core.utils.SortUtil;
 import com.tml.server.system.mapper.SysLogMapper;
 import com.tml.server.system.service.ISysLogService;
 import com.tml.server.system.utils.AddressUtil;
@@ -37,7 +35,8 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     private final ObjectMapper objectMapper;
 
     @Override
-    public IPage<SysLog> findLogs(SysLog log, QueryRequest request) {
+    public IPage<SysLog> pageLog(SysLog log, QueryRequest request) {
+        Page<SysLog> page = new Page<>(request.getPageNum(), request.getPageSize());
         QueryWrapper<SysLog> queryWrapper = new QueryWrapper<>();
 
         if (StringUtils.isNotBlank(log.getUsername())) {
@@ -54,10 +53,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
                     .ge(SysLog::getCreateTime, log.getCreateTimeFrom())
                     .le(SysLog::getCreateTime, log.getCreateTimeTo());
         }
-
-        Page<SysLog> page = new Page<>(request.getPageNum(), request.getPageSize());
-        SortUtil.handlePageSort(request, page, "createTime", BrightConstant.ORDER_DESC, true);
-
+        queryWrapper.lambda().orderByDesc(SysLog::getCreateTime);
         return this.page(page, queryWrapper);
     }
 

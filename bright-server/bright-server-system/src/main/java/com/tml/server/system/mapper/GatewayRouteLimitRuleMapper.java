@@ -1,7 +1,7 @@
 package com.tml.server.system.mapper;
 
-import com.tml.api.system.entity.GatewayRouteLimitRule;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tml.api.system.entity.GatewayRouteLimitRule;
 
 /**
  * 限流规则 Mapper

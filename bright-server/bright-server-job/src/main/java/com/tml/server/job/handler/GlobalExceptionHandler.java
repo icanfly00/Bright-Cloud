@@ -6,10 +6,10 @@ import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * @description 
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @RestControllerAdvice
 @Order(value = Ordered.HIGHEST_PRECEDENCE)

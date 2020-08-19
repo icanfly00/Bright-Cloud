@@ -1,7 +1,7 @@
 package com.tml.common.core.utils;
 
-import com.tml.common.core.entity.constant.BrightConstant;
 import com.google.common.base.Preconditions;
+import com.tml.common.core.entity.constant.BrightConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,10 +17,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Slf4j
 public class FileUtil {

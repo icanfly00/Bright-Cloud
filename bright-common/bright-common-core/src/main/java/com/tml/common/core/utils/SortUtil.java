@@ -1,10 +1,10 @@
 package com.tml.common.core.utils;
 
-import com.tml.common.core.entity.QueryRequest;
-import com.tml.common.core.entity.constant.BrightConstant;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tml.common.core.entity.QueryRequest;
+import com.tml.common.core.entity.constant.BrightConstant;
 import org.apache.commons.lang3.StringUtils;
 
 /**

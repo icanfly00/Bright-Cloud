@@ -40,7 +40,7 @@ public class ScheduleJob extends QuartzJobBean {
     @Resource
     private RestTemplate restTemplate;
 
-    @Resource(name="asyncThreadPoolTaskExecutor")
+    @Resource(name = "asyncThreadPoolTaskExecutor")
     private ThreadPoolTaskExecutor scheduleJobExecutorService;
 
     @Override
@@ -61,18 +61,18 @@ public class ScheduleJob extends QuartzJobBean {
         jobLog.setAlarmMail(scheduleJob.getAlarmMail());
         jobLog.setCreateTime(new Date());
 
-        JobDataMap dataMap=context.getJobDetail().getJobDataMap();
+        JobDataMap dataMap = context.getJobDetail().getJobDataMap();
         dataMap.entrySet().stream().forEach((entry) -> {
-            System.out.println(entry.getKey()+":"+entry.getValue());
+            System.out.println(entry.getKey() + ":" + entry.getValue());
         });
-        String body=dataMap.getString("body");
+        String body = dataMap.getString("body");
 
         long startTime = System.currentTimeMillis();
 
         try {
             // 执行任务
             log.info("任务准备执行，任务ID：{}", scheduleJob.getJobId());
-            if(scheduleJob.getJobType().equals("0")){
+            if (scheduleJob.getJobType().equals("0")) {
                 ScheduleRunnable task = new ScheduleRunnable(scheduleJob.getBeanName(), scheduleJob.getMethodName(), scheduleJob.getParams());
                 Future<?> future = scheduleJobExecutorService.submit(task);
                 future.get();
@@ -80,34 +80,34 @@ public class ScheduleJob extends QuartzJobBean {
                 jobLog.setTimes(times);
                 jobLog.setStatus(JobLog.JOB_SUCCESS);
                 log.info("本地方法任务执行完毕，任务ID：{} 总共耗时：{} 毫秒", scheduleJob.getJobId(), times);
-            }else {
-                String contentType=StringUtils.isBlank(scheduleJob.getContentType())? MediaType.APPLICATION_FORM_URLENCODED_VALUE:scheduleJob.getContentType();
-                ServiceInstance serviceInstance=loadBalancerClient.choose(jobLog.getServiceId());
+            } else {
+                String contentType = StringUtils.isBlank(scheduleJob.getContentType()) ? MediaType.APPLICATION_FORM_URLENCODED_VALUE : scheduleJob.getContentType();
+                ServiceInstance serviceInstance = loadBalancerClient.choose(jobLog.getServiceId());
                 //获取服务实例
-                if(serviceInstance==null){
-                    throw new RuntimeException(String.format("%s服务暂不可用",scheduleJob.getServiceId()));
+                if (serviceInstance == null) {
+                    throw new RuntimeException(String.format("%s服务暂不可用", scheduleJob.getServiceId()));
                 }
-                String url=String.format("%%s",serviceInstance.getUri(),scheduleJob.getPath());
-                HttpHeaders headers=new HttpHeaders();
-                HttpMethod httpMethod=HttpMethod.resolve(scheduleJob.getRequestMethod().toUpperCase());
-                HttpEntity requestEntity=null;
+                String url = String.format("%%s", serviceInstance.getUri(), scheduleJob.getPath());
+                HttpHeaders headers = new HttpHeaders();
+                HttpMethod httpMethod = HttpMethod.resolve(scheduleJob.getRequestMethod().toUpperCase());
+                HttpEntity requestEntity = null;
                 headers.setContentType(MediaType.parseMediaType(contentType));
 
-                if(contentType.contains(MediaType.APPLICATION_JSON_VALUE)){
+                if (contentType.contains(MediaType.APPLICATION_JSON_VALUE)) {
                     //json 格式
-                    requestEntity=new HttpEntity(body,headers);
-                }else{
+                    requestEntity = new HttpEntity(body, headers);
+                } else {
                     //表单形式
-                    MultiValueMap<String,String> params=new LinkedMultiValueMap<>();
-                    if(StringUtils.isNoneBlank(body)){
-                        Map data= JSONObject.parseObject(body,Map.class);
+                    MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+                    if (StringUtils.isNoneBlank(body)) {
+                        Map data = JSONObject.parseObject(body, Map.class);
                         params.putAll(data);
-                        requestEntity=new HttpEntity(body,headers);
+                        requestEntity = new HttpEntity(body, headers);
                     }
                 }
-                log.info("----- url[{}] method[{}] data=[{}] -----",url,httpMethod,requestEntity);
-                ResponseEntity<String> result=restTemplate.exchange(url,httpMethod,requestEntity,String.class);
-                log.info("----- result [{}] -----",result.getBody());
+                log.info("----- url[{}] method[{}] data=[{}] -----", url, httpMethod, requestEntity);
+                ResponseEntity<String> result = restTemplate.exchange(url, httpMethod, requestEntity, String.class);
+                log.info("----- result [{}] -----", result.getBody());
                 long times = System.currentTimeMillis() - startTime;
                 jobLog.setTimes(times);
                 jobLog.setStatus(JobLog.JOB_SUCCESS);

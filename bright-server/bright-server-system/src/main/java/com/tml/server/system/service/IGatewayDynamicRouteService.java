@@ -1,10 +1,9 @@
 package com.tml.server.system.service;
 
-import com.tml.api.system.entity.GatewayDynamicRoute;
-
-import com.tml.common.core.entity.QueryRequest;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tml.api.system.entity.GatewayDynamicRoute;
+import com.tml.common.core.entity.QueryRequest;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public interface IGatewayDynamicRouteService extends IService<GatewayDynamicRout
     /**
      * 查询（分页）
      *
-     * @param request QueryRequest
+     * @param request             QueryRequest
      * @param gatewayDynamicRoute gatewayDynamicRoute
      * @return IPage<GatewayDynamicRoute>
      */
@@ -34,6 +33,7 @@ public interface IGatewayDynamicRouteService extends IService<GatewayDynamicRout
 
     /**
      * 检查路由ID
+     *
      * @param routeId
      * @return
      */

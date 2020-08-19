@@ -1,19 +1,19 @@
 package com.tml.server.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.tml.api.system.entity.SysLoginLog;
 import com.tml.api.system.entity.SysUser;
 import com.tml.common.core.entity.QueryRequest;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * @description 登录日志业务层
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description 登录日志业务层
+ * @since 2020-08-10 20:30
  */
 public interface ISysLoginLogService extends IService<SysLoginLog> {
 
@@ -24,7 +24,7 @@ public interface ISysLoginLogService extends IService<SysLoginLog> {
      * @param request  request
      * @return IPage<LoginLog>
      */
-    IPage<SysLoginLog> findLoginLogs(SysLoginLog loginLog, QueryRequest request);
+    IPage<SysLoginLog> pageLoginLog(SysLoginLog loginLog, QueryRequest request);
 
     /**
      * 保存登录日志

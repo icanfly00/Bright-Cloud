@@ -1,18 +1,19 @@
 package com.tml.api.system.entity;
 
-import java.util.Date;
-import lombok.Data;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+import java.util.Date;
 
 /**
-* 动态路由配置表 Entity
-*
-* @author JacksonTu
-* @date 2020-08-13 09:47:27
-*/
+ * 动态路由配置表 Entity
+ *
+ * @author JacksonTu
+ * @date 2020-08-13 09:47:27
+ */
 @Data
 @TableName("t_gateway_dynamic_route")
 public class GatewayDynamicRoute {
@@ -49,30 +50,30 @@ public class GatewayDynamicRoute {
 
     /**
      * 断言字符串集合，字符串结构：[{
-      	"args": {
-     		"pattern": "/auth/**"
-             },
-     	"name": "Path"
-      }]
+     * "args": {
+     * "pattern": "/auth/**"
+     * },
+     * "name": "Path"
+     * }]
      */
     @TableField("predicates")
     private String predicates;
 
     /**
      * 过滤器字符串集合，字符串结构：[{
-     	"args": {
-     		"name": "authfallback",
-     		"fallbackUri": "forward:/fallback/bright-auth"
-             },
-      	"name": "Hystrix"
-      }, {
-      	"args": {
-      		"_genkey_0": "1"
-         },
-      	"name": "StripPrefix"
-      }, {
-      	"name": "BrightDocGatewayHeaderFilter"
-      }]
+     * "args": {
+     * "name": "authfallback",
+     * "fallbackUri": "forward:/fallback/bright-auth"
+     * },
+     * "name": "Hystrix"
+     * }, {
+     * "args": {
+     * "_genkey_0": "1"
+     * },
+     * "name": "StripPrefix"
+     * }, {
+     * "name": "BrightDocGatewayHeaderFilter"
+     * }]
      */
     @TableField("filters")
     private String filters;

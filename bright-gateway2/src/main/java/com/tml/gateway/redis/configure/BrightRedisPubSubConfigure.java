@@ -22,6 +22,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 public class BrightRedisPubSubConfigure {
     /**
      * 将订阅器绑定到容器
+     *
      * @param connectionFactory
      * @param listener
      * @return

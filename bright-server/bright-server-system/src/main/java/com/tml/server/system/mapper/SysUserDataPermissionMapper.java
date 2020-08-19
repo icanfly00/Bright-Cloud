@@ -1,15 +1,15 @@
 package com.tml.server.system.mapper;
 
-import com.tml.api.system.entity.SysUserDataPermission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tml.api.system.entity.SysUserDataPermission;
 
 import java.util.List;
 
 /**
- * @description 用户与数据权限Mapper接口
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description 用户与数据权限Mapper接口
+ * @since 2020-08-10 20:30
  */
 public interface SysUserDataPermissionMapper extends BaseMapper<SysUserDataPermission> {
     /**

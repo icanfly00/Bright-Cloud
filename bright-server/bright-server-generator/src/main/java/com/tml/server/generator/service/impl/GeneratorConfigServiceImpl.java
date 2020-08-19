@@ -1,10 +1,10 @@
 package com.tml.server.generator.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tml.server.generator.entity.GeneratorConfig;
 import com.tml.server.generator.mapper.GeneratorConfigMapper;
 import com.tml.server.generator.service.IGeneratorConfigService;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

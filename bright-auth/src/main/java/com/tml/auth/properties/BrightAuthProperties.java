@@ -1,16 +1,14 @@
 package com.tml.auth.properties;
 
 import lombok.Data;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
- * @description jwt配置
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description jwt配置
+ * @since 2020-08-10 20:30
  */
 @Data
 @Component

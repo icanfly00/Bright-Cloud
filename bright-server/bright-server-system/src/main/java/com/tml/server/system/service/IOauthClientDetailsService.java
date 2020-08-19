@@ -1,10 +1,10 @@
 package com.tml.server.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.tml.api.system.entity.OauthClientDetails;
 import com.tml.common.core.entity.QueryRequest;
 import com.tml.common.core.exception.BrightException;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * @author Yuuki

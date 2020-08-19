@@ -3,10 +3,10 @@ package com.tml.common.starter.redis.properties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * @description 
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @ConfigurationProperties(prefix = "bright.lettuce.redis")
 public class BrightRedisProperties {

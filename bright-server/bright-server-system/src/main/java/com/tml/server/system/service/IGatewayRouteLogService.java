@@ -1,10 +1,9 @@
 package com.tml.server.system.service;
 
-import com.tml.api.system.entity.GatewayRouteLog;
-
-import com.tml.common.core.entity.QueryRequest;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tml.api.system.entity.GatewayRouteLog;
+import com.tml.common.core.entity.QueryRequest;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public interface IGatewayRouteLogService extends IService<GatewayRouteLog> {
     /**
      * 查询（分页）
      *
-     * @param request QueryRequest
+     * @param request         QueryRequest
      * @param gatewayRouteLog gatewayRouteLog
      * @return IPage<GatewayRouteLog>
      */

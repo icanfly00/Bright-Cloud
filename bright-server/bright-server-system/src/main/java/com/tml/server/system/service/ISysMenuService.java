@@ -1,17 +1,17 @@
 package com.tml.server.system.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.tml.api.system.entity.SysMenu;
 import com.tml.common.core.entity.router.VueRouter;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * @description 菜单业务层
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description 菜单业务层
+ * @since 2020-08-10 20:30
  */
 public interface ISysMenuService extends IService<SysMenu> {
 

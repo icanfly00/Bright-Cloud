@@ -1,18 +1,18 @@
 package com.tml.server.generator.controller;
 
+import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
+import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import com.tml.common.core.entity.CommonResult;
 import com.tml.common.core.entity.QueryRequest;
 import com.tml.common.core.entity.constant.GeneratorConstant;
-import com.tml.server.generator.entity.Column;
-import com.tml.server.generator.entity.GeneratorConfig;
 import com.tml.common.core.exception.BrightException;
 import com.tml.common.core.utils.BrightUtil;
 import com.tml.common.core.utils.FileUtil;
+import com.tml.server.generator.entity.Column;
+import com.tml.server.generator.entity.GeneratorConfig;
 import com.tml.server.generator.helper.GeneratorHelper;
 import com.tml.server.generator.service.IGeneratorConfigService;
 import com.tml.server.generator.service.IGeneratorService;
-import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
-import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RegExUtils;
@@ -30,10 +30,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description 
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Slf4j
 @Validated

@@ -30,28 +30,28 @@ public class RedisSubService {
 
     public void onMessage(RedisSimpleMessage message, String pattern) {
         log.info("redis topic: {} received: {} ", pattern, JacksonUtil.toJson(message));
-        if(message.getStatus()==1){
+        if (message.getStatus() == 1) {
             log.info("----- add route -----");
-            RouteDefinitionDTO definitionDTO=JacksonUtil.toObject(message.getContent(),RouteDefinitionDTO.class);
-            RouteDefinition routeDefinition=getRouteDefinition(definitionDTO);
+            RouteDefinitionDTO definitionDTO = JacksonUtil.toObject(message.getContent(), RouteDefinitionDTO.class);
+            RouteDefinition routeDefinition = getRouteDefinition(definitionDTO);
             gatewayDynamicRouteService.addRoute(routeDefinition);
             gatewayDynamicRouteService.refreshRoute();
         }
-        if(message.getStatus()==2){
+        if (message.getStatus() == 2) {
             log.info("----- update route -----");
-            RouteDefinitionDTO definitionDTO=JacksonUtil.toObject(message.getContent(),RouteDefinitionDTO.class);
-            RouteDefinition routeDefinition=getRouteDefinition(definitionDTO);
+            RouteDefinitionDTO definitionDTO = JacksonUtil.toObject(message.getContent(), RouteDefinitionDTO.class);
+            RouteDefinition routeDefinition = getRouteDefinition(definitionDTO);
             gatewayDynamicRouteService.updateRoute(routeDefinition);
             gatewayDynamicRouteService.refreshRoute();
         }
-        if(message.getStatus()==3){
+        if (message.getStatus() == 3) {
             log.info("----- delete route -----");
             gatewayDynamicRouteService.deleteRoute(message.getContent());
             gatewayDynamicRouteService.refreshRoute();
         }
     }
 
-    private RouteDefinition getRouteDefinition(RouteDefinitionDTO definitionDTO){
+    private RouteDefinition getRouteDefinition(RouteDefinitionDTO definitionDTO) {
         List<PredicateDefinition> predicates = Lists.newArrayList();
         definitionDTO.getPredicates().stream().forEach(dto -> {
                     PredicateDefinition predicateDefinition = new PredicateDefinition();

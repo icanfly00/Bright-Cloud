@@ -1,26 +1,26 @@
 package com.tml.server.system.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tml.api.system.dto.FilterDefinitionDTO;
 import com.tml.api.system.dto.PredicateDefinitionDTO;
 import com.tml.api.system.dto.RouteDefinitionDTO;
 import com.tml.api.system.entity.GatewayDynamicRoute;
+import com.tml.common.core.entity.QueryRequest;
 import com.tml.common.core.entity.constant.CacheConstant;
 import com.tml.common.core.utils.JacksonUtil;
 import com.tml.common.starter.redis.service.RedisPubService;
 import com.tml.common.starter.redis.service.RedisService;
 import com.tml.server.system.mapper.GatewayDynamicRouteMapper;
 import com.tml.server.system.service.IGatewayDynamicRouteService;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
-import lombok.RequiredArgsConstructor;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.tml.common.core.entity.QueryRequest;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -45,8 +45,8 @@ public class GatewayDynamicRouteServiceImpl extends ServiceImpl<GatewayDynamicRo
     public IPage<GatewayDynamicRoute> pageGatewayDynamicRoute(QueryRequest request, GatewayDynamicRoute gatewayDynamicRoute) {
         LambdaQueryWrapper<GatewayDynamicRoute> queryWrapper = new LambdaQueryWrapper<>();
         // TODO 设置查询条件
-        queryWrapper.like(StringUtils.isNoneBlank(gatewayDynamicRoute.getRouteName()),GatewayDynamicRoute::getRouteName,gatewayDynamicRoute.getRouteName())
-                .eq(StringUtils.isNoneBlank(gatewayDynamicRoute.getRouteId()),GatewayDynamicRoute::getRouteId,gatewayDynamicRoute.getRouteId());
+        queryWrapper.like(StringUtils.isNoneBlank(gatewayDynamicRoute.getRouteName()), GatewayDynamicRoute::getRouteName, gatewayDynamicRoute.getRouteName())
+                .eq(StringUtils.isNoneBlank(gatewayDynamicRoute.getRouteId()), GatewayDynamicRoute::getRouteId, gatewayDynamicRoute.getRouteId());
         Page<GatewayDynamicRoute> page = new Page<>(request.getPageNum(), request.getPageSize());
         return this.page(page, queryWrapper);
     }
@@ -55,8 +55,8 @@ public class GatewayDynamicRouteServiceImpl extends ServiceImpl<GatewayDynamicRo
     public List<GatewayDynamicRoute> listGatewayDynamicRoute(GatewayDynamicRoute gatewayDynamicRoute) {
         LambdaQueryWrapper<GatewayDynamicRoute> queryWrapper = new LambdaQueryWrapper<>();
         // TODO 设置查询条件
-        queryWrapper.like(StringUtils.isNoneBlank(gatewayDynamicRoute.getRouteName()),GatewayDynamicRoute::getRouteName,gatewayDynamicRoute.getRouteName())
-                .eq(StringUtils.isNoneBlank(gatewayDynamicRoute.getRouteId()),GatewayDynamicRoute::getRouteId,gatewayDynamicRoute.getRouteId());
+        queryWrapper.like(StringUtils.isNoneBlank(gatewayDynamicRoute.getRouteName()), GatewayDynamicRoute::getRouteName, gatewayDynamicRoute.getRouteName())
+                .eq(StringUtils.isNoneBlank(gatewayDynamicRoute.getRouteId()), GatewayDynamicRoute::getRouteId, gatewayDynamicRoute.getRouteId());
         return this.baseMapper.selectList(queryWrapper);
     }
 
@@ -64,11 +64,11 @@ public class GatewayDynamicRouteServiceImpl extends ServiceImpl<GatewayDynamicRo
     public boolean checkRouteId(String routeId) {
         LambdaQueryWrapper<GatewayDynamicRoute> queryWrapper = new LambdaQueryWrapper<>();
         // TODO 设置查询条件
-        queryWrapper.eq(StringUtils.isNoneBlank(routeId),GatewayDynamicRoute::getRouteId,routeId);
-        int count=this.baseMapper.selectCount(queryWrapper);
-        if(count>0){
+        queryWrapper.eq(StringUtils.isNoneBlank(routeId), GatewayDynamicRoute::getRouteId, routeId);
+        int count = this.baseMapper.selectCount(queryWrapper);
+        if (count > 0) {
             return false;
-        }else {
+        } else {
             return true;
         }
     }
@@ -77,7 +77,7 @@ public class GatewayDynamicRouteServiceImpl extends ServiceImpl<GatewayDynamicRo
     @Transactional(rollbackFor = Exception.class)
     public void saveGatewayDynamicRoute(GatewayDynamicRoute gatewayDynamicRoute) {
         boolean save = this.save(gatewayDynamicRoute);
-        if (save && gatewayDynamicRoute.getEnable()==1) {
+        if (save && gatewayDynamicRoute.getEnable() == 1) {
             RouteDefinitionDTO dto = getRouteDefinition(gatewayDynamicRoute);
             redisPubService.publish("/redis/dynamicRoute", "admin", JacksonUtil.toJson(dto), 1);
         }
@@ -89,11 +89,11 @@ public class GatewayDynamicRouteServiceImpl extends ServiceImpl<GatewayDynamicRo
     public void updateGatewayDynamicRoute(GatewayDynamicRoute gatewayDynamicRoute) {
         boolean update = this.saveOrUpdate(gatewayDynamicRoute);
         if (update) {
-            if(gatewayDynamicRoute.getEnable()==1){
+            if (gatewayDynamicRoute.getEnable() == 1) {
                 RouteDefinitionDTO dto = getRouteDefinition(gatewayDynamicRoute);
                 redisPubService.publish("/redis/dynamicRoute", "admin", JacksonUtil.toJson(dto), 2);
             }
-            if(gatewayDynamicRoute.getEnable()==0){
+            if (gatewayDynamicRoute.getEnable() == 0) {
                 redisPubService.publish("/redis/dynamicRoute", "admin", gatewayDynamicRoute.getRouteId(), 3);
             }
         }
@@ -110,16 +110,16 @@ public class GatewayDynamicRouteServiceImpl extends ServiceImpl<GatewayDynamicRo
 
     @Override
     public void cacheGatewayDynamicRoute() {
-        LambdaQueryWrapper<GatewayDynamicRoute> lambdaQueryWrapper=new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(GatewayDynamicRoute::getEnable,1);
-        List<GatewayDynamicRoute> list=this.list(lambdaQueryWrapper);
+        LambdaQueryWrapper<GatewayDynamicRoute> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(GatewayDynamicRoute::getEnable, 1);
+        List<GatewayDynamicRoute> list = this.list(lambdaQueryWrapper);
 
-        if(list!=null && list.size()>0){
-            String key= CacheConstant.GATEWAY_ROUTE_CACHE;
+        if (list != null && list.size() > 0) {
+            String key = CacheConstant.GATEWAY_ROUTE_CACHE;
             redisService.del(key);
             list.stream().forEach(dynamicRoute -> {
-                RouteDefinitionDTO dto=getRouteDefinition(dynamicRoute);
-                redisService.sSet(key,JacksonUtil.toJson(dto));
+                RouteDefinitionDTO dto = getRouteDefinition(dynamicRoute);
+                redisService.sSet(key, JacksonUtil.toJson(dto));
             });
         }
     }

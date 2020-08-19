@@ -1,10 +1,9 @@
 package com.tml.server.system.service;
 
-import com.tml.api.system.entity.GatewayBlockList;
-
-import com.tml.common.core.entity.QueryRequest;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tml.api.system.entity.GatewayBlockList;
+import com.tml.common.core.entity.QueryRequest;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public interface IGatewayBlockListService extends IService<GatewayBlockList> {
     /**
      * 查询（分页）
      *
-     * @param request QueryRequest
+     * @param request          QueryRequest
      * @param gatewayBlockList gatewayBlackList
      * @return IPage<GatewayBlockList>
      */
@@ -34,12 +33,13 @@ public interface IGatewayBlockListService extends IService<GatewayBlockList> {
 
     /**
      * 检查
+     *
      * @param ip
      * @param requestUri
      * @param requestMethod
      * @return
      */
-    boolean check(String ip,String requestUri,String requestMethod);
+    boolean check(String ip, String requestUri, String requestMethod);
 
     /**
      * 新增
@@ -64,6 +64,7 @@ public interface IGatewayBlockListService extends IService<GatewayBlockList> {
 
     /**
      * 查询
+     *
      * @param
      * @return
      */

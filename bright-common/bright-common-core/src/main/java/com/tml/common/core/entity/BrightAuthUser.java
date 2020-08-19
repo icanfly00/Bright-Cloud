@@ -9,10 +9,10 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
- * @description 
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Data
 @SuppressWarnings("all")

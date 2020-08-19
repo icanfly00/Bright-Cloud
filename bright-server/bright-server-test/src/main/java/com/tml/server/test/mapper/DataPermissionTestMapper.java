@@ -6,10 +6,10 @@ import com.tml.server.test.entity.DataPermissionTest;
 
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @DataPermission(methods = {"selectPage"})
 public interface DataPermissionTestMapper extends BaseMapper<DataPermissionTest> {

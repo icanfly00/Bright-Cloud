@@ -1,7 +1,5 @@
 package com.tml.server.system.runner;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
 import com.tml.server.system.service.IGatewayBlockListService;
 import com.tml.server.system.service.IGatewayDynamicRouteService;
 import com.tml.server.system.service.IGatewayRouteLimitRuleService;
@@ -9,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 /**
  * @author JacksonTu
@@ -32,7 +28,7 @@ public class GatewayRunner implements ApplicationRunner {
         routeLimitRuleService.cacheGatewayRouteLimitRule();
         dynamicRouteService.cacheGatewayDynamicRoute();
         String banner = "-----------------------------------------\n" +
-                "已缓存黑名单、限流规则、动态路由。"+ "\n" +
+                "已缓存黑名单、限流规则、动态路由。" + "\n" +
                 "-----------------------------------------";
         System.out.println(banner);
     }

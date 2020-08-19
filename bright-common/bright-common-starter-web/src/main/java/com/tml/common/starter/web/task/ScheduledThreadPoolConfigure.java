@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+
 import javax.annotation.Resource;
 import java.util.concurrent.ThreadPoolExecutor;
 

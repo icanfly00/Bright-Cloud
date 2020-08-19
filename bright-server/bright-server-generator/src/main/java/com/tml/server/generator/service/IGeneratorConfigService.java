@@ -1,13 +1,13 @@
 package com.tml.server.generator.service;
 
-import com.tml.server.generator.entity.GeneratorConfig;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tml.server.generator.entity.GeneratorConfig;
 
 /**
- * @description 
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 public interface IGeneratorConfigService extends IService<GeneratorConfig> {
 

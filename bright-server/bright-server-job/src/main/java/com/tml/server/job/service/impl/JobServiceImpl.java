@@ -1,15 +1,15 @@
 package com.tml.server.job.service.impl;
 
-import com.tml.common.core.entity.QueryRequest;
-import com.tml.common.core.entity.constant.StringConstant;
-import com.tml.server.job.entity.Job;
-import com.tml.server.job.utils.ScheduleUtils;
-import com.tml.server.job.mapper.JobMapper;
-import com.tml.server.job.service.IJobService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.tml.common.core.entity.QueryRequest;
+import com.tml.common.core.entity.constant.StringConstant;
+import com.tml.server.job.entity.Job;
+import com.tml.server.job.mapper.JobMapper;
+import com.tml.server.job.service.IJobService;
+import com.tml.server.job.utils.ScheduleUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,10 +25,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Slf4j
 @Service("JobService")
@@ -66,17 +66,17 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements IJobS
 
         LambdaQueryWrapper<Job> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper
-                .eq(StringUtils.isNotBlank(job.getBeanName()),Job::getBeanName, job.getBeanName())
-                .eq(StringUtils.isNotBlank(job.getMethodName()),Job::getMethodName, job.getMethodName())
-                .eq(StringUtils.isNotBlank(job.getServiceId()),Job::getServiceId, job.getServiceId())
-                .eq(StringUtils.isNotBlank(job.getPath()),Job::getPath, job.getPath())
-                .eq(StringUtils.isNotBlank(job.getParams()),Job::getParams, job.getParams())
-                .eq(StringUtils.isNotBlank(job.getRemark()),Job::getRemark, job.getRemark())
-                .eq(StringUtils.isNotBlank(job.getJobType()),Job::getJobType, job.getJobType())
-                .eq(StringUtils.isNotBlank(job.getStatus()),Job::getStatus, job.getStatus())
-                .ge(StringUtils.isNotBlank(job.getCreateTimeFrom()),Job::getCreateTime, job.getCreateTimeFrom())
-                .le(StringUtils.isNotBlank(job.getCreateTimeTo()),Job::getCreateTime, job.getCreateTimeTo())
-        .orderByDesc(Job::getCreateTime);
+                .eq(StringUtils.isNotBlank(job.getBeanName()), Job::getBeanName, job.getBeanName())
+                .eq(StringUtils.isNotBlank(job.getMethodName()), Job::getMethodName, job.getMethodName())
+                .eq(StringUtils.isNotBlank(job.getServiceId()), Job::getServiceId, job.getServiceId())
+                .eq(StringUtils.isNotBlank(job.getPath()), Job::getPath, job.getPath())
+                .eq(StringUtils.isNotBlank(job.getParams()), Job::getParams, job.getParams())
+                .eq(StringUtils.isNotBlank(job.getRemark()), Job::getRemark, job.getRemark())
+                .eq(StringUtils.isNotBlank(job.getJobType()), Job::getJobType, job.getJobType())
+                .eq(StringUtils.isNotBlank(job.getStatus()), Job::getStatus, job.getStatus())
+                .ge(StringUtils.isNotBlank(job.getCreateTimeFrom()), Job::getCreateTime, job.getCreateTimeFrom())
+                .le(StringUtils.isNotBlank(job.getCreateTimeTo()), Job::getCreateTime, job.getCreateTimeTo())
+                .orderByDesc(Job::getCreateTime);
 
         return this.page(page, queryWrapper);
     }

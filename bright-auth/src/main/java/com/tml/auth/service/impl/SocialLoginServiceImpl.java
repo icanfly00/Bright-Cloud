@@ -1,8 +1,9 @@
 package com.tml.auth.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.tml.api.system.entity.SysUser;
-import com.tml.auth.entity.BindUser;
 import com.tml.api.system.entity.SysUserConnection;
+import com.tml.auth.entity.BindUser;
 import com.tml.auth.feign.RemoteUserFeignService;
 import com.tml.auth.manager.UserManager;
 import com.tml.auth.properties.BrightAuthProperties;
@@ -15,7 +16,6 @@ import com.tml.common.core.entity.constant.SocialConstant;
 import com.tml.common.core.entity.constant.StringConstant;
 import com.tml.common.core.exception.BrightException;
 import com.tml.common.core.utils.BrightUtil;
-import cn.hutool.core.util.StrUtil;
 import com.xkcoding.justauth.AuthRequestFactory;
 import lombok.RequiredArgsConstructor;
 import me.zhyd.oauth.config.AuthSource;
@@ -37,10 +37,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Service
 @RequiredArgsConstructor
@@ -86,10 +86,10 @@ public class SocialLoginServiceImpl implements SocialLoginService {
         if (response.ok()) {
             AuthUser authUser = (AuthUser) response.getData();
             ResultBody<SysUserConnection> resultBody = remoteUserFeignService.findUserConnectionByCondition(authUser.getSource().toString(), authUser.getUuid());
-            if (resultBody.getCode()!=200) {
+            if (resultBody.getCode() != 200) {
                 commonResult.message(NOT_BIND).data(authUser);
             } else {
-                SysUserConnection sysUserConnection=resultBody.getData();
+                SysUserConnection sysUserConnection = resultBody.getData();
                 SysUser user = userManager.findByName(sysUserConnection.getUserName());
                 if (user == null) {
                     throw new BrightException("系统中未找到与第三方账号对应的账户");
@@ -131,7 +131,7 @@ public class SocialLoginServiceImpl implements SocialLoginService {
         String username = bindUser.getBindUsername();
         if (isCurrentUser(username)) {
             ResultBody<SysUserConnection> resultBody = remoteUserFeignService.findUserConnectionByCondition(authUser.getSource().toString(), authUser.getUuid());
-            if (resultBody.getCode()==200 && resultBody.getData() != null) {
+            if (resultBody.getCode() == 200 && resultBody.getData() != null) {
                 throw new BrightException("绑定失败，该第三方账号已绑定" + resultBody.getData().getUserName() + "系统账户");
             }
             SysUser sysUser = new SysUser();
@@ -154,8 +154,8 @@ public class SocialLoginServiceImpl implements SocialLoginService {
 
     @Override
     public List<SysUserConnection> findUserConnections(String username) {
-        ResultBody<List<SysUserConnection>> resultBody=this.remoteUserFeignService.findUserConnectionByUsername(username);
-        if(resultBody.getCode()==200 && resultBody.getData()!=null && resultBody.getData().size()>0){
+        ResultBody<List<SysUserConnection>> resultBody = this.remoteUserFeignService.findUserConnectionByUsername(username);
+        if (resultBody.getCode() == 200 && resultBody.getData() != null && resultBody.getData().size() > 0) {
             return resultBody.getData();
         }
         return null;

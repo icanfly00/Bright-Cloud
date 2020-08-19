@@ -1,14 +1,14 @@
 package com.tml.server.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tml.api.system.entity.OauthClientDetails;
 import com.tml.common.core.entity.QueryRequest;
 import com.tml.common.core.entity.constant.CacheConstant;
 import com.tml.common.core.entity.constant.StringConstant;
 import com.tml.common.core.exception.BrightException;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tml.common.starter.redis.service.RedisService;
 import com.tml.server.system.mapper.OauthClientDetailsMapper;
 import com.tml.server.system.service.IOauthClientDetailsService;
@@ -25,10 +25,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @description
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 @Slf4j
 @Service
@@ -75,7 +75,7 @@ public class IOauthClientDetailsServiceImpl extends ServiceImpl<OauthClientDetai
         boolean saved = this.save(oauthClientDetails);
         if (saved) {
             log.info("缓存Client -> {}", oauthClientDetails);
-            this.redisService.hset(CacheConstant.CLIENT_DETAILS_CACHE,oauthClientDetails.getClientId(),oauthClientDetails);
+            this.redisService.hset(CacheConstant.CLIENT_DETAILS_CACHE, oauthClientDetails.getClientId(), oauthClientDetails);
         }
     }
 
@@ -92,8 +92,8 @@ public class IOauthClientDetailsServiceImpl extends ServiceImpl<OauthClientDetai
         boolean updated = this.update(oauthClientDetails, queryWrapper);
         if (updated) {
             log.info("更新Client -> {}", oauthClientDetails);
-            this.redisService.hdel(CacheConstant.CLIENT_DETAILS_CACHE,clientId);
-            this.redisService.hset(CacheConstant.CLIENT_DETAILS_CACHE,oauthClientDetails.getClientId(),oauthClientDetails);
+            this.redisService.hdel(CacheConstant.CLIENT_DETAILS_CACHE, clientId);
+            this.redisService.hset(CacheConstant.CLIENT_DETAILS_CACHE, oauthClientDetails.getClientId(), oauthClientDetails);
         }
     }
 
@@ -106,7 +106,7 @@ public class IOauthClientDetailsServiceImpl extends ServiceImpl<OauthClientDetai
         boolean removed = this.remove(queryWrapper);
         if (removed) {
             log.info("删除ClientId为({})的Client", clientIds);
-            Arrays.stream(clientIdArray).forEach(c -> this.redisService.hdel(CacheConstant.CLIENT_DETAILS_CACHE,String.valueOf(c)));
+            Arrays.stream(clientIdArray).forEach(c -> this.redisService.hdel(CacheConstant.CLIENT_DETAILS_CACHE, String.valueOf(c)));
         }
     }
 }

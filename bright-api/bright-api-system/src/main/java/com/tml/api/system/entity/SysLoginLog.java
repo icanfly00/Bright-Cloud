@@ -4,21 +4,26 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.tml.common.core.converter.TimeConverter;
+import com.wuwenze.poi.annotation.Excel;
+import com.wuwenze.poi.annotation.ExcelField;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @description 登录日志
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description 登录日志
+ * @since 2020-08-10 20:30
  */
 @Slf4j
 @Data
 @TableName("t_sys_login_log")
+@Excel("登录日志表")
 public class SysLoginLog implements Serializable {
 
     private static final long serialVersionUID = 921991157363932095L;
@@ -31,31 +36,37 @@ public class SysLoginLog implements Serializable {
      * 登录用户
      */
     @TableField("USERNAME")
+    @ExcelField(value = "登录用户")
     private String username;
     /**
      * 登录时间
      */
     @TableField("LOGIN_TIME")
+    @ExcelField(value = "登录时间", writeConverter = TimeConverter.class)
     private Date loginTime;
     /**
      * 登录地点
      */
     @TableField("LOCATION")
+    @ExcelField(value = "登录地点")
     private String location;
     /**
      * 登录 IP
      */
     @TableField("IP")
+    @ExcelField(value = "登录IP")
     private String ip;
     /**
      * 操作系统
      */
     @TableField("`SYSTEM`")
+    @ExcelField(value = "操作系统")
     private String system;
     /**
      * 登录浏览器
      */
     @TableField("BROWSER")
+    @ExcelField(value = "登录浏览器")
     private String browser;
 
     private transient String loginTimeFrom;

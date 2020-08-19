@@ -14,22 +14,22 @@ public interface CacheConstant {
     /**
      * 网关缓存
      */
-    String GATEWAY_ROUTE_CACHE="gateway:route";
+    String GATEWAY_ROUTE_CACHE = "gateway:route";
     /**
      * 黑名单缓存
      */
-    String GATEWAY_BLOCK_LIST_CACHE="gateway:block:list";
+    String GATEWAY_BLOCK_LIST_CACHE = "gateway:block:list";
     /**
      * 限流规则缓存
      */
-    String GATEWAY_ROUTE_LIMIT_RULE_CACHE="gateway:route:limit:rule";
+    String GATEWAY_ROUTE_LIMIT_RULE_CACHE = "gateway:route:limit:rule";
     /**
      * 限流次数缓存
      */
-    String GATEWAY_ROUTE_LIMIT_COUNT_CACHE="gateway:route:limit:count";
+    String GATEWAY_ROUTE_LIMIT_COUNT_CACHE = "gateway:route:limit:count";
     /**
      * 动态路由
      */
-    String GATEWAY_DYNAMIC_ROUTE_CACHE="gateway:dynamic:route";
+    String GATEWAY_DYNAMIC_ROUTE_CACHE = "gateway:dynamic:route";
 
 }

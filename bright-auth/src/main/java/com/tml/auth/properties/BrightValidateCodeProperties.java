@@ -6,10 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * @description  验证码配置
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description 验证码配置
+ * @since 2020-08-10 20:30
  */
 @Data
 @Component

@@ -38,9 +38,9 @@ public class GatewayBlockListServiceImpl extends ServiceImpl<GatewayBlockListMap
     public IPage<GatewayBlockList> pageGatewayBlockList(QueryRequest request, GatewayBlockList gatewayBlockList) {
         LambdaQueryWrapper<GatewayBlockList> queryWrapper = new LambdaQueryWrapper<>();
         // TODO 设置查询条件
-        queryWrapper.eq(StringUtils.isNoneBlank(gatewayBlockList.getIp()),GatewayBlockList::getIp,gatewayBlockList.getIp())
-                .eq(StringUtils.isNoneBlank(gatewayBlockList.getRequestUri()),GatewayBlockList::getRequestUri,gatewayBlockList.getRequestUri())
-                .eq(StringUtils.isNoneBlank(gatewayBlockList.getRequestMethod()),GatewayBlockList::getRequestMethod,gatewayBlockList.getRequestMethod());
+        queryWrapper.eq(StringUtils.isNoneBlank(gatewayBlockList.getIp()), GatewayBlockList::getIp, gatewayBlockList.getIp())
+                .eq(StringUtils.isNoneBlank(gatewayBlockList.getRequestUri()), GatewayBlockList::getRequestUri, gatewayBlockList.getRequestUri())
+                .eq(StringUtils.isNoneBlank(gatewayBlockList.getRequestMethod()), GatewayBlockList::getRequestMethod, gatewayBlockList.getRequestMethod());
         Page<GatewayBlockList> page = new Page<>(request.getPageNum(), request.getPageSize());
         return this.page(page, queryWrapper);
     }
@@ -49,28 +49,28 @@ public class GatewayBlockListServiceImpl extends ServiceImpl<GatewayBlockListMap
     public List<GatewayBlockList> listGatewayBlockList(GatewayBlockList gatewayBlockList) {
         LambdaQueryWrapper<GatewayBlockList> queryWrapper = new LambdaQueryWrapper<>();
         // TODO 设置查询条件
-        queryWrapper.eq(StringUtils.isNoneBlank(gatewayBlockList.getIp()),GatewayBlockList::getIp,gatewayBlockList.getIp())
-                .eq(StringUtils.isNoneBlank(gatewayBlockList.getRequestUri()),GatewayBlockList::getRequestUri,gatewayBlockList.getRequestUri())
-                .eq(StringUtils.isNoneBlank(gatewayBlockList.getRequestMethod()),GatewayBlockList::getRequestMethod,gatewayBlockList.getRequestMethod());
+        queryWrapper.eq(StringUtils.isNoneBlank(gatewayBlockList.getIp()), GatewayBlockList::getIp, gatewayBlockList.getIp())
+                .eq(StringUtils.isNoneBlank(gatewayBlockList.getRequestUri()), GatewayBlockList::getRequestUri, gatewayBlockList.getRequestUri())
+                .eq(StringUtils.isNoneBlank(gatewayBlockList.getRequestMethod()), GatewayBlockList::getRequestMethod, gatewayBlockList.getRequestMethod());
         return this.baseMapper.selectList(queryWrapper);
     }
 
     @Override
     public boolean check(String ip, String requestUri, String requestMethod) {
-        int count=0;
+        int count = 0;
         LambdaQueryWrapper<GatewayBlockList> queryWrapper = new LambdaQueryWrapper<>();
         // TODO 设置查询条件
-        queryWrapper.eq(StringUtils.isNoneBlank(requestUri),GatewayBlockList::getRequestUri,requestUri)
-                .eq(StringUtils.isNoneBlank(requestMethod),GatewayBlockList::getRequestMethod,requestMethod);
-         count=this.count(queryWrapper);
-         if(count>0){
-             return false;
-         }
-        queryWrapper.eq(StringUtils.isNoneBlank(ip),GatewayBlockList::getIp,ip);
-         count=this.count(queryWrapper);
-         if(count>0){
-             return false;
-         }
+        queryWrapper.eq(StringUtils.isNoneBlank(requestUri), GatewayBlockList::getRequestUri, requestUri)
+                .eq(StringUtils.isNoneBlank(requestMethod), GatewayBlockList::getRequestMethod, requestMethod);
+        count = this.count(queryWrapper);
+        if (count > 0) {
+            return false;
+        }
+        queryWrapper.eq(StringUtils.isNoneBlank(ip), GatewayBlockList::getIp, ip);
+        count = this.count(queryWrapper);
+        if (count > 0) {
+            return false;
+        }
         return true;
     }
 

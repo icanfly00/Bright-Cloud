@@ -1,14 +1,13 @@
 package com.tml.server.system.controller;
 
-import com.tml.api.system.entity.GatewayDynamicRoute;
 import com.tml.api.system.entity.GatewayRouteLimitRule;
-import com.tml.server.system.service.IGatewayRouteLimitRuleService;
 import com.tml.common.core.entity.CommonResult;
 import com.tml.common.core.entity.QueryRequest;
 import com.tml.common.core.exception.BrightException;
 import com.tml.common.core.utils.BrightUtil;
-import lombok.extern.slf4j.Slf4j;
+import com.tml.server.system.service.IGatewayRouteLimitRuleService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +33,8 @@ public class GatewayRouteLimitRuleController {
     private final IGatewayRouteLimitRuleService gatewayRouteLimitRuleService;
 
     @GetMapping("check")
-    public boolean check(@NotBlank(message = "{required}") @RequestParam("requestUri") String requestUri,@NotBlank(message = "{required}") @RequestParam("requestMethod") String requestMethod) {
-        boolean flag = this.gatewayRouteLimitRuleService.checkUriAndMethod(requestUri,requestMethod);
+    public boolean check(@NotBlank(message = "{required}") @RequestParam("requestUri") String requestUri, @NotBlank(message = "{required}") @RequestParam("requestMethod") String requestMethod) {
+        boolean flag = this.gatewayRouteLimitRuleService.checkUriAndMethod(requestUri, requestMethod);
         return flag;
     }
 

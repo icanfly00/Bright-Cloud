@@ -1,19 +1,18 @@
 package com.tml.server.system.controller;
 
 import com.tml.api.system.entity.GatewayBlockList;
-import com.tml.server.system.service.IGatewayBlockListService;
 import com.tml.common.core.entity.CommonResult;
 import com.tml.common.core.entity.QueryRequest;
 import com.tml.common.core.exception.BrightException;
 import com.tml.common.core.utils.BrightUtil;
-import lombok.extern.slf4j.Slf4j;
+import com.tml.server.system.service.IGatewayBlockListService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -33,8 +32,8 @@ public class GatewayBlockListController {
     private final IGatewayBlockListService gatewayBlockListService;
 
     @GetMapping("check")
-    public boolean check(@RequestParam(required = false,value = "ip") String ip, @RequestParam(value = "requestUri") String requestUri, @RequestParam(value = "requestMethod")  String requestMethod) {
-        boolean flag = this.gatewayBlockListService.check(ip,requestUri,requestMethod);
+    public boolean check(@RequestParam(required = false, value = "ip") String ip, @RequestParam(value = "requestUri") String requestUri, @RequestParam(value = "requestMethod") String requestMethod) {
+        boolean flag = this.gatewayBlockListService.check(ip, requestUri, requestMethod);
         return flag;
     }
 

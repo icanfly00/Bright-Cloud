@@ -56,5 +56,5 @@ public interface BrightConstant {
 
     String LOCALHOST_IP = "127.0.0.1";
 
-    String ASYNC_POOL="asyncThreadPoolTaskExecutor";
+    String ASYNC_POOL = "asyncThreadPoolTaskExecutor";
 }

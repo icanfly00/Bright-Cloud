@@ -1,7 +1,7 @@
 package com.tml.auth.service;
 
-import com.tml.auth.entity.BindUser;
 import com.tml.api.system.entity.SysUserConnection;
+import com.tml.auth.entity.BindUser;
 import com.tml.common.core.entity.CommonResult;
 import com.tml.common.core.exception.BrightException;
 import me.zhyd.oauth.model.AuthCallback;
@@ -12,10 +12,10 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import java.util.List;
 
 /**
- * @description 
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 public interface SocialLoginService {
 
@@ -62,7 +62,7 @@ public interface SocialLoginService {
      * 注册并登录
      *
      * @param registerUser 注册用户
-     * @param authUser   第三方平台对象
+     * @param authUser     第三方平台对象
      * @return OAuth2AccessToken 令牌对象
      * @throws BrightException 异常
      */

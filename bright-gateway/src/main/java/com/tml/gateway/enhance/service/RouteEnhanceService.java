@@ -5,10 +5,10 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * @description 
  * @author JacksonTu
- * @since 2020-08-10 20:30
  * @version 1.0
+ * @description
+ * @since 2020-08-10 20:30
  */
 public interface RouteEnhanceService {
 
@@ -33,7 +33,7 @@ public interface RouteEnhanceService {
      *
      * @param exchange ServerWebExchange
      */
-    @Async(BrightConstant.ASYNC_POOL)
+    @Async
     void saveRequestLogs(ServerWebExchange exchange);
 
     /**
@@ -41,7 +41,7 @@ public interface RouteEnhanceService {
      *
      * @param exchange ServerWebExchange
      */
-    @Async(BrightConstant.ASYNC_POOL)
+    @Async
     void saveBlockLogs(ServerWebExchange exchange);
 
     /**
@@ -49,6 +49,6 @@ public interface RouteEnhanceService {
      *
      * @param exchange ServerWebExchange
      */
-    @Async(BrightConstant.ASYNC_POOL)
+    @Async
     void saveRateLimitLogs(ServerWebExchange exchange);
 }

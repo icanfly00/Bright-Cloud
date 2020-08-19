@@ -11,6 +11,6 @@ import org.springframework.cloud.openfeign.FeignClient;
  * @description com.tml.gateway.feign
  * @since 2020/8/13 15:09
  */
-@FeignClient(value = BrightServerConstant.BRIGHT_SERVER_SYSTEM, contextId = "RemoteGatewayServiceClient",fallbackFactory = RemoteGatewayFeignServiceFallback.class)
+@FeignClient(value = BrightServerConstant.BRIGHT_SERVER_SYSTEM, contextId = "RemoteGatewayServiceClient", fallbackFactory = RemoteGatewayFeignServiceFallback.class)
 public interface RemoteGatewayFeignService extends IRemoteGatewayService {
 }
