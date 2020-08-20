@@ -23,7 +23,6 @@
         <module>bright-common</module>
         <module>bright-devops</module>
         <module>bright-gateway</module>
-        <module>bright-gateway2</module>
         <module>bright-server</module>
     </modules>
 

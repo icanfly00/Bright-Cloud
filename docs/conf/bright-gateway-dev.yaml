@@ -18,78 +18,69 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
             allowCredentials: true
-      routes:
-        - id: bright-auth-Social
-          uri: lb://bright-auth
-          predicates:
-            - Path=/auth/social/**
-          filters:
-            - name: Hystrix
-              args:
-                name: socialfallback
-                fallbackUri: forward:/fallback/bright-auth
-        - id: bright-auth
-          uri: lb://bright-auth
-          predicates:
-            - Path=/auth/**
-          filters:
-            - name: Hystrix
-              args:
-                name: authfallback
-                fallbackUri: forward:/fallback/bright-auth
-        - id: bright-server-system
-          uri: lb://bright-server-system
-          predicates:
-            - Path=/system/**
-          filters:
-            - name: Hystrix
-              args:
-                name: systemfallback
-                fallbackUri: forward:/fallback/bright-server-system
-        - id: bright-server-generator
-          uri: lb://bright-server-generator
-          predicates:
-            - Path=/generator/**
-          filters:
-            - name: Hystrix
-              args:
-                name: generatorfallback
-                fallbackUri: forward:/fallback/bright-server-generator
-        - id: bright-server-job
-          uri: lb://bright-server-job
-          predicates:
-            - Path=/job/**
-          filters:
-            - name: Hystrix
-              args:
-                name: jobfallback
-                fallbackUri: forward:/fallback/bright-server-job
-        - id: bright-server-test
-          uri: lb://bright-server-test
-          predicates:
-            - Path=/test/**
-          filters:
-            - name: Hystrix
-              args:
-                name: testfallback
-                fallbackUri: forward:/fallback/bright-server-test
+#      routes:
+#        - id: bright-auth-Social
+#          uri: lb://bright-auth
+#          predicates:
+#            - Path=/auth/social/**
+#          filters:
+#            - name: Hystrix
+#              args:
+#                name: socialfallback
+#                fallbackUri: forward:/fallback/bright-auth
+#        - id: bright-auth
+#          uri: lb://bright-auth
+#          predicates:
+#            - Path=/auth/**
+#          filters:
+#            - name: Hystrix
+#              args:
+#                name: authfallback
+#                fallbackUri: forward:/fallback/bright-auth
+#        - id: bright-server-system
+#          uri: lb://bright-server-system
+#          predicates:
+#            - Path=/system/**
+#          filters:
+#            - name: Hystrix
+#              args:
+#                name: systemfallback
+#                fallbackUri: forward:/fallback/bright-server-system
+#        - id: bright-server-generator
+#          uri: lb://bright-server-generator
+#          predicates:
+#            - Path=/generator/**
+#          filters:
+#            - name: Hystrix
+#              args:
+#                name: generatorfallback
+#                fallbackUri: forward:/fallback/bright-server-generator
+#        - id: bright-server-job
+#          uri: lb://bright-server-job
+#          predicates:
+#            - Path=/job/**
+#          filters:
+#            - name: Hystrix
+#              args:
+#                name: jobfallback
+#                fallbackUri: forward:/fallback/bright-server-job
+#        - id: bright-server-test
+#          uri: lb://bright-server-test
+#          predicates:
+#            - Path=/test/**
+#          filters:
+#            - name: Hystrix
+#              args:
+#                name: testfallback
+#                fallbackUri: forward:/fallback/bright-server-test
       loadbalancer:
         use404: true
       default-filters:
         - StripPrefix=1
         - BrightDocGatewayHeaderFilter
-    # autoconfigure:
-    #   exclude: org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration,org.springframework.boot.autoconfigure.data.mongo.MongoReactiveRepositoriesAutoConfiguration,org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
-
-  # 网关增强配置
-  data:
-    mongodb:
-      host: 127.0.0.1
-      port: 27017
-      database: febs_cloud_route
 
   redis:
-    database: 3
+    database: 0
     host: 127.0.0.1
     port: 6379
     lettuce:
@@ -104,9 +95,6 @@ spring:
 bright:
   gateway:
     enhance: true
-    jwt:
-      secret: 123456
-      expiration: 36000
   doc:
     gateway:
       enable: true
@@ -178,4 +166,3 @@ management:
     web:
       exposure:
         include: health,info,gateway
-

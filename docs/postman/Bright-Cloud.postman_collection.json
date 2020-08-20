@@ -1,0 +1,218 @@
+{
+	"info": {
+		"_postman_id": "04a2bab1-84ef-4ef4-ad45-390c1b5d1109",
+		"name": "Bright-Cloud",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. 密码模式获取令牌",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"description": "客户端凭证，值的格式为Basic空格 + client_id:client_secret经过Base64加密后的值",
+						"key": "Authorization",
+						"type": "text",
+						"value": "Basic ZmViczoxMjM0NTY="
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8002/auth/oauth/token?grant_type=password&username=admin&password=123456&key=1234&code=2865",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8002",
+					"path": [
+						"auth",
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"description": "认证类型，password密码模式"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"description": "用户名"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"description": "密码"
+						},
+						{
+							"key": "key",
+							"value": "1234",
+							"description": "代表每个验证码的唯一key"
+						},
+						{
+							"key": "code",
+							"value": "2865",
+							"description": "验证码值（验证码的值可以通过浏览器访问http://localhost:8002/auth/captcha?key=1234获取）"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. 刷新令牌",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic ZmViczoxMjM0NTY=",
+						"description": "客户端凭证，值的格式为Basic空格 + client_id:client_secret经过Base64加密后的值",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8002/auth/oauth/token?grant_type=refresh_token&refresh_token=5d2dd6c3-bd99-4558-b622-bf8612d7c4fb",
+					"host": [
+						"localhost"
+					],
+					"port": "8002",
+					"path": [
+						"auth",
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "refresh_token"
+						},
+						{
+							"key": "refresh_token",
+							"value": "5d2dd6c3-bd99-4558-b622-bf8612d7c4fb"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. 授权码模式获取令牌",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"description": "客户端凭证，值的格式为Basic空格 + client_id:client_secret经过Base64加密后的值",
+						"key": "Authorization",
+						"type": "text",
+						"value": "Basic Y29kZToxMjM0NTY="
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8002/auth/oauth/token?grant_type=authorization_code&code=HLapQA&redirect_uri=http://www.baidu.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8002",
+					"path": [
+						"auth",
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"description": "认证类型，authorization_code授权码模式"
+						},
+						{
+							"key": "code",
+							"value": "HLapQA",
+							"description": "授权码"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://www.baidu.com",
+							"description": "重定向地址"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. 客户端模式获取令牌",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"description": "客户端凭证，值的格式为Basic空格 + client_id:client_secret经过Base64加密后的值",
+						"key": "Authorization",
+						"type": "text",
+						"value": "Basic Y29kZToxMjM0NTY="
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8002/auth/oauth/token?grant_type=client_credentials&client=code",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8002",
+					"path": [
+						"auth",
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"description": "认证类型，client_credentials客户端模式"
+						},
+						{
+							"key": "client",
+							"value": "code",
+							"description": "客户端client_id"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "448f0e39-6206-4129-816b-0a6fc9865371",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "79058a4a-28fb-4277-8f45-cda111bf4b22",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

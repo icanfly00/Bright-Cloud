@@ -20,6 +20,11 @@ import java.time.LocalDateTime;
 @TableName("t_gateway_route_limit_rule")
 public class GatewayRouteLimitRule {
 
+    public static final String CLOSE = "0";
+    public static final String OPEN = "1";
+
+    public static final String METHOD_ALL = "all";
+
     /**
      * 主键ID
      */

@@ -1,0 +1,103 @@
+version: '2.2'
+services:
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      # - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /home/elasticsearch/es01/data:/usr/share/elasticsearch/data
+      - /home/elasticsearch/es01/logs:/usr/share/elasticsearch/logs
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+
+  cerebro:
+    image: lmenezes/cerebro:0.9.0  #  cerebro镜像
+    container_name: cerebro
+    ports:
+       - 9000:9000
+    command:
+      -Dhosts.0.host=http://es01:9200  # 容器内部的ES地址
+    networks:
+      - elastic
+    depends_on:
+      - es01
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.6.2  # kibana镜像
+    container_name: kibana # 容器的名称
+    environment:    # 容器内部环境变量
+      - I18N_LOCALE=zh-CN
+      - XPACK_GRAPH_ENABLED=true
+      - TIMELION_ENABLED=true
+      - XPACK_MONITORING_COLLECTION_ENABLED=true   
+      - SERVER_PORT=9400     # Kibana端口
+      - ELASTICSEARCH_HOSTS=http://es01:9200   # ES地址
+    ports:
+      - 9400:9400
+    networks:
+      - elastic
+    depends_on:
+      - es01
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.6.2  # logstash镜像
+    container_name: logstash # 容器的名称
+    ports:
+      - 9500:9500
+    command: logstash -f /usr/share/logstash/config/logstash-log.conf  
+    volumes:
+      - /home/elasticsearch/logstash-log.conf:/usr/share/logstash/config/logstash-log.conf:rw  
+    networks:
+      - elastic
+    depends_on:
+      - es01
+
+  skywalking-oap:
+    image: apache/skywalking-oap-server:8.0.1-es7
+    container_name: skywalking-oap
+    restart: always
+    ports:
+      - 11800:11800
+      - 12800:12800
+    networks:
+      - elastic  
+    environment:
+      - "TZ=Asia/Shanghai"
+      - "SW_STORAGE=elasticsearch7"
+      - "SW_STORAGE_ES_CLUSTER_NODES=es01:9200"
+    depends_on:
+      - es01
+    links:
+      - es01 
+
+  skywalking-ui:
+    image: apache/skywalking-ui:8.0.1
+    container_name: skywalking-ui
+    restart: always
+    ports:
+      - 9080:8080
+    networks:
+      - elastic  
+    environment:
+      - "TZ=Asia/Shanghai"
+      - "SW_OAP_ADDRESS=skywalking-oap:12800"
+    depends_on:
+      - skywalking-oap
+    links:
+      - skywalking-oap  
+
+networks:
+  elastic:
+    driver: bridge

@@ -20,6 +20,11 @@ import java.time.LocalDateTime;
 @TableName("t_gateway_block_list")
 public class GatewayBlockList {
 
+    public static final String CLOSE = "0";
+    public static final String OPEN = "1";
+
+    public static final String METHOD_ALL = "all";
+
     /**
      * 主键ID
      */

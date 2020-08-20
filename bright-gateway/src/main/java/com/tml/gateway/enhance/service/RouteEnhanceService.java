@@ -1,5 +1,6 @@
 package com.tml.gateway.enhance.service;
 
+import com.tml.common.core.entity.constant.BrightConstant;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -18,7 +19,7 @@ public interface RouteEnhanceService {
      * @param exchange ServerWebExchange
      * @return Mono<Void>
      */
-    Mono<Void> filterBlackList(ServerWebExchange exchange);
+    Mono<Void> filterBlockList(ServerWebExchange exchange);
 
     /**
      * 根据限流规则进行过滤
@@ -33,22 +34,22 @@ public interface RouteEnhanceService {
      *
      * @param exchange ServerWebExchange
      */
-    @Async
-    void saveRequestLogs(ServerWebExchange exchange);
+    @Async(BrightConstant.ASYNC_POOL)
+    void saveRouteLog(ServerWebExchange exchange);
 
     /**
      * 异步存储拦截日志
      *
      * @param exchange ServerWebExchange
      */
-    @Async
-    void saveBlockLogs(ServerWebExchange exchange);
+    @Async(BrightConstant.ASYNC_POOL)
+    void saveBlockLog(ServerWebExchange exchange);
 
     /**
      * 异步存储限流日志
      *
      * @param exchange ServerWebExchange
      */
-    @Async
-    void saveRateLimitLogs(ServerWebExchange exchange);
+    @Async(BrightConstant.ASYNC_POOL)
+    void saveRateLimitLog(ServerWebExchange exchange);
 }
