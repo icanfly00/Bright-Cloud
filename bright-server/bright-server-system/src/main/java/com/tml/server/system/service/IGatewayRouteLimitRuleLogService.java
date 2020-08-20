@@ -48,7 +48,7 @@ public interface IGatewayRouteLimitRuleLogService extends IService<GatewayRouteL
     /**
      * 删除
      *
-     * @param gatewayRouteLimitRuleLog gatewayRouteLimitRuleLog
+     * @param ids
      */
-    void deleteGatewayRouteLimitRuleLog(GatewayRouteLimitRuleLog gatewayRouteLimitRuleLog);
+    void deleteGatewayRouteLimitRuleLog(String[] ids);
 }

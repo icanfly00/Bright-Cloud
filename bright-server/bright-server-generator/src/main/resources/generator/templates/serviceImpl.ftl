@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tml.common.core.entity.QueryRequest;
-
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -55,9 +55,8 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete${className}(${className} ${className?uncap_first}) {
-        LambdaQueryWrapper<${className}>  queryWrapper= new LambdaQueryWrapper<>();
-        // TODO 设置删除条件
-        this.remove(queryWrapper);
+    public void delete${className}(String[] ids) {
+        List<String> list = Arrays.asList(ids);
+        this.removeByIds(list);
     }
 }

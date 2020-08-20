@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -99,12 +100,16 @@ public class GatewayBlockListServiceImpl extends ServiceImpl<GatewayBlockListMap
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteGatewayBlockList(GatewayBlockList gatewayBlockList) {
-        boolean remove = this.removeById(gatewayBlockList.getId());
-        if (remove) {
-            String key = CacheConstant.GATEWAY_BLOCK_LIST_CACHE;
-            redisService.setRemove(key, JacksonUtil.toJson(gatewayBlockList));
-        }
+    public void deleteGatewayBlockList(String[] ids) {
+        List<String> list = Arrays.asList(ids);
+        list.stream().forEach(s -> {
+            boolean remove = this.removeById(s);
+            if (remove) {
+                String key = CacheConstant.GATEWAY_BLOCK_LIST_CACHE;
+                redisService.setRemove(key, JacksonUtil.toJson(this.getById(s)));
+            }
+        });
+
     }
 
     @Override

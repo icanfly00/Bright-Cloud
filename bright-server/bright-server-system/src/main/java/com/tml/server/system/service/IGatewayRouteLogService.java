@@ -48,7 +48,7 @@ public interface IGatewayRouteLogService extends IService<GatewayRouteLog> {
     /**
      * 删除
      *
-     * @param gatewayRouteLog gatewayRouteLog
+     * @param ids
      */
-    void deleteGatewayRouteLog(GatewayRouteLog gatewayRouteLog);
+    void deleteGatewayRouteLog(String[] ids);
 }

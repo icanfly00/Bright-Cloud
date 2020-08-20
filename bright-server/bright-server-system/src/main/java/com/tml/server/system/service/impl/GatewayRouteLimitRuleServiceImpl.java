@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -90,12 +91,16 @@ public class GatewayRouteLimitRuleServiceImpl extends ServiceImpl<GatewayRouteLi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteGatewayRouteLimitRule(GatewayRouteLimitRule gatewayRouteLimitRule) {
-        boolean remove = this.removeById(gatewayRouteLimitRule.getId());
-        if (remove) {
-            String key = CacheConstant.GATEWAY_ROUTE_LIMIT_RULE_CACHE + ":" + gatewayRouteLimitRule.getRequestUri() + ":" + gatewayRouteLimitRule.getRequestMethod();
-            redisService.del(key);
-        }
+    public void deleteGatewayRouteLimitRule(String[] ids) {
+        List<String> list = Arrays.asList(ids);
+        list.stream().forEach(s -> {
+            GatewayRouteLimitRule gatewayRouteLimitRule=this.getById(s);
+            boolean remove = this.removeById(s);
+            if (remove) {
+                String key = CacheConstant.GATEWAY_ROUTE_LIMIT_RULE_CACHE + ":" + gatewayRouteLimitRule.getRequestUri() + ":" + gatewayRouteLimitRule.getRequestMethod();
+                redisService.del(key);
+            }
+        });
     }
 
     @Override

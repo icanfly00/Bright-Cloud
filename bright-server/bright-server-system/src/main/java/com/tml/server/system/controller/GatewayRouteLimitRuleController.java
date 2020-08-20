@@ -3,6 +3,7 @@ package com.tml.server.system.controller;
 import com.tml.api.system.entity.GatewayRouteLimitRule;
 import com.tml.common.core.entity.CommonResult;
 import com.tml.common.core.entity.QueryRequest;
+import com.tml.common.core.entity.constant.StringConstant;
 import com.tml.common.core.exception.BrightException;
 import com.tml.common.core.utils.BrightUtil;
 import com.tml.server.system.service.IGatewayRouteLimitRuleService;
@@ -59,11 +60,12 @@ public class GatewayRouteLimitRuleController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("{ids}")
     @PreAuthorize("hasAuthority('gatewayRouteLimitRule:delete')")
-    public void deleteGatewayRouteLimitRule(GatewayRouteLimitRule gatewayRouteLimitRule) throws BrightException {
+    public void deleteGatewayRouteLimitRule(@NotBlank(message = "{required}") @PathVariable String ids) throws BrightException {
         try {
-            this.gatewayRouteLimitRuleService.deleteGatewayRouteLimitRule(gatewayRouteLimitRule);
+            String[] idArray = ids.split(StringConstant.COMMA);
+            this.gatewayRouteLimitRuleService.deleteGatewayRouteLimitRule(idArray);
         } catch (Exception e) {
             String message = "删除GatewayRouteLimitRule失败";
             log.error(message, e);

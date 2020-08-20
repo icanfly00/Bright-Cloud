@@ -6,6 +6,7 @@ import com.tml.common.core.entity.CommonResult;
 import com.tml.common.core.entity.QueryRequest;
 import com.tml.common.core.exception.BrightException;
 import com.tml.common.core.utils.BrightUtil;
+import com.tml.common.core.entity.constant.StringConstant;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.Map;
 
 /**
@@ -33,12 +35,12 @@ public class ${className}Controller {
     @GetMapping
     @PreAuthorize("hasAuthority('${className?uncap_first}:list')")
     public CommonResult list${className}(${className} ${className?uncap_first}) {
-        return new CommonResult().data(${className?uncap_first}Service.page${className}(${className?uncap_first}));
+        return new CommonResult().data(${className?uncap_first}Service.list${className}(${className?uncap_first}));
     }
 
     @GetMapping("list")
     @PreAuthorize("hasAuthority('${className?uncap_first}:list')")
-    public CommonResult page${className?uncap_first}(QueryRequest request, ${className} ${className?uncap_first}) {
+    public CommonResult page${className}(QueryRequest request, ${className} ${className?uncap_first}) {
         Map<String, Object> dataTable = BrightUtil.getDataTable(this.${className?uncap_first}Service.page${className}(request, ${className?uncap_first}));
         return new CommonResult().data(dataTable);
     }
@@ -55,11 +57,12 @@ public class ${className}Controller {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("{ids}")
     @PreAuthorize("hasAuthority('${className?uncap_first}:delete')")
-    public void delete${className}(${className} ${className?uncap_first}) throws BrightException {
+    public void delete${className}(@NotBlank(message = "{required}") @PathVariable String ids) throws BrightException {
         try {
-            this.${className?uncap_first}Service.delete${className}(${className?uncap_first});
+            String[] idArray = ids.split(StringConstant.COMMA);
+            this.${className?uncap_first}Service.delete${className}(idArray);
         } catch (Exception e) {
             String message = "删除${className}失败";
             log.error(message, e);

@@ -3,6 +3,7 @@ package com.tml.server.system.controller;
 import com.tml.api.system.entity.GatewayBlockList;
 import com.tml.common.core.entity.CommonResult;
 import com.tml.common.core.entity.QueryRequest;
+import com.tml.common.core.entity.constant.StringConstant;
 import com.tml.common.core.exception.BrightException;
 import com.tml.common.core.utils.BrightUtil;
 import com.tml.server.system.service.IGatewayBlockListService;
@@ -13,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -58,11 +60,12 @@ public class GatewayBlockListController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("{ids}")
     @PreAuthorize("hasAuthority('gatewayBlockList:delete')")
-    public void deleteGatewayBlackList(GatewayBlockList gatewayBlockList) throws BrightException {
+    public void deleteGatewayBlackList(@NotBlank(message = "{required}") @PathVariable String ids) throws BrightException {
         try {
-            this.gatewayBlockListService.deleteGatewayBlockList(gatewayBlockList);
+            String[] idArray = ids.split(StringConstant.COMMA);
+            this.gatewayBlockListService.deleteGatewayBlockList(idArray);
         } catch (Exception e) {
             String message = "删除GatewayBlackList失败";
             log.error(message, e);

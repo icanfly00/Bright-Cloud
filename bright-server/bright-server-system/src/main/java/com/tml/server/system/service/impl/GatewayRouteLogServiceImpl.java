@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -70,8 +71,8 @@ public class GatewayRouteLogServiceImpl extends ServiceImpl<GatewayRouteLogMappe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteGatewayRouteLog(GatewayRouteLog gatewayRouteLog) {
-        // TODO 设置删除条件
-        this.removeById(gatewayRouteLog.getId());
+    public void deleteGatewayRouteLog(String[] ids) {
+        List<String> list = Arrays.asList(ids);
+        this.removeByIds(list);
     }
 }

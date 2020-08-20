@@ -3,6 +3,7 @@ package com.tml.server.system.controller;
 import com.tml.api.system.entity.GatewayDynamicRoute;
 import com.tml.common.core.entity.CommonResult;
 import com.tml.common.core.entity.QueryRequest;
+import com.tml.common.core.entity.constant.StringConstant;
 import com.tml.common.core.exception.BrightException;
 import com.tml.common.core.utils.BrightUtil;
 import com.tml.server.system.service.IGatewayDynamicRouteService;
@@ -59,11 +60,12 @@ public class GatewayDynamicRouteController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("{ids}")
     @PreAuthorize("hasAuthority('gatewayDynamicRoute:delete')")
-    public void deleteGatewayDynamicRoute(GatewayDynamicRoute gatewayDynamicRoute) throws BrightException {
+    public void deleteGatewayDynamicRoute(@NotBlank(message = "{required}") @PathVariable String ids) throws BrightException {
         try {
-            this.gatewayDynamicRouteService.deleteGatewayDynamicRoute(gatewayDynamicRoute);
+            String[] idArray = ids.split(StringConstant.COMMA);
+            this.gatewayDynamicRouteService.deleteGatewayDynamicRoute(idArray);
         } catch (Exception e) {
             String message = "删除GatewayDynamicRoute失败";
             log.error(message, e);

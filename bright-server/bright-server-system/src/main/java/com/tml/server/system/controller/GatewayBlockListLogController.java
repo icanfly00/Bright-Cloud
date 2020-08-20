@@ -3,6 +3,7 @@ package com.tml.server.system.controller;
 import com.tml.api.system.entity.GatewayBlockListLog;
 import com.tml.common.core.entity.CommonResult;
 import com.tml.common.core.entity.QueryRequest;
+import com.tml.common.core.entity.constant.StringConstant;
 import com.tml.common.core.exception.BrightException;
 import com.tml.common.core.utils.BrightUtil;
 import com.tml.server.system.service.IGatewayBlockListLogService;
@@ -10,11 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Map;
 
 /**
@@ -39,11 +38,12 @@ public class GatewayBlockListLogController {
         return new CommonResult().data(dataTable);
     }
 
-    @DeleteMapping
+    @DeleteMapping("{ids}")
     @PreAuthorize("hasAuthority('gatewayBlockListLog:delete')")
-    public void deleteGatewayBlackListLog(GatewayBlockListLog gatewayBlockListLog) throws BrightException {
+    public void deleteGatewayBlackListLog(@NotBlank(message = "{required}") @PathVariable String ids) throws BrightException {
         try {
-            this.gatewayBlockListLogService.deleteGatewayBlockListLog(gatewayBlockListLog);
+            String[] idArray = ids.split(StringConstant.COMMA);
+            this.gatewayBlockListLogService.deleteGatewayBlockListLog(idArray);
         } catch (Exception e) {
             String message = "删除GatewayBlackListLog失败";
             log.error(message, e);

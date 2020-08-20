@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -101,11 +102,14 @@ public class GatewayDynamicRouteServiceImpl extends ServiceImpl<GatewayDynamicRo
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteGatewayDynamicRoute(GatewayDynamicRoute gatewayDynamicRoute) {
-        boolean delete = this.removeById(gatewayDynamicRoute.getId());
-        if (delete) {
-            redisPubService.publish("/redis/dynamicRoute", "admin", gatewayDynamicRoute.getRouteId(), 3);
-        }
+    public void deleteGatewayDynamicRoute(String[] ids) {
+        List<String> list = Arrays.asList(ids);
+        list.stream().forEach(s -> {
+            boolean delete = this.removeById(s);
+            if (delete) {
+                redisPubService.publish("/redis/dynamicRoute", "admin", s, 3);
+            }
+        });
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.tml.common.core.converter.TimeConverter;
+import com.tml.common.core.converter.ExcelDateTimeConverter;
 import com.wuwenze.poi.annotation.Excel;
 import com.wuwenze.poi.annotation.ExcelField;
 import lombok.Data;
@@ -114,7 +114,7 @@ public class Job implements Serializable {
      * 创建时间
      */
     @TableField("CREATE_TIME")
-    @ExcelField(value = "创建时间", writeConverter = TimeConverter.class)
+    @ExcelField(value = "创建时间", writeConverter = ExcelDateTimeConverter.class)
     private Date createTime;
     /**
      * 方法名称

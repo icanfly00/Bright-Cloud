@@ -9,12 +9,12 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.ParseException;
 
 /**
- * Execl导出时间类型字段格式化
+ * Excel导出时间类型字段格式化
  *
  * @Author TuMingLong
  */
 @Slf4j
-public class TimeConverter implements WriteConverter {
+public class ExcelDateTimeConverter implements WriteConverter {
     @Override
     public String convert(Object value) {
         if (value == null) {

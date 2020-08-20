@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -68,8 +69,8 @@ public class GatewayRouteLimitRuleLogServiceImpl extends ServiceImpl<GatewayRout
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteGatewayRouteLimitRuleLog(GatewayRouteLimitRuleLog gatewayRouteLimitRuleLog) {
-        // TODO 设置删除条件
-        this.removeById(gatewayRouteLimitRuleLog.getId());
+    public void deleteGatewayRouteLimitRuleLog(String[] ids) {
+        List<String> list = Arrays.asList(ids);
+        this.removeByIds(list);
     }
 }

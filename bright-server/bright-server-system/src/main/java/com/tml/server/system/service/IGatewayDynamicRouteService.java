@@ -56,9 +56,9 @@ public interface IGatewayDynamicRouteService extends IService<GatewayDynamicRout
     /**
      * 删除
      *
-     * @param gatewayDynamicRoute gatewayDynamicRoute
+     * @param ids
      */
-    void deleteGatewayDynamicRoute(GatewayDynamicRoute gatewayDynamicRoute);
+    void deleteGatewayDynamicRoute(String[] ids);
 
     /**
      * 缓存动态路由

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.tml.common.core.converter.TimeConverter;
+import com.tml.common.core.converter.ExcelDateTimeConverter;
 import com.wuwenze.poi.annotation.Excel;
 import com.wuwenze.poi.annotation.ExcelField;
 import lombok.Data;
@@ -111,7 +111,7 @@ public class JobLog implements Serializable {
      *
      */
     @TableField("CREATE_TIME")
-    @ExcelField(value = "执行时间", writeConverter = TimeConverter.class)
+    @ExcelField(value = "执行时间", writeConverter = ExcelDateTimeConverter.class)
     private Date createTime;
 
     @TableField(exist = false)

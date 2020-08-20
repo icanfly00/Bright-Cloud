@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.tml.common.core.converter.TimeConverter;
+import com.tml.common.core.converter.ExcelDateTimeConverter;
 import com.wuwenze.poi.annotation.Excel;
 import com.wuwenze.poi.annotation.ExcelField;
 import lombok.Data;
@@ -42,7 +42,7 @@ public class SysLoginLog implements Serializable {
      * 登录时间
      */
     @TableField("LOGIN_TIME")
-    @ExcelField(value = "登录时间", writeConverter = TimeConverter.class)
+    @ExcelField(value = "登录时间", writeConverter = ExcelDateTimeConverter.class)
     private Date loginTime;
     /**
      * 登录地点

@@ -57,9 +57,9 @@ public interface IGatewayRouteLimitRuleService extends IService<GatewayRouteLimi
     /**
      * 删除
      *
-     * @param gatewayRouteLimitRule gatewayRouteLimitRule
+     * @param ids
      */
-    void deleteGatewayRouteLimitRule(GatewayRouteLimitRule gatewayRouteLimitRule);
+    void deleteGatewayRouteLimitRule(String[] ids);
 
     /**
      * 根据路径和方法获取

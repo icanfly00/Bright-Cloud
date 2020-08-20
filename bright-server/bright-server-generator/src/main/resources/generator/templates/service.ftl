@@ -49,7 +49,7 @@ public interface I${className}Service extends IService<${className}> {
     /**
      * 删除
      *
-     * @param ${className?uncap_first} ${className?uncap_first}
+     * @param ids
      */
-    void delete${className}(${className} ${className?uncap_first});
+    void delete${className}(String[] ids);
 }

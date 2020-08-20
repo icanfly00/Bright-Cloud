@@ -48,7 +48,7 @@ public interface IGatewayBlockListLogService extends IService<GatewayBlockListLo
     /**
      * 删除
      *
-     * @param gatewayBlockListLog gatewayBlackListLog
+     * @param ids
      */
-    void deleteGatewayBlockListLog(GatewayBlockListLog gatewayBlockListLog);
+    void deleteGatewayBlockListLog(String[] ids);
 }
