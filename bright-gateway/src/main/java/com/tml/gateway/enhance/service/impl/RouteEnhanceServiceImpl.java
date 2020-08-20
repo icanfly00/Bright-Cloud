@@ -135,10 +135,6 @@ public class RouteEnhanceServiceImpl implements RouteEnhanceService {
             String ipAddress = BrightUtil.getServerHttpRequestIpAddress(request);
             int httpStatus = response.getStatusCode().value();
             Map<String, String> headers = request.getHeaders().toSingleValueMap();
-            System.out.println("-------请求头------");
-            headers.entrySet().stream().forEach((entry) -> {
-                System.out.println(entry.getKey() + ":" + entry.getValue());
-            });
             String userAgent = headers.get("user-agent");
             String authorization = headers.get("authorization");
             if (url != null && route != null) {

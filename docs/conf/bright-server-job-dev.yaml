@@ -18,6 +18,22 @@ spring:
         instance:
           prefer-ip: true
 
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+  cloud:
+    stream:
+      default-binder: rabbit
+      bindings:
+        input:
+          destination: bright.cloud.api
+          group: resource
+        output:
+          destination: bright.cloud.api
+
   datasource:
     dynamic:
       # 是否开启 SQL日志输出，生产环境建议关闭，有性能损耗

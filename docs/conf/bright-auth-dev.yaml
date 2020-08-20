@@ -20,6 +20,34 @@ spring:
         instance:
           prefer-ip: true
 
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    lettuce:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+    timeout: 5000
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+  cloud:
+    stream:
+      default-binder: rabbit
+      bindings:
+        input:
+          destination: bright.cloud.api
+          group: resource
+        output:
+          destination: bright.cloud.api
+
   datasource:
     dynamic:
       hikari:
@@ -36,18 +64,6 @@ spring:
           password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
           url: jdbc:mysql://127.0.0.1:3306/bright_cloud?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
-
-  redis:
-    database: 0
-    host: 127.0.0.1
-    port: 6379
-    lettuce:
-      pool:
-        min-idle: 8
-        max-idle: 500
-        max-active: 2000
-        max-wait: 10000
-    timeout: 5000
 
 mybatis-plus:
   type-aliases-package: com.tml.api.system.entity

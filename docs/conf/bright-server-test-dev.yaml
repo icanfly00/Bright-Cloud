@@ -18,6 +18,34 @@ spring:
         instance:
           prefer-ip: true
 
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    lettuce:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+      timeout: 5000
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+  cloud:
+    stream:
+      default-binder: rabbit
+      bindings:
+        input:
+          destination: bright.cloud.api
+          group: resource
+        output:
+          destination: bright.cloud.api
+
   datasource:
     dynamic:
       p6spy: true

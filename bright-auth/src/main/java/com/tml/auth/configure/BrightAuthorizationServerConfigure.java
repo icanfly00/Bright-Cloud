@@ -1,5 +1,9 @@
 package com.tml.auth.configure;
 
+import com.tml.auth.converter.BrightJwtAccessTokenConverter;
+import com.tml.auth.converter.BrightUserAuthenticationConverter;
+import com.tml.auth.converter.BrightJwtTokenService;
+import com.tml.auth.converter.BrightRedisTokenService;
 import com.tml.auth.handler.BrightWebResponseExceptionTranslator;
 import com.tml.auth.properties.BrightAuthProperties;
 import com.tml.auth.service.impl.RedisClientDetailsService;
@@ -18,10 +22,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
-import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter;
-import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.*;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
@@ -86,6 +87,11 @@ public class BrightAuthorizationServerConfigure extends AuthorizationServerConfi
         return tokenServices;
     }
 
+    /**
+     * 构建jwt token转换器
+     *
+     * @return
+     */
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
@@ -93,8 +99,35 @@ public class BrightAuthorizationServerConfigure extends AuthorizationServerConfi
         DefaultUserAuthenticationConverter userAuthenticationConverter = new DefaultUserAuthenticationConverter();
         userAuthenticationConverter.setUserDetailsService(userDetailService);
         defaultAccessTokenConverter.setUserTokenConverter(userAuthenticationConverter);
-        accessTokenConverter.setSigningKey(properties.getJwtAccessKey());
+        accessTokenConverter.setSigningKey(properties.getJwtAccessKey()); //对称秘钥，资源服务器使用该秘钥验证
         return accessTokenConverter;
+
+//        BrightJwtAccessTokenConverter accessTokenConverter = new BrightJwtAccessTokenConverter();
+//        DefaultAccessTokenConverter defaultAccessTokenConverter = (DefaultAccessTokenConverter) converter.getAccessTokenConverter();
+//        BrightUserAuthenticationConverter userAuthenticationConverter = new BrightUserAuthenticationConverter();
+//        defaultAccessTokenConverter.setUserTokenConverter(userAuthenticationConverter);
+//        accessTokenConverter.setAccessTokenConverter(defaultAccessTokenConverter);
+//        accessTokenConverter.setSigningKey(properties.getJwtAccessKey());//对称秘钥，资源服务器使用该秘钥验证
+//        return accessTokenConverter;
+    }
+
+    /**
+     * token服务
+     *
+     * @return
+     */
+    @Bean
+    public ResourceServerTokenServices resourceServerTokenServices() {
+        if (properties.getEnableJwt()) {
+            BrightJwtTokenService tokenService = new BrightJwtTokenService();
+            tokenService.setTokenStore(tokenStore());
+            tokenService.setJwtAccessTokenConverter(jwtAccessTokenConverter());
+            return tokenService;
+        } else {
+            BrightRedisTokenService tokenService = new BrightRedisTokenService();
+            tokenService.setTokenStore(tokenStore());
+            return tokenService;
+        }
     }
 
     @Bean

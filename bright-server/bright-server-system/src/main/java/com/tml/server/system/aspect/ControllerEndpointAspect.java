@@ -1,19 +1,23 @@
 package com.tml.server.system.aspect;
 
+import com.google.common.collect.Maps;
 import com.tml.common.core.exception.BrightException;
 import com.tml.common.core.utils.BrightUtil;
 import com.tml.server.system.annotation.ControllerEndpoint;
+import com.tml.server.system.event.LogEvent;
 import com.tml.server.system.service.ISysLogService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * @author JacksonTu
@@ -24,10 +28,18 @@ import java.lang.reflect.Method;
 @Aspect
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class ControllerEndpointAspect extends BaseAspectSupport {
 
-    private final ISysLogService logService;
+    private ThreadLocal<Map<String,Object>> logThreadLocal = new ThreadLocal<>();
+
+    /**
+     * 事件发布是由ApplicationContext对象管控的，我们发布事件前需要注入ApplicationContext对象调用publishEvent方法完成事件发布
+     **/
+    @Resource
+    private ApplicationContext applicationContext;
+
+    @Resource
+    private ISysLogService logService;
 
     @Pointcut("execution(* com.tml.server.system.controller.*.*(..)) && @annotation(com.tml.server.system.annotation.ControllerEndpoint)")
     public void pointcut() {
@@ -45,7 +57,22 @@ public class ControllerEndpointAspect extends BaseAspectSupport {
             if (StringUtils.isNotBlank(operation)) {
                 String username = BrightUtil.getCurrentUsername();
                 String ip = BrightUtil.getHttpServletRequestIpAddress();
-                logService.saveLog(point, targetMethod, ip, operation, username, start);
+                Map<String,Object> params= Maps.newHashMap();
+                params.put("point",point);
+                params.put("targetMethod",targetMethod);
+                params.put("ip",ip);
+                params.put("operation",operation);
+                params.put("username",username);
+                params.put("start",start);
+                //TODO:将当前Map保存到threadLocal
+                logThreadLocal.set(params);
+
+                //得到当前线程的map
+                Map<String,Object> newParams=logThreadLocal.get();
+                // 发布事件
+                applicationContext.publishEvent(new LogEvent(newParams));
+                //移除当前map
+                logThreadLocal.remove();
             }
             return result;
         } catch (Throwable throwable) {

@@ -44,7 +44,7 @@ public class OauthClientDetailsController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('client:view')")
+    @PreAuthorize("hasAuthority('client:list')")
     public CommonResult oauthCliendetailsList(QueryRequest request, OauthClientDetails oAuthClientDetails) {
         Map<String, Object> dataTable = BrightUtil.getDataTable(this.oauthClientDetailsService.findOauthClientDetails(request, oAuthClientDetails));
         return new CommonResult().data(dataTable);

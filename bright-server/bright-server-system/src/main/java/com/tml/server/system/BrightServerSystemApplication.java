@@ -6,6 +6,8 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Processor;
 
 /**
  * @author JacksonTu
@@ -17,9 +19,11 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 @EnableBrightCloudResourceServer
 @MapperScan("com.tml.server.system.mapper")
+@EnableBinding(Processor.class)
 public class BrightServerSystemApplication {
 
     public static void main(String[] args) {
+
         new SpringApplicationBuilder(BrightServerSystemApplication.class)
                 .web(WebApplicationType.SERVLET)
                 .run(args);

@@ -55,6 +55,22 @@ spring:
         max-wait: 10000
       timeout: 5000
 
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+  cloud:
+    stream:
+      default-binder: rabbit
+      bindings:
+        input:
+          destination: bright.cloud.api
+          group: resource
+        output:
+          destination: bright.cloud.api
+
 mybatis-plus:
   type-aliases-package: com.tml.api.system.entity
   mapper-locations: classpath:mapper/*.xml
