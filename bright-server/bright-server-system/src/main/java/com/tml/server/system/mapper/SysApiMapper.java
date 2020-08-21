@@ -1,6 +1,6 @@
 package com.tml.server.system.mapper;
 
-import com.tml.server.system.entity.SysApi;
+import com.tml.api.system.entity.SysApi;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

@@ -1,6 +1,6 @@
 package com.tml.server.system.service;
 
-import com.tml.server.system.entity.SysApi;
+import com.tml.api.system.entity.SysApi;
 
 import com.tml.common.core.entity.QueryRequest;
 import com.baomidou.mybatisplus.core.metadata.IPage;

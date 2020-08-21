@@ -1,6 +1,6 @@
 package com.tml.server.system.controller;
 
-import com.tml.server.system.entity.SysApi;
+import com.tml.api.system.entity.SysApi;
 import com.tml.server.system.service.ISysApiService;
 import com.tml.common.core.entity.CommonResult;
 import com.tml.common.core.entity.QueryRequest;

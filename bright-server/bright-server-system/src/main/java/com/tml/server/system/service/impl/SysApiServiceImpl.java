@@ -1,7 +1,6 @@
 package com.tml.server.system.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.tml.server.system.entity.SysApi;
+import com.tml.api.system.entity.SysApi;
 import com.tml.server.system.mapper.SysApiMapper;
 import com.tml.server.system.service.ISysApiService;
 import org.apache.commons.lang3.StringUtils;

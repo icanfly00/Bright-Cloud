@@ -1,4 +1,4 @@
-package com.tml.server.system.entity;
+package com.tml.api.system.entity;
 
 import java.util.Date;
 import lombok.Data;
