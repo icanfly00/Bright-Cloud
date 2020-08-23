@@ -74,6 +74,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                    <outputDirectory>../docker/${project.artifactId}</outputDirectory>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -84,5 +88,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

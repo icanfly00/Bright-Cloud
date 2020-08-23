@@ -1,0 +1,156 @@
+version: '3'
+
+services:
+  bright-admin:
+    image: bright-admin
+    container_name: bright-admin
+    build:
+      context: /home/project/bright-admin
+      dockerfile: Dockerfile
+    hostname: bright-admin
+    restart: always
+    ports:
+    - 8006:8006
+    networks:
+      - bright-service
+    volumes:
+      - /home/output:/output:rw
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Asia/Shanghai
+
+  bright-server-system:
+    image: bright-server-system
+    container_name: bright-server-system
+    build:
+      context: /home/project/bright-server-system
+      dockerfile: Dockerfile
+    hostname: bright-server-system
+    restart: always
+    ports:
+      - 8000:8000
+    networks:
+      - bright-service
+    volumes:
+      - /home/output:/output:rw
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - bright-admin
+
+  bright-auth:
+    image: bright-auth
+    container_name: bright-auth
+    build:
+      context: /home/project/bright-auth
+      dockerfile: Dockerfile
+    hostname: bright-auth
+    restart: always
+    ports:
+      - 8001:8001
+    networks:
+      - bright-service
+    volumes:
+      - /home/output:/output:rw
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - bright-server-system
+        
+  bright-gateway:
+    image: bright-gateway
+    container_name: bright-gateway
+    build:
+      context: /home/project/bright-gateway
+      dockerfile: Dockerfile
+    hostname: bright-gateway
+    restart: always
+    ports:
+      - 8002:8002
+    networks:
+      - bright-service
+    volumes:
+      - /home/output:/output:rw
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - bright-auth
+      
+  bright-server-job:
+    image: bright-server-job
+    container_name: bright-server-job
+    build:
+      context: /home/project/bright-server-job
+      dockerfile: Dockerfile
+    hostname: bright-server-job
+    restart: always
+    ports:
+      - 8003:8003
+    networks:
+      - bright-service
+    volumes:
+      - /home/output:/output:rw
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - bright-gateway
+
+  bright-server-generator:
+    image: bright-server-generator
+    container_name: bright-server-generator
+    build:
+      context: /home/project/bright-server-generator
+      dockerfile: Dockerfile
+    hostname: bright-server-generator
+    restart: always
+    ports:
+      - 8005:8005
+    networks:
+      - bright-service
+    volumes:
+      - /home/output:/output:rw
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - bright-gateway
+        
+  bright-server-test:
+    image: bright-server-test
+    container_name: bright-server-test
+    build:
+      context: /home/project/bright-server-test
+      dockerfile: Dockerfile
+    hostname: bright-server-test
+    restart: always
+    ports:
+      - 8007:8007
+    networks:
+      - bright-service
+    volumes:
+      - /home/output:/output:rw
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - bright-gateway
+
+networks:
+  bright-service:
+    driver: bridge
+
+
+# 创建并启动
+# COMPOSE_PROJECT_NAME=bright-service docker-compose up -d
+# 启动
+# COMPOSE_PROJECT_NAME=bright-service docker-compose start
+# 停止
+# COMPOSE_PROJECT_NAME=bright-service docker-compose stop
+# 删除
+#COMPOSE_PROJECT_NAME=bright-service docker-compose rm
+# 查看日志
+# COMPOSE_PROJECT_NAME=bright-service docker-compose logs

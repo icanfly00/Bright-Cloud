@@ -145,6 +145,14 @@ Skywalking|11800、12800、9080|Skywalking APM
 ```
 -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -Xms256m -Xmx256m -Xmn96m -Xss1m -XX:SurvivorRatio=8 -XX:+UseG1GC  -XX:+PrintGCDetails
 ```
+### 打包命令
+```
+正式环境
+clean package -D profileActive=prod -D maven.test.skip=true -f pom.xml
+测试环境环境
+clean package -D profileActive=test -D maven.test.skip=true -f pom.xml
+```
+
 
 
 
