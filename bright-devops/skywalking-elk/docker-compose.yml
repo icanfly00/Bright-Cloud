@@ -1,8 +1,9 @@
-version: '2.2'
+version: '3'
 services:
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
     container_name: es01
+    restart: always
     environment:
       - node.name=es01
       - cluster.name=es-docker-cluster
@@ -22,21 +23,10 @@ services:
     networks:
       - elastic
 
-  cerebro:
-    image: lmenezes/cerebro:0.9.0  #  cerebro镜像
-    container_name: cerebro
-    ports:
-       - 9000:9000
-    command:
-      -Dhosts.0.host=http://es01:9200  # 容器内部的ES地址
-    networks:
-      - elastic
-    depends_on:
-      - es01
-
   kibana:
     image: docker.elastic.co/kibana/kibana:7.6.2  # kibana镜像
     container_name: kibana # 容器的名称
+    restart: always
     environment:    # 容器内部环境变量
       - I18N_LOCALE=zh-CN
       - XPACK_GRAPH_ENABLED=true
@@ -54,11 +44,12 @@ services:
   logstash:
     image: docker.elastic.co/logstash/logstash:7.6.2  # logstash镜像
     container_name: logstash # 容器的名称
-    ports:
-      - 9500:9500
+    restart: always
     command: logstash -f /usr/share/logstash/config/logstash-log.conf  
     volumes:
-      - /home/elasticsearch/logstash-log.conf:/usr/share/logstash/config/logstash-log.conf:rw  
+      - /home/elasticsearch/logstash-log.conf:/usr/share/logstash/config/logstash-log.conf:rw
+    ports:
+      - 9500:9500
     networks:
       - elastic
     depends_on:
@@ -68,15 +59,15 @@ services:
     image: apache/skywalking-oap-server:8.0.1-es7
     container_name: skywalking-oap
     restart: always
-    ports:
-      - 11800:11800
-      - 12800:12800
-    networks:
-      - elastic  
     environment:
       - "TZ=Asia/Shanghai"
       - "SW_STORAGE=elasticsearch7"
       - "SW_STORAGE_ES_CLUSTER_NODES=es01:9200"
+    ports:
+      - 11800:11800
+      - 12800:12800
+    networks:
+      - elastic
     depends_on:
       - es01
     links:
@@ -86,13 +77,13 @@ services:
     image: apache/skywalking-ui:8.0.1
     container_name: skywalking-ui
     restart: always
-    ports:
-      - 9080:8080
-    networks:
-      - elastic  
     environment:
       - "TZ=Asia/Shanghai"
       - "SW_OAP_ADDRESS=skywalking-oap:12800"
+    ports:
+      - 9080:8080
+    networks:
+      - elastic
     depends_on:
       - skywalking-oap
     links:
