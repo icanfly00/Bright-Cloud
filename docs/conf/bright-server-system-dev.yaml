@@ -24,6 +24,7 @@ spring:
         password: 123456
         instance:
           prefer-ip: true
+          service-base-url: http://127.0.0.1:${server.port}
 
   datasource:
     dynamic:
