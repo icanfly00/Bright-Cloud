@@ -148,9 +148,9 @@ Skywalking|11800、12800、9080|Skywalking APM
 ### 打包命令
 ```
 正式环境
-clean package -D profileActive=prod -D maven.test.skip=true -f pom.xml
+clean package -P prod -D maven.test.skip=true -f pom.xml
 测试环境环境
-clean package -D profileActive=test -D maven.test.skip=true -f pom.xml
+clean package -P test -D maven.test.skip=true -f pom.xml
 ```
 
 
