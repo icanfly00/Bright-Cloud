@@ -10,8 +10,8 @@ import org.springframework.messaging.SubscribableChannel;
  */
 public interface OrderInputChannel {
     //定义通道的名称
-    String saveOder = "saveOder";
-    //定义为输入通道
-    @Input(saveOder)
-    SubscribableChannel saveOrder();
+    String orderInput = "orderInput";
+    //定义为输出通道
+    @Input(orderInput)
+    SubscribableChannel orderInput();
 }

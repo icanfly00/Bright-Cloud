@@ -11,8 +11,8 @@ import org.springframework.messaging.MessageChannel;
  */
 public interface OrderOutputChannel {
     //定义通道的名称
-    String saveOrder = "saveOrder";
+    String orderOutput = "orderOutput";
     //定义为输入通道
-    @Output(saveOrder)
-    MessageChannel saveApi();
+    @Output(orderOutput)
+    MessageChannel orderOutput();
 }
