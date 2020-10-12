@@ -1,13 +1,13 @@
 # Bright-Cloud
-基于Spring Cloud Hoxton.SR7、Spring Cloud OAuth2 &amp; Spring Cloud Alibaba &amp; Element 微服务权限系统，开箱即用。
+基于Spring Cloud Hoxton.SR8、Spring Cloud OAuth2 &amp; Spring Cloud Alibaba &amp; Element 微服务权限系统，开箱即用。
 ### Bright-Cloud 微服务权限系统
 ![https://img.shields.io/badge/license-Apache%202.0-blue.svg?longCache=true&style=flat-square](https://img.shields.io/badge/license-Apache%202.0-blue.svg?longCache=true&style=flat-square)
-![https://img.shields.io/badge/springcloud-Hoxton.SR7-yellow.svg?style=flat-square](https://img.shields.io/badge/springcloud-Hoxton.SR7-yellow.svg?style=flat-square)
-![https://img.shields.io/badge/SpringCloudAlibaba-2.2.1.RELEASE-blueviolet.svg?style=flat-square](https://img.shields.io/badge/SpringCloudAlibaba-2.2.1.RELEASE-blueviolet.svg?style=flat-square)
-![https://img.shields.io/badge/springboot-2.3.2.RELEASE-brightgreen.svg?style=flat-square](https://img.shields.io/badge/springboot-2.3.2.RELEASE-brightgreen.svg?style=flat-square)
+![https://img.shields.io/badge/springcloud-Hoxton.SR8-yellow.svg?style=flat-square](https://img.shields.io/badge/springcloud-Hoxton.SR8-yellow.svg?style=flat-square)
+![https://img.shields.io/badge/SpringCloudAlibaba-2.2.3.RELEASE-blueviolet.svg?style=flat-square](https://img.shields.io/badge/SpringCloudAlibaba-2.2.3.RELEASE-blueviolet.svg?style=flat-square)
+![https://img.shields.io/badge/springboot-2.3.4.RELEASE-brightgreen.svg?style=flat-square](https://img.shields.io/badge/springboot-2.3.4.RELEASE-brightgreen.svg?style=flat-square)
 ![https://img.shields.io/badge/vue-2.6.10-orange.svg?style=flat-square](https://img.shields.io/badge/vue-2.6.10-orange.svg?style=flat-square)
 
-Bright-Cloud是一款使用Spring Cloud Hoxton.SR7、Spring Cloud OAuth2 & Spring Cloud Alibaba构建的低耦合权限管理系统，前端（Bright-Cloud-UI）采用vue-element-admin构建。该系统具有如下特点：
+Bright-Cloud是一款使用Spring Cloud Hoxton.SR8、Spring Cloud OAuth2 & Spring Cloud Alibaba构建的低耦合权限管理系统，前端（Bright-Cloud-UI）采用vue-element-admin构建。该系统具有如下特点：
 
 序号 | 特点
 ---|---
@@ -143,7 +143,7 @@ Skywalking|11800、12800、9080|Skywalking APM
 ### 系统优化
 
 ```
--XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -Xms256m -Xmx256m -Xmn96m -Xss1m -XX:SurvivorRatio=8 -XX:+UseG1GC  -XX:+PrintGCDetails
+-Xms256m -Xmx256m -Xmn96m -Xss1m -XX:SurvivorRatio=8 -XX:+UseG1GC  -XX:+PrintGCDetails
 ```
 ### 打包命令
 ```

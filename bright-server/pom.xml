@@ -19,9 +19,10 @@
 
     <modules>
         <module>bright-server-system</module>
-        <module>bright-server-test</module>
-        <module>bright-server-generator</module>
         <module>bright-server-job</module>
+        <module>bright-server-msg</module>
+        <module>bright-server-generator</module>
+        <module>bright-server-test</module>
     </modules>
 
     <dependencies>

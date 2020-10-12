@@ -1,0 +1,156 @@
+spring:
+  aop:
+    proxy-target-class: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:8006
+        username: admin
+        password: 123456
+        instance:
+          prefer-ip: true
+          service-base-url: http://127.0.0.1:${server.port}
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+  cloud:
+    stream:
+      default-binder: rabbit
+      bindings:
+        input:
+          destination: bright.cloud.api
+          group: resource
+        output:
+          destination: bright.cloud.api
+
+  datasource:
+    dynamic:
+      # 是否开启 SQL日志输出，生产环境建议关闭，有性能损耗
+      p6spy: true
+      hikari:
+        connection-timeout: 30000
+        max-lifetime: 1800000
+        max-pool-size: 15
+        min-idle: 5
+        connection-test-query: select 1
+        pool-name: BrightHikariCP
+      # 配置默认数据源
+      primary: master
+      datasource:
+        master:
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://127.0.0.1:3306/bright_cloud?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+
+mybatis-plus:
+  type-aliases-package: com.tml.server.msg.entity
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+  global-config:
+    db-config:
+      id-type: assign_id
+      table-underline: true
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      logic-delete-field: delFlag
+
+# feign配置
+feign:
+  # 在feign中开启hystrix功能，默认情况下feign不开启hystrix功能
+  hystrix:
+    enabled: true
+  # 在feign中开启sentinel功能，默认情况下feign不开启hystrix功能
+  sentinel:
+    enable: false
+  ## 配置httpclient线程池
+  httpclient:
+    enabled: true
+  okhttp:
+    enabled: false
+  # feign 开启Gzip压缩
+  compression:
+    request:
+      enabled: true
+      min-request-size: 2048
+      mime-types: text/xml,application/xml,application/json
+    response:
+      enabled: true
+
+#设置feign客户端超时时间（OpenFeign默认支持ribbon）
+ribbon:
+  eager-load:
+    enabled: true
+  #对当前实例的重试次数
+  MaxAutoRetries: 1
+  #切换实例的重试次数
+  MaxAutoRetriesNextServer: 2
+  #请求处理的超时时间
+  ReadTimeout: 60000
+  #请求连接的超时时间
+  ConnectTimeout: 60000
+  #对所有操作请求都进行重试
+  OkToRetryOnAllOperations: true
+
+# 配置hystrix的参数
+hystrix:
+  threadpool:
+    # default: 默认参数，作用的所有的hystrix的客户端,如果需要对某个具体的接口，可以写接口+方法名称
+    default:
+      coreSize: 500
+  command:
+    default:
+      fallback:
+        # 是否开启回退方法
+        enabled: true
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000 #缺省为1000
+
+security:
+  oauth2:
+    resource:
+      id: ${spring.application.name}
+      user-info-uri: http://127.0.0.1:8002/auth/user
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+bright:
+  doc:
+    enable: true
+    title: ${info.name}文档
+    base-package: com.tml.server.msg.controller
+    description: ${info.description}
+    name: JacksonTu
+    email: 674717739@qq.com
+    url: https://github.com/JacksonTu
+    version: ${info.version}
+  cloud:
+    security:
+      enable: true
+      anon-uris:
+        - /actuator/**
+        - /v2/api-docs
+        - /v2/api-docs-ext

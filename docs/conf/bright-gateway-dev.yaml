@@ -74,6 +74,15 @@ spring:
 #              args:
 #                name: testfallback
 #                fallbackUri: forward:/fallback/bright-server-test
+#        - id: bright-server-msg
+#          uri: lb://bright-server-msg
+#          predicates:
+#            - Path=/msg/**
+#          filters:
+#            - name: Hystrix
+#              args:
+#                name: msgfallback
+#                fallbackUri: forward:/fallback/bright-server-msg
       loadbalancer:
         use404: true
       default-filters:
