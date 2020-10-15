@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -49,9 +50,11 @@ public class SysNoticeController {
     @PreAuthorize("hasAuthority('notice:add')")
     public void saveSysNotice(@Valid SysNotice sysNotice) throws BrightException {
         try {
+            sysNotice.setCreateUser(BrightUtil.getCurrentUsername());
+            sysNotice.setCreateTime(new Date());
             this.sysNoticeService.saveSysNotice(sysNotice);
         } catch (Exception e) {
-            String message = "新增SysNotice失败";
+            String message = "新增失败";
             log.error(message, e);
             throw new BrightException(message);
         }
@@ -64,7 +67,7 @@ public class SysNoticeController {
             String[] idArray = ids.split(StringConstant.COMMA);
             this.sysNoticeService.deleteSysNotice(idArray);
         } catch (Exception e) {
-            String message = "删除SysNotice失败";
+            String message = "删除失败";
             log.error(message, e);
             throw new BrightException(message);
         }
@@ -74,9 +77,79 @@ public class SysNoticeController {
     @PreAuthorize("hasAuthority('notice:update')")
     public void updateSysNotice(SysNotice sysNotice) throws BrightException {
         try {
+            sysNotice.setUpdateUser(BrightUtil.getCurrentUsername());
+            sysNotice.setUpdateTime(new Date());
             this.sysNoticeService.updateSysNotice(sysNotice);
         } catch (Exception e) {
-            String message = "修改SysNotice失败";
+            String message = "修改失败";
+            log.error(message, e);
+            throw new BrightException(message);
+        }
+    }
+
+    /**
+     * 发布操作
+     * @return
+     */
+    @GetMapping("release/{id}")
+    @PreAuthorize("hasAuthority('notice:release')")
+    public CommonResult doReleaseData(@PathVariable("id") Long id) throws BrightException{
+        try {
+            String message="成功";
+            SysNotice notice=this.sysNoticeService.getById(id);
+            if(notice==null){
+                throw new BrightException("未找到对应实体");
+            }else{
+                notice.setSendStatus("1");
+                notice.setCreateUser(BrightUtil.getCurrentUsername());
+                notice.setUpdateUser(BrightUtil.getCurrentUsername());
+                notice.setSendTime(new Date());
+                boolean flag=this.sysNoticeService.updateById(notice);
+                if(flag){
+                    message="成功";
+                    // 1.全局推送
+                    if(notice.getMsgType().equals("ALL")){
+
+                    }else {
+                        // 2.插入用户通告阅读标记表记录
+                        String userId = notice.getUserIds();
+                        String[] userIds = userId.substring(0, (userId.length()-1)).split(",");
+                    }
+                }
+            }
+            return new CommonResult().data(message);
+        } catch (Exception e) {
+            String message = "失败";
+            log.error(message, e);
+            throw new BrightException(message);
+        }
+    }
+
+    /**
+     * 撤销操作
+     * @return
+     */
+    @GetMapping("revoke/{id}")
+    @PreAuthorize("hasAuthority('notice:revoke')")
+    public CommonResult doRevokeData(@PathVariable("id") Long id) throws BrightException{
+        try {
+            String message="";
+            SysNotice notice=this.sysNoticeService.getById(id);
+            if(notice==null){
+                throw new BrightException("未找到对应实体");
+            }else{
+                notice.setSendStatus("2");
+                notice.setCreateUser(BrightUtil.getCurrentUsername());
+                notice.setUpdateUser(BrightUtil.getCurrentUsername());
+                notice.setCancelTime(new Date());
+                boolean flag=this.sysNoticeService.updateById(notice);
+                if(flag) {
+                    message="成功";
+                }
+            }
+            return new CommonResult().data(message);
+        } catch (Exception e) {
+            String message = "失败";
             log.error(message, e);
             throw new BrightException(message);
         }

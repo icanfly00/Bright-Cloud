@@ -1,11 +1,14 @@
 package com.tml.server.msg.entity;
 
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
 * 系统通告表 Entity
@@ -44,12 +47,16 @@ public class SysNotice {
     /**
      * 开始时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("START_TIME")
     private Date startTime;
 
     /**
      * 结束时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("END_TIME")
     private Date endTime;
 
@@ -128,8 +135,8 @@ public class SysNotice {
     /**
      * 创建时间
      */
-    @TableField("CREATRE_TIME")
-    private Date creatreTime;
+    @TableField("CREATE_TIME")
+    private Date createTime;
 
     /**
      * 更新人

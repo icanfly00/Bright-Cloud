@@ -20,7 +20,7 @@ public class SysNoticeSend {
     /**
      * 
      */
-    @TableField("ID")
+    @TableId(value = "ID", type = IdType.AUTO)
     private Long id;
 
     /**

@@ -28,7 +28,7 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
 
     @Override
     public IPage<SysNotice> pageSysNotice(QueryRequest request, SysNotice sysNotice) {
-        LambdaQueryWrapper<SysNotice> queryWrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<SysNotice> queryWrapper = new LambdaQueryWrapper<>(sysNotice);
         // TODO 设置查询条件
         Page<SysNotice> page = new Page<>(request.getPageNum(), request.getPageSize());
         return this.page(page, queryWrapper);
