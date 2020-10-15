@@ -1,14 +1,22 @@
 package com.tml.server.msg.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tml.common.core.entity.constant.BrightConstant;
+import com.tml.common.core.entity.constant.WebsocketConstant;
 import com.tml.server.msg.entity.SysNotice;
+import com.tml.server.msg.entity.SysNoticeSend;
+import com.tml.server.msg.service.ISysNoticeSendService;
 import com.tml.server.msg.service.ISysNoticeService;
 import com.tml.common.core.entity.CommonResult;
 import com.tml.common.core.entity.QueryRequest;
 import com.tml.common.core.exception.BrightException;
 import com.tml.common.core.utils.BrightUtil;
 import com.tml.common.core.entity.constant.StringConstant;
+import com.tml.server.msg.websocket.CommonWebSocket;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +42,11 @@ import java.util.Map;
 public class SysNoticeController {
 
     private final ISysNoticeService sysNoticeService;
+
+    private final ISysNoticeSendService sysNoticeSendService;
+
+    private final CommonWebSocket webSocket;
+
 
     @GetMapping
     @PreAuthorize("hasAuthority('notice:list')")
@@ -108,12 +123,21 @@ public class SysNoticeController {
                 if(flag){
                     message="成功";
                     // 1.全局推送
-                    if(notice.getMsgType().equals("ALL")){
-
+                    if(notice.getMsgType().equals(BrightConstant.MSG_TYPE_ALL)){
+                        JSONObject obj = new JSONObject();
+                        obj.put(WebsocketConstant.MSG_CMD, WebsocketConstant.CMD_TOPIC);
+                        obj.put(WebsocketConstant.MSG_ID, notice.getId());
+                        obj.put(WebsocketConstant.MSG_TXT, notice.getTitle());
+                        webSocket.sendAllMessage(obj.toJSONString());
                     }else {
                         // 2.插入用户通告阅读标记表记录
                         String userId = notice.getUserIds();
                         String[] userIds = userId.substring(0, (userId.length()-1)).split(",");
+                        JSONObject obj = new JSONObject();
+                        obj.put(WebsocketConstant.MSG_CMD, WebsocketConstant.CMD_USER);
+                        obj.put(WebsocketConstant.MSG_ID, notice.getId());
+                        obj.put(WebsocketConstant.MSG_TXT, notice.getTitle());
+                        webSocket.sendMoreMessage(userIds, obj.toJSONString());
                     }
                 }
             }
@@ -153,5 +177,81 @@ public class SysNoticeController {
             log.error(message, e);
             throw new BrightException(message);
         }
+    }
+
+    /**
+     * 补充用户数据，并返回系统消息
+     * @return
+     */
+    @GetMapping("listNoticeByUser")
+    public CommonResult listNoticeByUser(){
+        Long userId=BrightUtil.getCurrentUser().getUserId();
+        List<Long> noticeIds=this.sysNoticeSendService.listByUserId(userId);
+        // 1.将系统消息补充到用户通告阅读标记表中
+        List<SysNotice> notices=this.sysNoticeService.listByCondition(BrightConstant.MSG_TYPE_ALL,BrightConstant.HAS_SEND,BrightUtil.getCurrentUser().getCreateTime(),noticeIds);
+        if(notices!=null && notices.size()>0){
+            notices.forEach(notice ->{
+                SysNoticeSend noticeSend= this.sysNoticeSendService.findByNoticeIdAndUserId(notice.getId(),userId);
+                if(noticeSend==null){
+                    SysNoticeSend ns = new SysNoticeSend();
+                    ns.setNoticeId(notice.getId());
+                    ns.setUserId(userId);
+                    ns.setReadFlag(BrightConstant.NO_READ_FLAG);
+                    this.sysNoticeSendService.save(ns);
+                }
+            });
+        }
+        // 2.查询用户未读的系统消息
+        QueryRequest queryRequest=new QueryRequest();
+        queryRequest.setPageSize(5);
+        //通知公告消息
+        IPage<SysNotice> noticePage=this.sysNoticeService.pageUnreadMsg(queryRequest,userId,"1");
+        //系统消息
+        IPage<SysNotice> msgPage=this.sysNoticeService.pageUnreadMsg(queryRequest,userId,"2");
+        Map<String,Object> params = new HashMap<String, Object>();
+        params.put("sysMsgList", msgPage.getRecords());
+        params.put("sysMsgTotal", msgPage.getTotal());
+        params.put("noticeMsgList", noticePage.getRecords());
+        params.put("noticeMsgTotal", noticePage.getTotal());
+        return new CommonResult().data(params);
+    }
+
+    /**
+     * 同步消息
+     * @param noticeId
+     * @return
+     * @throws BrightException
+     */
+    @GetMapping("syncNotice/{noticeId}")
+    public CommonResult syncNotice(@PathVariable(name="noticeId") Long noticeId) throws BrightException{
+        JSONObject obj = new JSONObject();
+        if(noticeId!=null){
+            SysNotice notice = this.sysNoticeService.getById(noticeId);
+            if(notice==null) {
+                throw new BrightException("未找到对应实体");
+            }else {
+                if(notice.getMsgType().equals(BrightConstant.MSG_TYPE_ALL)) {
+                    obj.put(WebsocketConstant.MSG_CMD, WebsocketConstant.CMD_TOPIC);
+                    obj.put(WebsocketConstant.MSG_ID, notice.getId());
+                    obj.put(WebsocketConstant.MSG_TXT, notice.getTitle());
+                    webSocket.sendAllMessage(obj.toJSONString());
+                }else {
+                    // 2.插入用户通告阅读标记表记录
+                    String userId = notice.getUserIds();
+                    if(StringUtils.isNoneBlank(userId)){
+                        String[] userIds = userId.substring(0, (userId.length()-1)).split(",");
+                        obj.put(WebsocketConstant.MSG_CMD, WebsocketConstant.CMD_USER);
+                        obj.put(WebsocketConstant.MSG_ID, notice.getId());
+                        obj.put(WebsocketConstant.MSG_TXT, notice.getTitle());
+                        webSocket.sendMoreMessage(userIds, obj.toJSONString());
+                    }
+                }
+            }
+        }else{
+            obj.put(WebsocketConstant.MSG_CMD, WebsocketConstant.CMD_TOPIC);
+            obj.put(WebsocketConstant.MSG_TXT, "批量设置已读");
+            webSocket.sendAllMessage(obj.toJSONString());
+        }
+        return new CommonResult().data("成功");
     }
 }

@@ -52,4 +52,14 @@ public interface ISysNoticeSendService extends IService<SysNoticeSend> {
      * @param ids
      */
     void deleteSysNoticeSend(String[] ids);
+
+    /**
+     * 查询所有通告ID
+     * @param userId
+     * @return
+     */
+    List<Long> listByUserId(Long userId);
+
+
+    SysNoticeSend findByNoticeIdAndUserId(Long noticeId,Long userId);
 }

@@ -41,6 +41,7 @@ public class CurrentUser implements Serializable {
     private String deptName;
     private String roleId;
     private String roleName;
+    private Date createTime;
     @JsonIgnore
     private Date lastLoginTime;
     private String description;

@@ -6,6 +6,8 @@ import com.tml.api.system.entity.SysUser;
 import com.tml.common.core.entity.QueryRequest;
 import com.tml.common.core.exception.BrightException;
 
+import java.util.Map;
+
 
 /**
  * @author JacksonTu
@@ -104,5 +106,12 @@ public interface ISysUserService extends IService<SysUser> {
      * @return 用户
      */
     SysUser findSecurityUserByName(String username);
+
+    /**
+     * 用户树
+     * @param user
+     * @return
+     */
+    Map<String,Object> treeUser(SysUser user);
 
 }

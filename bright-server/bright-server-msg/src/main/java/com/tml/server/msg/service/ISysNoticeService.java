@@ -6,6 +6,7 @@ import com.tml.common.core.entity.QueryRequest;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,4 +53,16 @@ public interface ISysNoticeService extends IService<SysNotice> {
      * @param ids
      */
     void deleteSysNotice(String[] ids);
+
+    List<SysNotice> listByCondition(String msgType, String sendStatus, Date endTime, List<Long> noticeIds);
+
+    /**
+     * 未读消息
+     * @param request
+     * @param userId
+     * @param msgCategory
+     * @return
+     */
+    IPage<SysNotice> pageUnreadMsg(QueryRequest request, Long userId,String msgCategory);
+
 }

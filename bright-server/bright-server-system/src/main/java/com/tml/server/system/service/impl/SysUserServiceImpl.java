@@ -6,16 +6,17 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
-import com.tml.api.system.entity.SysUser;
-import com.tml.api.system.entity.SysUserDataPermission;
-import com.tml.api.system.entity.SysUserRole;
+import com.tml.api.system.entity.*;
 import com.tml.common.core.entity.CurrentUser;
 import com.tml.common.core.entity.QueryRequest;
+import com.tml.common.core.entity.TreeNode;
 import com.tml.common.core.entity.constant.BrightConstant;
+import com.tml.common.core.entity.constant.PageConstant;
 import com.tml.common.core.entity.constant.StringConstant;
 import com.tml.common.core.exception.BrightException;
 import com.tml.common.core.utils.BrightUtil;
 import com.tml.common.core.utils.SortUtil;
+import com.tml.common.core.utils.TreeUtil;
 import com.tml.server.system.mapper.SysUserMapper;
 import com.tml.server.system.service.ISysUserDataPermissionService;
 import com.tml.server.system.service.ISysUserRoleService;
@@ -27,9 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author JacksonTu
@@ -170,6 +169,26 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return this.baseMapper.findSecurityUserByName(username);
     }
 
+    @Override
+    public Map<String, Object> treeUser(SysUser user) {
+        Map<String, Object> result = new HashMap<>(2);
+        try {
+            LambdaQueryWrapper<SysUser> queryWrapper=new LambdaQueryWrapper<>();
+            List<SysUser> userList =this.baseMapper.selectList(queryWrapper);
+            List<UserTree> trees = new ArrayList<>();
+            buildTrees(trees, userList);
+            List<? extends TreeNode<?>> userTree = TreeUtil.build(trees);
+
+            result.put(PageConstant.ROWS, userTree);
+            result.put(PageConstant.TOTAL, userList.size());
+        } catch (Exception e) {
+            log.error("获取用户列表失败", e);
+            result.put(PageConstant.ROWS, null);
+            result.put(PageConstant.TOTAL, 0);
+        }
+        return result;
+    }
+
     private void setUserRoles(SysUser user, String[] roles) {
         List<SysUserRole> userRoles = Lists.newArrayList();
         Arrays.stream(roles).forEach(roleId -> {
@@ -195,5 +214,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private boolean isCurrentUser(Long id) {
         CurrentUser currentUser = BrightUtil.getCurrentUser();
         return currentUser != null && id.equals(currentUser.getUserId());
+    }
+
+    private void buildTrees(List<UserTree> trees, List<SysUser> users) {
+        users.forEach(user -> {
+            UserTree tree = new UserTree();
+            tree.setId(user.getUserId().toString());
+            tree.setParentId("0");
+            tree.setLabel(user.getUsername());
+            trees.add(tree);
+        });
     }
 }

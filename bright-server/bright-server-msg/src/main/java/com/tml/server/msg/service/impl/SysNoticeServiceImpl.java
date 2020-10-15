@@ -3,6 +3,7 @@ package com.tml.server.msg.service.impl;
 import com.tml.server.msg.entity.SysNotice;
 import com.tml.server.msg.mapper.SysNoticeMapper;
 import com.tml.server.msg.service.ISysNoticeService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,6 +14,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tml.common.core.entity.QueryRequest;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,7 +37,7 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
     }
 
     @Override
-    public List<SysNotice> listSysNotice(SysNotice sysNotice) {
+    public List<SysNotice> listSysNotice(SysNotice notice) {
         LambdaQueryWrapper<SysNotice> queryWrapper = new LambdaQueryWrapper<>();
         // TODO 设置查询条件
         return this.baseMapper.selectList(queryWrapper);
@@ -58,5 +60,26 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
     public void deleteSysNotice(String[] ids) {
         List<String> list = Arrays.asList(ids);
         this.removeByIds(list);
+    }
+
+    @Override
+    public List<SysNotice> listByCondition(String msgType, String sendStatus, Date endTime, List<Long> noticeIds) {
+        LambdaQueryWrapper<SysNotice> queryWrapper = new LambdaQueryWrapper<>();
+        // TODO 设置查询条件
+        queryWrapper.eq(StringUtils.isNoneBlank(msgType),SysNotice::getMsgType,msgType)
+                .eq(StringUtils.isNoneBlank(sendStatus),SysNotice::getSendStatus,sendStatus)
+                .ge(endTime!=null,SysNotice::getEndTime,endTime);
+        if(noticeIds!=null&&noticeIds.size()>0) {
+            queryWrapper.notIn(SysNotice::getId, noticeIds);
+        }
+        return this.baseMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public IPage<SysNotice> pageUnreadMsg(QueryRequest request, Long userId, String msgCategory) {
+        // TODO 设置查询条件
+        Page<SysNotice> page = new Page<>(request.getPageNum(), request.getPageSize());
+        List<SysNotice> notices=this.baseMapper.pageUnreadMsg(page,userId,msgCategory);
+        return page.setRecords(notices);
     }
 }

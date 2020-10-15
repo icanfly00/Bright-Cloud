@@ -39,6 +39,8 @@ public class BrightAuthUser extends User {
 
     private String roleName;
 
+    private Date createTime;
+
     private Date lastLoginTime;
 
     private String description;

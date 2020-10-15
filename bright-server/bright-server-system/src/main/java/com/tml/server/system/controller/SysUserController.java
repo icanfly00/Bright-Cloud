@@ -159,4 +159,15 @@ public class SysUserController {
         List<SysUser> list = this.userService.pageUserDetail(user, request).getRecords();
         ExcelKit.$Export(SysUser.class, response).downXlsx(list, false);
     }
+
+    /**
+     * 用户树
+     * @param sysUser
+     * @return
+     */
+    @GetMapping("treeUser")
+    public CommonResult treeUser(SysUser sysUser) {
+        Map<String, Object> users = this.userService.treeUser(sysUser);
+        return new CommonResult().data(users);
+    }
 }

@@ -143,7 +143,7 @@ Skywalking|11800、12800、9080|Skywalking APM
 ### 系统优化
 
 ```
--Xms256m -Xmx256m -Xmn96m -Xss1m -XX:SurvivorRatio=8 -XX:+UseG1GC  -XX:+PrintGCDetails
+-Xms256m -Xmx256m -Xmn128m -Xss1m -XX:SurvivorRatio=8 -XX:+UseG1GC  -XX:+PrintGCDetails
 ```
 ### 打包命令
 ```

@@ -59,4 +59,18 @@ public class SysNoticeSendServiceImpl extends ServiceImpl<SysNoticeSendMapper, S
         List<String> list = Arrays.asList(ids);
         this.removeByIds(list);
     }
+
+    @Override
+    public List<Long> listByUserId(Long userId) {
+        return this.baseMapper.listByUserId(userId);
+    }
+
+    @Override
+    public SysNoticeSend findByNoticeIdAndUserId(Long noticeId, Long userId) {
+        LambdaQueryWrapper<SysNoticeSend> queryWrapper = new LambdaQueryWrapper<>();
+        // TODO 设置查询条件
+        queryWrapper.eq(noticeId!=null,SysNoticeSend::getNoticeId,noticeId);
+        queryWrapper.eq(userId!=null,SysNoticeSend::getUserId,userId);
+        return this.baseMapper.selectOne(queryWrapper);
+    }
 }
