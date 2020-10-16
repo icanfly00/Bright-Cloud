@@ -71,11 +71,11 @@ public class AccessManager implements ReactiveAuthorizationManager<Authorization
         if(auth instanceof OAuth2Authentication){
             OAuth2Authentication authentication = (OAuth2Authentication) auth;
             String clientId = authentication.getOAuth2Request().getClientId();
-            log.info("clientId is {}",clientId);
+            log.info("clientId is: {}",clientId);
         }
 
         Object principal = auth.getPrincipal();
-        log.info("用户信息:{}",principal.toString());
+        log.info("user info is: {}",principal.toString());
         return true;
     }
 }

@@ -32,18 +32,17 @@ public class RedisReactiveAuthenticationManager implements ReactiveAuthenticatio
                 .cast(BearerTokenAuthenticationToken.class)
                 .map(BearerTokenAuthenticationToken::getToken)
                 .flatMap((accessToken -> {
-                    log.info("accessToken is :{}", accessToken);
+                    log.info("accessToken is: {}", accessToken);
                     OAuth2AccessToken oAuth2AccessToken = this.tokenStore.readAccessToken(accessToken);
                     //根据access_token从数据库获取不到OAuth2AccessToken
                     if (oAuth2AccessToken == null) {
-                        return Mono.error(new InvalidTokenException("invalid access token,please check"));
+                        throw new InvalidTokenException("invalid access token,please check");
                     } else if (oAuth2AccessToken.isExpired()) {
-                        return Mono.error(new InvalidTokenException("access token has expired,please reacquire token"));
+                        throw new InvalidTokenException("access token has expired,please reacquire token");
                     }
-
                     OAuth2Authentication oAuth2Authentication = this.tokenStore.readAuthentication(accessToken);
                     if (oAuth2Authentication == null) {
-                        return Mono.error(new InvalidTokenException("Access Token 无效!"));
+                        throw new InvalidTokenException("Access Token 无效");
                     } else {
                         return Mono.just(oAuth2Authentication);
                     }
