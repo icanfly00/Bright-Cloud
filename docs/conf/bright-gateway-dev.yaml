@@ -108,7 +108,7 @@ bright:
   doc:
     gateway:
       enable: true
-      resources: "bright-server-system,bright-server-test,bright-auth,bright-server-generator,bright-server-job"
+      resources: "bright-server-system,bright-server-test,bright-auth,bright-server-generator,bright-server-job,bright-server-msg"
 
 # feign配置
 feign:

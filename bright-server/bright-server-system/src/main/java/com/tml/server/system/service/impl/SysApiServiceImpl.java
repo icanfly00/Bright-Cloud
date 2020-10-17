@@ -29,8 +29,12 @@ public class SysApiServiceImpl extends ServiceImpl<SysApiMapper, SysApi> impleme
 
     @Override
     public IPage<SysApi> pageSysApi(QueryRequest request, SysApi sysApi) {
-        LambdaQueryWrapper<SysApi> queryWrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<SysApi> queryWrapper = new LambdaQueryWrapper<>(sysApi);
         // TODO 设置查询条件
+        queryWrapper.eq(StringUtils.isNoneBlank(sysApi.getApiName()),SysApi::getApiName,sysApi.getApiName())
+                .eq(StringUtils.isNoneBlank(sysApi.getPath()),SysApi::getPath,sysApi.getPath())
+                .eq(StringUtils.isNoneBlank(sysApi.getServiceId()),SysApi::getServiceId,sysApi.getServiceId())
+                .orderByDesc(SysApi::getUpdateTime);
         Page<SysApi> page = new Page<>(request.getPageNum(), request.getPageSize());
         return this.page(page, queryWrapper);
     }
@@ -39,6 +43,10 @@ public class SysApiServiceImpl extends ServiceImpl<SysApiMapper, SysApi> impleme
     public List<SysApi> listSysApi(SysApi sysApi) {
         LambdaQueryWrapper<SysApi> queryWrapper = new LambdaQueryWrapper<>();
         // TODO 设置查询条件
+        queryWrapper.eq(StringUtils.isNoneBlank(sysApi.getApiName()),SysApi::getApiName,sysApi.getApiName())
+                .eq(StringUtils.isNoneBlank(sysApi.getPath()),SysApi::getPath,sysApi.getPath())
+                .eq(StringUtils.isNoneBlank(sysApi.getServiceId()),SysApi::getServiceId,sysApi.getServiceId())
+                .orderByDesc(SysApi::getUpdateTime);
         return this.baseMapper.selectList(queryWrapper);
     }
 

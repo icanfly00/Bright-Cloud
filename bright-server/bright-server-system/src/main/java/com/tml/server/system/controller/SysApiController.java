@@ -1,5 +1,6 @@
 package com.tml.server.system.controller;
 
+import cn.hutool.crypto.SecureUtil;
 import com.tml.api.system.entity.SysApi;
 import com.tml.server.system.service.ISysApiService;
 import com.tml.common.core.entity.CommonResult;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -26,57 +28,61 @@ import java.util.Map;
 @Slf4j
 @Validated
 @RestController
-@RequestMapping("sysApi")
+@RequestMapping("api")
 @RequiredArgsConstructor
 public class SysApiController {
 
     private final ISysApiService sysApiService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('sysApi:list')")
+    @PreAuthorize("hasAuthority('api:list')")
     public CommonResult listSysApi(SysApi sysApi) {
         return new CommonResult().data(sysApiService.listSysApi(sysApi));
     }
 
     @GetMapping("list")
-    @PreAuthorize("hasAuthority('sysApi:list')")
+    @PreAuthorize("hasAuthority('api:list')")
     public CommonResult pageSysApi(QueryRequest request, SysApi sysApi) {
         Map<String, Object> dataTable = BrightUtil.getDataTable(this.sysApiService.pageSysApi(request, sysApi));
         return new CommonResult().data(dataTable);
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('sysApi:add')")
+    @PreAuthorize("hasAuthority('api:add')")
     public void saveSysApi(@Valid SysApi sysApi) throws BrightException {
         try {
+            String md5 = SecureUtil.md5(sysApi.getServiceId()+ sysApi.getPath());
+            sysApi.setApiCode(md5);
+            sysApi.setCreateTime(new Date());
             this.sysApiService.saveSysApi(sysApi);
         } catch (Exception e) {
-            String message = "新增SysApi失败";
+            String message = "新增API失败";
             log.error(message, e);
             throw new BrightException(message);
         }
     }
 
     @DeleteMapping("{ids}")
-    @PreAuthorize("hasAuthority('sysApi:delete')")
+    @PreAuthorize("hasAuthority('api:delete')")
     public void deleteSysApi(@NotBlank(message = "{required}") @PathVariable String ids) throws BrightException {
         try {
             String[] idArray = ids.split(StringConstant.COMMA);
             this.sysApiService.deleteSysApi(idArray);
         } catch (Exception e) {
-            String message = "删除SysApi失败";
+            String message = "删除API失败";
             log.error(message, e);
             throw new BrightException(message);
         }
     }
 
     @PutMapping
-    @PreAuthorize("hasAuthority('sysApi:update')")
+    @PreAuthorize("hasAuthority('api:update')")
     public void updateSysApi(SysApi sysApi) throws BrightException {
         try {
+            sysApi.setUpdateTime(new Date());
             this.sysApiService.updateSysApi(sysApi);
         } catch (Exception e) {
-            String message = "修改SysApi失败";
+            String message = "修改API失败";
             log.error(message, e);
             throw new BrightException(message);
         }
