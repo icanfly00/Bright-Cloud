@@ -180,7 +180,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             List<? extends TreeNode<?>> userTree = TreeUtil.build(trees);
 
             result.put(PageConstant.ROWS, userTree);
-            result.put(PageConstant.TOTAL, userList.size());
+            result.put(PageConstant.TOTAL, userTree.size());
         } catch (Exception e) {
             log.error("获取用户列表失败", e);
             result.put(PageConstant.ROWS, null);

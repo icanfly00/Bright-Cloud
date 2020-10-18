@@ -99,3 +99,4 @@ bright:
         - /actuator/**
         - /v2/api-docs
         - /v2/api-docs-ext
+        - /task/**

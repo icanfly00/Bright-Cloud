@@ -35,6 +35,7 @@ public class AccessManager implements ReactiveAuthorizationManager<Authorization
         permitAll.add("/**/v2/api-docs-ext/**");
         permitAll.add("/doc.html");
         permitAll.add("/auth/**");
+        permitAll.add("/task/**");
     }
 
     /**

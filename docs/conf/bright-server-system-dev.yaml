@@ -135,3 +135,4 @@ bright:
         - /gateway/getCurrentRequestCount/**
         - /gateway/setCurrentRequestCount/**
         - /gateway/incrCurrentRequestCount/**
+        - /task/**

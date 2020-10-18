@@ -87,4 +87,24 @@ public class SysApiController {
             throw new BrightException(message);
         }
     }
+
+    /**
+     * 服务名树
+     * @return
+     */
+    @GetMapping("treeServiceId")
+    public CommonResult treeServiceId() {
+        Map<String, Object> params = this.sysApiService.treeServiceId();
+        return new CommonResult().data(params);
+    }
+
+    /**
+     * API数
+     * @return
+     */
+    @GetMapping("treeApi")
+    public CommonResult treeApi(SysApi sysApi) {
+        Map<String, Object> params = this.sysApiService.treeApi(sysApi);
+        return new CommonResult().data(params);
+    }
 }

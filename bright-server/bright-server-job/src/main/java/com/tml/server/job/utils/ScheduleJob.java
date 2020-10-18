@@ -2,6 +2,8 @@ package com.tml.server.job.utils;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.tml.common.core.entity.CommonResult;
+import com.tml.common.core.utils.JacksonUtil;
 import com.tml.server.job.entity.Job;
 import com.tml.server.job.entity.JobLog;
 import com.tml.server.job.service.IJobLogService;
@@ -80,33 +82,35 @@ public class ScheduleJob extends QuartzJobBean {
                 jobLog.setStatus(JobLog.JOB_SUCCESS);
                 log.info("本地方法任务执行完毕，任务ID：{} 总共耗时：{} 毫秒", scheduleJob.getJobId(), times);
             } else {
-                String contentType = StringUtils.isBlank(scheduleJob.getContentType()) ? MediaType.APPLICATION_FORM_URLENCODED_VALUE : scheduleJob.getContentType();
+                String requestMethod=scheduleJob.getRequestMethod();
+                String contentType = StringUtils.isBlank(scheduleJob.getContentType()) ? MediaType.APPLICATION_JSON_VALUE : scheduleJob.getContentType();
                 ServiceInstance serviceInstance = loadBalancerClient.choose(jobLog.getServiceId());
                 //获取服务实例
                 if (serviceInstance == null) {
                     throw new RuntimeException(String.format("%s服务暂不可用", scheduleJob.getServiceId()));
                 }
-                String url = String.format("%%s", serviceInstance.getUri(), scheduleJob.getPath());
-                HttpHeaders headers = new HttpHeaders();
-                HttpMethod httpMethod = HttpMethod.resolve(scheduleJob.getRequestMethod().toUpperCase());
-                HttpEntity requestEntity = null;
-                headers.setContentType(MediaType.parseMediaType(contentType));
-
-                if (contentType.contains(MediaType.APPLICATION_JSON_VALUE)) {
-                    //json 格式
-                    requestEntity = new HttpEntity(body, headers);
-                } else {
-                    //表单形式
-                    MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-                    if (StringUtils.isNoneBlank(body)) {
-                        Map data = JSONObject.parseObject(body, Map.class);
-                        params.putAll(data);
-                        requestEntity = new HttpEntity(body, headers);
+                String url ="http://"+ scheduleJob.getServiceId()+scheduleJob.getPath();
+                System.out.println("url: "+url);
+                StringBuffer newUrl=new StringBuffer();
+                String params= scheduleJob.getParams();
+                if(params.indexOf(",")>-1){
+                    String[] paramArr = params.substring(0, (params.length()-1)).split(",");
+                    StringBuffer sb=new StringBuffer();
+                    for(int i=0;i<paramArr.length;i++){
+                        sb.append(paramArr[i]);
+                        if(i< paramArr.length-1){
+                            sb.append("/");
+                        }
                     }
+                    newUrl.append(url.substring(0,url.indexOf("{")));
+                    newUrl.append(sb.toString());
+                }else{
+                    newUrl.append(url.substring(0,url.indexOf("{")));
+                    newUrl.append(params);
                 }
-                log.info("----- url[{}] method[{}] data=[{}] -----", url, httpMethod, requestEntity);
-                ResponseEntity<String> result = restTemplate.exchange(url, httpMethod, requestEntity, String.class);
-                log.info("----- result [{}] -----", result.getBody());
+                log.info("----- url: {} newUrl: {} method: {} contentType: {} data: {} -----", url, newUrl,requestMethod ,contentType,params);
+                CommonResult commonResult = this.restTemplate.getForObject(newUrl.toString(), CommonResult.class);
+                log.info("----- result: {} -----", JacksonUtil.toJson(commonResult));
                 long times = System.currentTimeMillis() - startTime;
                 jobLog.setTimes(times);
                 jobLog.setStatus(JobLog.JOB_SUCCESS);

@@ -84,18 +84,6 @@ public class SysApi {
     private Integer status;
 
     /**
-     * 
-     */
-    @TableField("create_time")
-    private Date createTime;
-
-    /**
-     * 
-     */
-    @TableField("update_time")
-    private Date updateTime;
-
-    /**
      * 保留数据0-否 1-是 不允许删除
      */
     @TableField("is_persist")
@@ -124,5 +112,23 @@ public class SysApi {
      */
     @TableField("method_name")
     private String methodName;
+
+    /**
+     *
+     */
+    @TableField("create_time")
+    private Date createTime;
+
+    /**
+     *
+     */
+    @TableField("update_time")
+    private Date updateTime;
+
+    /**
+     * 搜索前缀
+     */
+    @TableField(exist = false)
+    private String prefix;
 
 }

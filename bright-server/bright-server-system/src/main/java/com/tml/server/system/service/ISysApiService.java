@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统API接口 Service接口
@@ -62,4 +63,16 @@ public interface ISysApiService extends IService<SysApi> {
     boolean check(String apiCode);
 
     SysApi getSysApiByApiCode(String apiCode);
+
+    /**
+     * 服务树
+     * @return
+     */
+    Map<String,Object> treeServiceId();
+
+    /**
+     * API树
+     * @return
+     */
+    Map<String,Object> treeApi(SysApi sysApi);
 }
