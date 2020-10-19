@@ -28,8 +28,9 @@ public class RedisSubService {
     @Resource
     private GatewayDynamicRouteService gatewayDynamicRouteService;
 
-    public void onMessage(RedisSimpleMessage message, String pattern) {
-        log.info("redis topic: {} received: {} ", pattern, JacksonUtil.toJson(message));
+    public void onMessage(String jsonMsg) {
+        log.info("redis received: {} ",jsonMsg);
+        RedisSimpleMessage message=JacksonUtil.toObject(jsonMsg,RedisSimpleMessage.class);
         if (message.getStatus() == 1) {
             log.info("----- add route -----");
             RouteDefinitionDTO definitionDTO = JacksonUtil.toObject(message.getContent(), RouteDefinitionDTO.class);

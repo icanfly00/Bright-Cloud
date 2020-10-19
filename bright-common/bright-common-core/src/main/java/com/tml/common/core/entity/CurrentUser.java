@@ -1,9 +1,11 @@
 package com.tml.common.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
@@ -41,6 +43,8 @@ public class CurrentUser implements Serializable {
     private String deptName;
     private String roleId;
     private String roleName;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     @JsonIgnore
     private Date lastLoginTime;

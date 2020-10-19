@@ -43,14 +43,13 @@ public class BrightRedisPubSubConfigure {
      * @return
      */
     @Bean
-    public MessageListenerAdapter listener(RedisSubService subscriber) {
+    public MessageListenerAdapter listener(RedisSubService redisSubService) {
+        MessageListenerAdapter adapter = new MessageListenerAdapter(redisSubService, "onMessage");
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         mapper.activateDefaultTyping(mapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(mapper);
-
-        MessageListenerAdapter adapter = new MessageListenerAdapter(subscriber, "onMessage");
         adapter.setSerializer(jackson2JsonRedisSerializer);
         adapter.afterPropertiesSet();
         return adapter;

@@ -119,6 +119,7 @@ public class SysNoticeController {
                 notice.setCreateUser(BrightUtil.getCurrentUsername());
                 notice.setUpdateUser(BrightUtil.getCurrentUsername());
                 notice.setSendTime(new Date());
+                notice.setUpdateTime(new Date());
                 boolean flag=this.sysNoticeService.updateById(notice);
                 if(flag){
                     message="成功";
@@ -166,6 +167,7 @@ public class SysNoticeController {
                 notice.setCreateUser(BrightUtil.getCurrentUsername());
                 notice.setUpdateUser(BrightUtil.getCurrentUsername());
                 notice.setCancelTime(new Date());
+                notice.setUpdateTime(new Date());
                 boolean flag=this.sysNoticeService.updateById(notice);
                 if(flag) {
                     message="成功";

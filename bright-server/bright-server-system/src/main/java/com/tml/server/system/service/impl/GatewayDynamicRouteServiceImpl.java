@@ -88,12 +88,19 @@ public class GatewayDynamicRouteServiceImpl extends ServiceImpl<GatewayDynamicRo
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateGatewayDynamicRoute(GatewayDynamicRoute gatewayDynamicRoute) {
+        GatewayDynamicRoute dynamicRoute=this.getById(gatewayDynamicRoute.getId());
         boolean update = this.saveOrUpdate(gatewayDynamicRoute);
         if (update) {
-            if (gatewayDynamicRoute.getEnable() == 1) {
+            if (dynamicRoute.getEnable()==1 && gatewayDynamicRoute.getEnable() == 1) {
                 RouteDefinitionDTO dto = getRouteDefinition(gatewayDynamicRoute);
                 redisPubService.publish("/redis/dynamicRoute", "admin", JacksonUtil.toJson(dto), 2);
             }
+            // 当原来的状态是0，现在的状态是1，需要添加向网关添加路由，因为原来的路由信息在网关中已被删除
+            if (dynamicRoute.getEnable()==0 && gatewayDynamicRoute.getEnable() == 1) {
+                RouteDefinitionDTO dto = getRouteDefinition(gatewayDynamicRoute);
+                redisPubService.publish("/redis/dynamicRoute", "admin", JacksonUtil.toJson(dto), 1);
+            }
+
             if (gatewayDynamicRoute.getEnable() == 0) {
                 redisPubService.publish("/redis/dynamicRoute", "admin", gatewayDynamicRoute.getRouteId(), 3);
             }
