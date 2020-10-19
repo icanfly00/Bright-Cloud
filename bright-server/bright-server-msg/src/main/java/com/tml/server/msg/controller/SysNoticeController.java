@@ -128,7 +128,8 @@ public class SysNoticeController {
                         JSONObject obj = new JSONObject();
                         obj.put(WebsocketConstant.MSG_CMD, WebsocketConstant.CMD_TOPIC);
                         obj.put(WebsocketConstant.MSG_ID, notice.getId());
-                        obj.put(WebsocketConstant.MSG_TXT, notice.getTitle());
+                        obj.put(WebsocketConstant.MSG_TITLE, notice.getTitle());
+                        obj.put(WebsocketConstant.MSG_TXT, notice.getMsgAbstract());
                         webSocket.sendAllMessage(obj.toJSONString());
                     }else {
                         // 2.插入用户通告阅读标记表记录
@@ -137,7 +138,8 @@ public class SysNoticeController {
                         JSONObject obj = new JSONObject();
                         obj.put(WebsocketConstant.MSG_CMD, WebsocketConstant.CMD_USER);
                         obj.put(WebsocketConstant.MSG_ID, notice.getId());
-                        obj.put(WebsocketConstant.MSG_TXT, notice.getTitle());
+                        obj.put(WebsocketConstant.MSG_TITLE, notice.getTitle());
+                        obj.put(WebsocketConstant.MSG_TXT, notice.getMsgAbstract());
                         webSocket.sendMoreMessage(userIds, obj.toJSONString());
                     }
                 }

@@ -1,5 +1,6 @@
 package com.tml.server.msg.service.impl;
 
+import com.tml.server.msg.entity.SysNotice;
 import com.tml.server.msg.entity.SysNoticeSend;
 import com.tml.server.msg.mapper.SysNoticeSendMapper;
 import com.tml.server.msg.service.ISysNoticeSendService;
@@ -72,5 +73,11 @@ public class SysNoticeSendServiceImpl extends ServiceImpl<SysNoticeSendMapper, S
         queryWrapper.eq(noticeId!=null,SysNoticeSend::getNoticeId,noticeId);
         queryWrapper.eq(userId!=null,SysNoticeSend::getUserId,userId);
         return this.baseMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public IPage<SysNoticeSend> pageMyNoticeSend(QueryRequest request, SysNotice sysNotice) {
+        Page<SysNoticeSend> page = new Page<>(request.getPageNum(), request.getPageSize());
+        return this.baseMapper.pageMyNoticeSend(page,sysNotice);
     }
 }

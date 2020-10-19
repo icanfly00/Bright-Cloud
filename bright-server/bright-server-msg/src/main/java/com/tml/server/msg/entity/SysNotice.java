@@ -156,4 +156,16 @@ public class SysNotice {
     @TableField("DEL_FLAG")
     private String delFlag;
 
+    /**
+     * 用户ID
+     */
+    @TableField(exist = false)
+    private Long userId;
+
+    /**
+     * 阅读标志
+     */
+    @TableField(exist = false)
+    private String readFlag;
+
 }

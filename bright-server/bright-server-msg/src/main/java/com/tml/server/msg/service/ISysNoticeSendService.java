@@ -1,5 +1,6 @@
 package com.tml.server.msg.service;
 
+import com.tml.server.msg.entity.SysNotice;
 import com.tml.server.msg.entity.SysNoticeSend;
 
 import com.tml.common.core.entity.QueryRequest;
@@ -62,4 +63,15 @@ public interface ISysNoticeSendService extends IService<SysNoticeSend> {
 
 
     SysNoticeSend findByNoticeIdAndUserId(Long noticeId,Long userId);
+
+    /**
+     * 我的消息查询（分页）
+     *
+     * @param request QueryRequest
+     * @param SysNotice sysNotice
+     * @return IPage<SysNoticeSend>
+     */
+    IPage<SysNoticeSend> pageMyNoticeSend(QueryRequest request, SysNotice sysNotice);
+
+
 }

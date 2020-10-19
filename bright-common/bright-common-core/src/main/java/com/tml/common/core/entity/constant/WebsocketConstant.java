@@ -19,6 +19,11 @@ public interface WebsocketConstant {
      String MSG_ID = "msgId";
 
     /**
+     * 消息json key:msgTitle
+     */
+    String MSG_TITLE = "msgTitle";
+
+    /**
      * 消息json key:msgTxt
      */
      String MSG_TXT = "msgTxt";

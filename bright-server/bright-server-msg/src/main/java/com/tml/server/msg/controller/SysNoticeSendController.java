@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tml.common.core.entity.constant.BrightConstant;
+import com.tml.server.msg.entity.SysNotice;
 import com.tml.server.msg.entity.SysNoticeSend;
 import com.tml.server.msg.service.ISysNoticeSendService;
 import com.tml.common.core.entity.CommonResult;
@@ -104,8 +105,12 @@ public class SysNoticeSendController {
             updateWrapper.set(SysNoticeSend::getReadTime, new Date());
             updateWrapper.last("where notice_id ="+noticeId+" and user_id ="+userId);
             SysNoticeSend noticeSend = new SysNoticeSend();
+            noticeSend.setCreateUser(BrightUtil.getCurrentUsername());
+            noticeSend.setCreateTime(new Date());
+            noticeSend.setUpdateUser(BrightUtil.getCurrentUsername());
+            noticeSend.setUpdateTime(new Date());
             this.sysNoticeSendService.update(noticeSend, updateWrapper);
-            return new CommonResult().data("更新阅读状态成功");
+            return new CommonResult().data(true);
         } catch (Exception e) {
             String message = "更新阅读状态失败";
             log.error(message, e);
@@ -116,14 +121,14 @@ public class SysNoticeSendController {
     /**
      * 获取我的消息
      * @param request
-     * @param sysNoticeSend
+     * @param sysNotice
      * @return
      */
     @GetMapping("getMyNoticeSend")
-    public CommonResult getMyNoticeSend(QueryRequest request, SysNoticeSend sysNoticeSend) {
+    public CommonResult getMyNoticeSend(QueryRequest request, SysNotice sysNotice) {
         Long userId = BrightUtil.getCurrentUser().getUserId();
-        sysNoticeSend.setUserId(userId);
-        Map<String, Object> dataTable = BrightUtil.getDataTable(this.sysNoticeSendService.pageSysNoticeSend(request, sysNoticeSend));
+        sysNotice.setUserId(userId);
+        Map<String, Object> dataTable = BrightUtil.getDataTable(this.sysNoticeSendService.pageMyNoticeSend(request, sysNotice));
         return new CommonResult().data(dataTable);
     }
 
@@ -143,7 +148,7 @@ public class SysNoticeSendController {
 
             SysNoticeSend noticeSend = new SysNoticeSend();
             this.sysNoticeSendService.update(noticeSend, updateWrapper);
-            return new CommonResult().data("全部已读");
+            return new CommonResult().data(true);
         } catch (Exception e) {
             String message = "全部已读失败";
             log.error(message, e);

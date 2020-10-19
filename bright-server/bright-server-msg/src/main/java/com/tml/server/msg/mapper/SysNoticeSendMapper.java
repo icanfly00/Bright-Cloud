@@ -1,5 +1,8 @@
 package com.tml.server.msg.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tml.server.msg.entity.SysNotice;
 import com.tml.server.msg.entity.SysNoticeSend;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,5 +18,13 @@ import java.util.List;
 public interface SysNoticeSendMapper extends BaseMapper<SysNoticeSend> {
 
     List<Long> listByUserId(@Param("userId") Long userId);
+
+    /**
+     * 获取我的消息
+     * @param page
+     * @param sysNotice
+     * @return
+     */
+    IPage<SysNoticeSend> pageMyNoticeSend(Page<SysNoticeSend> page, @Param("sysNotice") SysNotice sysNotice);
 
 }
