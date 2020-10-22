@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 
 services:
   bright-admin:
@@ -98,6 +98,26 @@ services:
       - TZ=Asia/Shanghai
     depends_on:
       - bright-gateway
+
+  bright-server-msg:
+    image: bright-server-msg
+    container_name: bright-server-msg
+    build:
+      context: /home/project/bright-server-msg
+      dockerfile: Dockerfile
+    hostname: bright-server-msg
+    restart: always
+    ports:
+      - 8004:8004
+    networks:
+      - bright-service
+    volumes:
+      - /home/output:/output:rw
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - bright-gateway      
 
   bright-server-generator:
     image: bright-server-generator

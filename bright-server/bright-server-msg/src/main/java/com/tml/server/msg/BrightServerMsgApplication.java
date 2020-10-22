@@ -25,7 +25,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableFeignClients
 @EnableCircuitBreaker
 @EnableBrightCloudResourceServer
-@MapperScan("com.tml.server.Msg.mapper")
+@MapperScan("com.tml.server.msg.mapper")
 @EnableBinding(Processor.class)
 public class BrightServerMsgApplication {
 

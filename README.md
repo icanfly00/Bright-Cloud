@@ -35,7 +35,7 @@ Bright-Cloud是一款使用Spring Cloud Hoxton.SR8、Spring Cloud OAuth2 & Sprin
     <td align="center" style="background: #fff"><b>Bright-Cloud</b></td>
   </tr>
   <tr>
-     <td align="center" style="background: #fff"><img src="docs/images/Bright-Cloud.svg"/></td>
+     <td align="center" style="background: #fff"><img src="docs/images/bright-cloud.jpg"/></td>
    </tr>
    <tr>
       <td align="center" style="background: #fff"><img src="docs/images/Oauth2.0授权码模式流程.png"/></td>
@@ -43,13 +43,8 @@ Bright-Cloud是一款使用Spring Cloud Hoxton.SR8、Spring Cloud OAuth2 & Sprin
   <tr>
     <td align="center" style="background: #fff"><img src="docs/images/Oauth2.0授权码模式时序图.png"/></td>
   </tr>
-   <tr>
-    <td align="center" style="background: #fff"><b>Skywalking APM</b></td>
-  </tr>
-  <tr>
-    <td align="center" style="background: #fff"><img src="docs/images/SkywalkingAPM.svg"/></td>
-  </tr>
 </table>
+
 
 
 
@@ -62,13 +57,13 @@ Gitee  | [https://gitee.com/tumao2/Bright-Cloud](https://gitee.com/tumao2/Bright
 
 ### 演示地址
 
-演示地址：[]()
+演示地址：[http://106.13.130.94](http://106.13.130.94)
 
 演示环境账号密码：
 
 账号 | 密码| 权限
 ---|---|---
-test | 123456 | 注册账户，拥有查看权限
+jackson | 123456 | 测试账户，拥有查看权限
 
 本地部署账号密码：
 
@@ -77,12 +72,6 @@ test | 123456 | 注册账户，拥有查看权限
 admin | 123456 |超级管理员，拥有所有增删改查权限
 scott | 123456 | 注册账户，拥有查看，新增权限（新增用户除外） 
 jackson | 123456 |系统监测员，负责整个系统监控模块
-
-APM平台相关账号密码：
-
-平台 | 账号| 密码
----|---|---
-fast-admin | admin |123456
 
 ### 服务模块
 
@@ -140,10 +129,10 @@ Skywalking|11800、12800、9080|Skywalking APM
 │  └─sql                                        ------ SQL脚本           
 
 ```
-### 系统优化
+### JVM优化
 
 ```
--Xms256m -Xmx256m -Xmn128m -Xss1m -XX:SurvivorRatio=8 -XX:+UseG1GC  -XX:+PrintGCDetails
+-Xms256m -Xmx256m -Xmn128m -Xss1m -XX:+UseG1GC  -XX:+PrintGCDetails
 ```
 ### 打包命令
 ```
@@ -160,19 +149,16 @@ clean package -P test -D maven.test.skip=true -f pom.xml
 
 <table>
   <tr>
-     <td><img src=""/></td>
-     <td><img src=""/></td>
+     <td><img src="docs/images/1.png"/></td>
+     <td><img src="docs/images/2.png"/></td>
   </tr>
   <tr>
-     <td><img src=""/></td>
-     <td><img src=""/></td>
+     <td><img src="docs/images/3.png"/></td>
+     <td><img src="docs/images/4.png"/></td>
   </tr>
   <tr>
-     <td><img src=""/></td>
-     <td><img src=""/></td>
-  </tr>
-  <tr>
-     <td><img src=""/></td>
+     <td><img src="docs/images/5.png"/></td>
+     <td><img src="docs/images/6.png"/></td>
   </tr>
 </table>
 
@@ -183,7 +169,7 @@ clean package -P test -D maven.test.skip=true -f pom.xml
 ```
 -javaagent:G:\apache-skywalking-apm-bin-es7\agent\skywalking-agent.jar 
 -Dskywalking.agent.service_name=bright-server-system 
--Dskywalking.collector.backend_service=172.16.5.81:11800
+-Dskywalking.collector.backend_service=127.0.0.1:11800
 ```
 
 **bright-auth 服务APM命令**
@@ -191,23 +177,9 @@ clean package -P test -D maven.test.skip=true -f pom.xml
 ```
 -javaagent:G:\apache-skywalking-apm-bin-es7\agent\skywalking-agent.jar 
 -Dskywalking.agent.service_name=bright-auth 
--Dskywalking.collector.backend_service=172.16.5.81:11800
+-Dskywalking.collector.backend_service=127.0.0.1:11800
 ```
 
-
-
-#### [Skywalking APM]()
-
-<table>
-  <tr>
-     <td width="50%" align="top"><img src=""/></td>
-     <td width="50%" align="top"><img src=""/></td>
-  </tr>
-  <tr>
-     <td width="50%" align="top"><img src=""/></td>
-     <td width="50%" align="top"><img src=""/></td>
-  </tr>
-</table>
 
 ### 反馈交流
 

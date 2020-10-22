@@ -1,0 +1,95 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+    hostname: redis
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - bright
+    volumes:
+      - /etc/localtime:/etc/localtime:ro # 设置容器时区与宿主机保持一致
+      - /home/redis/data:/data:rw
+      - /home/redis/logs:/logs:rw
+    environment:
+      - TZ=Asia/Shanghai  
+    command:
+      redis-server --appendonly yes --requirepass Bright@2020
+
+  rabbitmq:
+    image: rabbitmq:3.8.7-management
+    container_name: rabbitmq
+    restart: always
+    hostname: rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+    networks:
+      - bright  
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /home/rabbitmq/data:/var/lib/rabbitmq:rw
+    environment:
+      - TZ=Asia/Shanghai  
+      - RABBITMQ_DEFAULT_USER=root
+      - RABBITMQ_DEFAULT_PASS=Bright@2020
+
+  nacos:
+    image: nacos/nacos-server:latest
+    container_name: nacos-standalone-mysql
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /home/nacos/logs/:/home/nacos/logs:rw
+      - /home/nacos/data/:/home/nacos/data:rw
+    environment:
+      - TZ=Asia/Shanghai
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
+      - SPRING_DATASOURCE_PLATFORM=mysql
+      - MYSQL_SERVICE_HOST=106.13.130.94
+      - MYSQL_SERVICE_DB_NAME=nacos
+      - MYSQL_SERVICE_PORT=3306
+      - MYSQL_SERVICE_USER=bright
+      - MYSQL_SERVICE_PASSWORD=Bright@2020
+      - management.endpoints.web.exposure.include=*
+    ports:
+      - "8848:8848"
+    networks:
+      - bright  
+    depends_on:
+      - redis
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    restart: always
+    ports:
+      - 80:80
+      - 8080:8080
+    networks:
+      - bright
+    volumes:
+      - /home/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:rw
+      - /home/nginx/conf/conf.d/:/etc/nginx/conf.d:rw
+      - /home/nginx/html/:/usr/share/nginx/html:rw
+      - /home/nginx/logs/:/var/log/nginx:rw
+      - /home/nginx/cache/:/usr/share/nginx/cache:rw
+      - /home/project/dist/:/home/project/dist:rw
+
+networks:
+  bright:
+    driver: bridge
+
+# 创建并启动
+# COMPOSE_PROJECT_NAME=bright docker-compose up -d
+# 启动
+# COMPOSE_PROJECT_NAME=bright docker-compose start
+# 停止
+# COMPOSE_PROJECT_NAME=bright docker-compose stop
+# 删除
+#COMPOSE_PROJECT_NAME=bright docker-compose rm
+# 查看日志
+# COMPOSE_PROJECT_NAME=bright docker-compose logs
